@@ -26,7 +26,6 @@ const Navbar = () => {
         setTheme(theme)
     }
 
-
     const navLinks = <>
         <li key={1}>
             <NavLink to='/' >Home</NavLink>
@@ -34,12 +33,16 @@ const Navbar = () => {
         <li key={2}>
             <NavLink to='/all-contests' >All Contests</NavLink>
         </li>
-        <li key={3}>
-            <NavLink to='/login' >Login</NavLink>
-        </li>
-        <li key={4}>
-            <NavLink to='/signup' >Signup</NavLink>
-        </li>
+        {!isAuthenticated &&
+            <>
+                <li key={3}>
+                    <NavLink to='/login' >Login</NavLink>
+                </li>
+                <li key={4}>
+                    <NavLink to='/signup' >Signup</NavLink>
+                </li>
+            </>
+        }
     </>
     return (
         <div className="navbar bg-base-100 shadow-sm">
@@ -66,7 +69,7 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                
+
                 {isAuthenticated &&
                     <div className="dropdown">
 
@@ -87,7 +90,7 @@ const Navbar = () => {
                     </div>
                 }
                 <div className="theme flex items-center gap-2">
-                <MdLightMode /><input onChange={(e) => handleTheme(e.target.checked)} checked={theme === 'dark' ? 'checked' : ''} type="checkbox" className="toggle" /><MdDarkMode />
+                    <MdLightMode /><input onChange={(e) => handleTheme(e.target.checked)} checked={theme === 'dark' ? 'checked' : ''} type="checkbox" className="toggle" /><MdDarkMode />
                 </div>
             </div>
         </div>

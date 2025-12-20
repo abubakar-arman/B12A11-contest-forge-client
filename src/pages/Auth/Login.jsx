@@ -1,72 +1,57 @@
-import { Link, useNavigate } from 'react-router';
-
+import { Link, useLocation, useNavigate } from 'react-router';
+import loginImg from '../../assets/login.png'
 // import { toast } from 'react-toastify';
-
 import useAuth from '../../hooks/useAuth'
-import signupImg from '../../assets/signup.png'
-import { useForm } from "react-hook-form"
-import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
-const Signup = () => {
-    const { signup, user, loginWithGoogle } = useAuth()
-    const {register , handleSubmit, formState: {errors}} = useForm()
+const Login = () => {
+    const { login, loginWithGoogle } = useAuth()
     const navigate = useNavigate()
-    // const [error, setError] = useState(null)
-    useEffect(() => {
-        console.log(user);
-        
-    },[user])
+    const location = useLocation()
+    const {register , handleSubmit, formState: {errors}} = useForm()
 
+    const from = location.state?.from || '/'
     const invalidPassErr = (`Enter a valid password:
-    - Must have an Uppercase letter in the password 
-    - Must have a Lowercase letter in the password 
-    `)
+        - Must have an Uppercase letter in the password 
+        - Must have a Lowercase letter in the password
+        `)
 
-    const handleRegister = async (data) => {        
-        const {name, email, password, photoUrl} = data
-        
+    const handleEmailLogin = async (data) => {
+        const {email, password} = data
+      
+        // toast('pass')
         try {
-            await signup(email, password, name, photoUrl)
-            // toast.success('Account created successfully')
-            console.log('user:', user);
-            
-            navigate('/')
+            await login(email, password)
+            navigate(from)
         } catch (err) {
-            if(err.code === 'auth/email-already-in-use'){
-                // toast.error('Email is already in use')
-                return
-            }
-            // toast.error('Incorrect information')
-            console.log(err.code)
+            // toast.error('Invalid Username or Password')
+            // console.log(err.message);
+            return err.message
+
         }
     }
 
     const handleGoogleLogin = async () => {
         try {
             await loginWithGoogle()
-            navigate('/')
-        } catch(err){
+            navigate(from)
+        } catch (err) {
             // toast.error('Error occured while Logging in')
             return err.message
         }
     }
     return (
         <div className="min-h-[calc(100vh-90px)]">
-            <h1 className="text-5xl font-bold text-center text-primary mt-10 mb-8">Signup now!</h1>
+            <h1 className="text-5xl font-bold text-center text-primary mt-10 mb-8">Login now!</h1>
             <div className="hero bg-base-200">
                 <div className="hero-content flex-col lg:flex-row">
                     <div className="text-center lg:text-left ">
-                        <img src={signupImg} className='w-lg hidden lg:block' alt="" />
+                        <img src={loginImg} className='w-lg hidden lg:block' alt="" />
                     </div>
                     <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
                         <div className="card-body">
-                            <form onSubmit={handleSubmit(handleRegister)}>
+                            <form onSubmit={handleSubmit(handleEmailLogin)}>
                                 <fieldset className="fieldset">
-                                    <label className="label">Name</label>
-                                    <input type="text" className="input" {...register('name', {required: true})} placeholder="Name" />
-                                    {errors.name?.type === 'required' && (
-                                        <p className="text-red-600">* Name is required.</p>
-                                    )}
                                     <label className="label">Email</label>
                                     <input type="email" className="input" {...register('email', {required: true})} placeholder="Email" />
                                     {errors.email?.type === 'required' && (
@@ -87,11 +72,9 @@ const Signup = () => {
                                     {errors.password?.type === 'pattern' && (
                                         <p className="text-red-600">{invalidPassErr}</p>
                                     )}
-                                    <label className="label">Photo URL</label>
-                                    <input type="text" className="input" {...register('photoUrl')} placeholder="abc.jpg" />
-                                    <button className="btn btn-primary mt-4">Signup</button>
+                                    <div><Link to='/recover-password' className="link link-hover">Forgot password?</Link></div>
+                                    <button className="btn btn-primary mt-4">Login</button>
                                     {/* Google */}
-                                    
                                 </fieldset>
                             </form>
                             <button onClick={handleGoogleLogin} className="btn bg-white text-black border-[#e5e5e5] mt-2">
@@ -106,10 +89,9 @@ const Signup = () => {
                                         </path><path fill="#ea4335"
                                             d="m153 219c22-69 116-109 179-50l55-54c-78-75-230-72-297 55">
                                         </path></g></svg>
-                                Signup with Google
+                                Login with Google
                             </button>
-                            <div className='mt-2'>
-                                        Already have an account? <Link to='/login' className="link link-hover text-primary">Login Now.</Link></div>
+                            <div className='mt-2'>Don't have an account? <Link to='/register' className="link link-hover text-primary">Register Now.</Link></div>
                         </div>
                     </div>
                 </div>
@@ -118,4 +100,4 @@ const Signup = () => {
     );
 };
 
-export default Signup;
+export default Login;
