@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router';
 
-// import { toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 import useAuth from '../../hooks/useAuth'
 import signupImg from '../../assets/signup.png'
@@ -11,7 +11,6 @@ const Signup = () => {
     const { signup, user, loginWithGoogle } = useAuth()
     const {register , handleSubmit, formState: {errors}} = useForm()
     const navigate = useNavigate()
-    // const [error, setError] = useState(null)
     useEffect(() => {
         console.log(user);
         
@@ -27,16 +26,16 @@ const Signup = () => {
         
         try {
             await signup(email, password, name, photoUrl)
-            // toast.success('Account created successfully')
+            toast.success('Account created successfully')
             console.log('user:', user);
             
             navigate('/')
         } catch (err) {
             if(err.code === 'auth/email-already-in-use'){
-                // toast.error('Email is already in use')
+                toast.error('Email is already in use')
                 return
             }
-            // toast.error('Incorrect information')
+            toast.error('Incorrect information')
             console.log(err.code)
         }
     }
@@ -46,7 +45,7 @@ const Signup = () => {
             await loginWithGoogle()
             navigate('/')
         } catch(err){
-            // toast.error('Error occured while Logging in')
+            toast.error('Error occured while Logging in')
             return err.message
         }
     }

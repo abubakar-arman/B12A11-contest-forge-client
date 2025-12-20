@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router';
 import loginImg from '../../assets/login.png'
-// import { toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import useAuth from '../../hooks/useAuth'
 import { useForm } from 'react-hook-form';
 
@@ -24,7 +24,7 @@ const Login = () => {
             await login(email, password)
             navigate(from)
         } catch (err) {
-            // toast.error('Invalid Username or Password')
+            toast.error('Invalid Username or Password')
             // console.log(err.message);
             return err.message
 
@@ -36,7 +36,7 @@ const Login = () => {
             await loginWithGoogle()
             navigate(from)
         } catch (err) {
-            // toast.error('Error occured while Logging in')
+            toast.error('Error occured while Logging in')
             return err.message
         }
     }
@@ -91,7 +91,7 @@ const Login = () => {
                                         </path></g></svg>
                                 Login with Google
                             </button>
-                            <div className='mt-2'>Don't have an account? <Link to='/register' className="link link-hover text-primary">Register Now.</Link></div>
+                            <div className='mt-2'>Don't have an account? <Link to='/signup' className="link link-hover text-primary">Register Now.</Link></div>
                         </div>
                     </div>
                 </div>
