@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import auth from "../firebase/firebase.init";
 import { AuthContext } from "./AuthContext";
-// import Spinner from "../components/Spinner";
+import Spinner from "../Components/Spinner";
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null)
