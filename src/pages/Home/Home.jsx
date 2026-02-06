@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth';
+import Banner from '../../Components/Banner';
 
 const Home = () => {
     const {user} = useAuth()
@@ -25,6 +26,7 @@ const Home = () => {
         <div>
             home
             {msg && <p>Message : {msg.msg}</p>}
+            <Banner />
         </div>
     );
 };
