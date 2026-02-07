@@ -5,32 +5,39 @@ import Signup from "../pages/Auth/Signup";
 import Login from "../pages/Auth/Login";
 import NotFound from "../pages/Shared/NotFound";
 import AllContests from "../pages/AllContests";
+import ContestDetails from "../pages/ContestDetails";
 
 export const router = createBrowserRouter([
-  {
-    path: "/",
-    Component: RootLayout,
-    children: [
-        {
-            index: true,
-            Component: Home
-        },
-        {
-            path: '/signup',
-            Component: Signup
-        },
-        {
-            path: '/login',
-            Component: Login
-        },
-        {
-            path: '/all-contests',
-            Component: AllContests
-        },
-        {
-            path: '/*',
-            Component: NotFound
-        }
-    ]
-  },
+    {
+        path: "/",
+        Component: RootLayout,
+        children: [
+            {
+                index: true,
+                Component: Home
+            },
+            {
+                path: '/signup',
+                Component: Signup
+            },
+            {
+                path: '/login',
+                Component: Login
+            },
+            {
+                path: '/all-contests',
+                Component: AllContests
+            },
+            {
+                path: '/contest-details/:id',
+                element: <ContestDetails />,
+                loader: () => fetch('/contest.json')
+                // loader: ({ params }) => fetch('https://moviemaster-pro.vercel.app/movies/' + params.id)
+            },
+            {
+                path: '/*',
+                Component: NotFound
+            }
+        ]
+    },
 ]);

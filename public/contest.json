@@ -1,0 +1,15 @@
+{
+        "id": 1,
+        "contest_name": "Nebula Digital Art Challenge",
+        "banner_url": "nebula.png",
+        "participants_count": 1240,
+        "description": "Create a stunning visual representation of deep space using only a neon color palette.",
+        "task_details": "Submit one original .PNG or .TIFF file. Resolution must be at least 3000x2000px. AI-generated entries are not permitted for this specific round.",
+        "prize_money": "$5,000",
+        "winner": {
+            "name": "Alex Rivera",
+            "photo_url": "https://example.com/profiles/alex-rivera.jpg"
+        },
+        "deadline": "2026-03-15T23:59:59Z",
+        "category": "art"
+    }

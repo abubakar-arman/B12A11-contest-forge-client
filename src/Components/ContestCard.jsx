@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaTrophy, FaUsers } from 'react-icons/fa6';
+import { Link } from 'react-router';
 
 const ContestCard = ({ contest }) => {
     return (
@@ -19,7 +20,7 @@ const ContestCard = ({ contest }) => {
                             <FaUsers />
                             <span>{contest.participants_count}</span>
                         </div>
-                        <button className="btn btn-sm btn-primary">Details</button>
+                        <Link to={`/contest-details/${contest.id}`} className="btn btn-sm btn-primary">Details</Link>
                     </div>
                 </div>
             </figure>
