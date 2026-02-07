@@ -6,6 +6,7 @@ import Login from "../pages/Auth/Login";
 import NotFound from "../pages/Shared/NotFound";
 import AllContests from "../pages/AllContests";
 import ContestDetails from "../pages/ContestDetails";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 export const router = createBrowserRouter([
     {
@@ -39,5 +40,9 @@ export const router = createBrowserRouter([
                 Component: NotFound
             }
         ]
+    },
+    {
+        path: '/dashboard',
+        element: <DashboardLayout />
     },
 ]);
