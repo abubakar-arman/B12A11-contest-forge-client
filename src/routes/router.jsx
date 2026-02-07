@@ -3,6 +3,8 @@ import RootLayout from "../layouts/RootLayout";
 import Home from "../pages/Home/Home";
 import Signup from "../pages/Auth/Signup";
 import Login from "../pages/Auth/Login";
+import NotFound from "../pages/Shared/NotFound";
+import AllContests from "../pages/AllContests";
 
 export const router = createBrowserRouter([
   {
@@ -21,7 +23,14 @@ export const router = createBrowserRouter([
             path: '/login',
             Component: Login
         },
-        
+        {
+            path: '/all-contests',
+            Component: AllContests
+        },
+        {
+            path: '/*',
+            Component: NotFound
+        }
     ]
   },
 ]);
