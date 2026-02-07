@@ -11,7 +11,7 @@ const Winners = () => {
         fetch('/winners.json')
             .then(res => res.json())
             .then(data => setWinners(data))
-    })
+    }, [])
     return (
         <div className='mt-10 mb-10 text-center'>
             <h3 className='text-3xl font-bold text-accent-content mb-5'>Contest Winners</h3>

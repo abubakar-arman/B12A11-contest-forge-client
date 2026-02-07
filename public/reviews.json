@@ -1,0 +1,52 @@
+[
+  {
+    "id": "6a12bc20c5d2e14f9d123456",
+    "user_email": "sophia.art@example.com",
+    "name": "Sophia Martinez",
+    "email": "sophia.art@example.com",
+    "ratings": 5.0,
+    "review": "Incredible platform! The Nebula Art challenge was super competitive, and I received my prize money within 24 hours of the announcement.",
+    "photoUrl": "https://randomuser.me/api/portraits/women/22.jpg",
+    "date": "2026-01-15T10:15:00.000Z"
+  },
+  {
+    "id": "7b34de45f6a2b34e8c789012",
+    "user_email": "dev.liam@example.com",
+    "name": "Liam O'Connor",
+    "email": "dev.liam@example.com",
+    "ratings": 4.5,
+    "review": "The UI is very intuitive and the countdown timers keep the adrenaline pumping. Lost by a hair on the App Sprint, but the feedback from judges was gold.",
+    "photoUrl": "https://randomuser.me/api/portraits/men/32.jpg",
+    "date": "2026-02-01T09:45:00.000Z"
+  },
+  {
+    "id": "8c56fg78h9j0k12l3m456789",
+    "user_email": "chen.designs@example.com",
+    "name": "Yuki Chen",
+    "email": "chen.designs@example.com",
+    "ratings": 4.8,
+    "review": "I love how transparent the leaderboard is. You can actually see the talent you're up against. Highly recommended for any serious designer.",
+    "photoUrl": "https://randomuser.me/api/portraits/women/45.jpg",
+    "date": "2026-02-06T16:20:00.000Z"
+  },
+  {
+    "id": "7b34de45f6a2b34e8c789012",
+    "user_email": "dev.liam@example.com",
+    "name": "Liam O'Connor",
+    "email": "dev.liam@example.com",
+    "ratings": 4.5,
+    "review": "The UI is very intuitive and the countdown timers keep the adrenaline pumping. Lost by a hair on the App Sprint, but the feedback from judges was gold.",
+    "photoUrl": "https://randomuser.me/api/portraits/men/32.jpg",
+    "date": "2026-02-01T09:45:00.000Z"
+  },
+  {
+    "id": "8c56fg78h9j0k12l3m456789",
+    "user_email": "chen.designs@example.com",
+    "name": "Yuki Chen",
+    "email": "chen.designs@example.com",
+    "ratings": 4.8,
+    "review": "I love how transparent the leaderboard is. You can actually see the talent you're up against. Highly recommended for any serious designer.",
+    "photoUrl": "https://randomuser.me/api/portraits/women/45.jpg",
+    "date": "2026-02-06T16:20:00.000Z"
+  }
+]

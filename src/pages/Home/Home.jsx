@@ -4,6 +4,7 @@ import Banner from '../../Components/Banner';
 import PopularContents from '../../Components/PopularContests';
 import Winners from '../../Components/Winners';
 import Stats from '../../Components/Stats';
+import Reviews from '../../Components/Reviews';
 
 const Home = () => {
     const {user} = useAuth()
@@ -39,6 +40,7 @@ const Home = () => {
             <PopularContents contests={popularContestsData} />
             <Stats />
             <Winners />
+            <Reviews />
         </div>
     );
 };
