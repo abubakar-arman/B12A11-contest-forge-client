@@ -1,0 +1,24 @@
+{
+    "name": "Jordan Vance",
+    "photo": "https://randomuser.me/api/portraits/men/44.jpg",
+    "address": "742 Evergreen Terrace, Portland, OR 97205",
+    "bio": "Full-stack developer by day, competitive UI/UX designer by night.",
+    "username": "@j_vance99",
+    "rank_title": "Elite Competitor",
+    "total_wins": 12,
+    "total_participated": 24,
+    "skills": [
+        "React",
+        "Figma",
+        "Node.js"
+    ],
+    "joined_date": "2024-03-12",
+    "social_links": {
+        "github": "https://github.com/j_vance",
+        "portfolio": "https://jordanvance.dev"
+    },
+    "badges": [
+        "Top Finisher",
+        "Fast Learner"
+    ]
+}
