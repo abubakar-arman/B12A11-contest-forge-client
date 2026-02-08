@@ -10,6 +10,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import ParticipatedContests from "../pages/Dashboard/User/ParticipatedContests";
 import WinningContests from "../pages/Dashboard/User/WinningContests";
 import UserProfile from "../pages/Dashboard/User/UserProfile";
+import AddContest from "../pages/Dashboard/Creator/AddContest";
 
 export const router = createBrowserRouter([
     {
@@ -59,6 +60,10 @@ export const router = createBrowserRouter([
             {
                 path: 'profile',
                 Component: UserProfile
+            },
+            {
+                path: 'add-contest',
+                Component: AddContest
             }
         ]
     },
