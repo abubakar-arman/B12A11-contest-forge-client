@@ -1,0 +1,50 @@
+[
+  {
+    "id": "sub_99a1",
+    "participant_name": "Jordan Vance",
+    "email": "jordan.vance@example.com",
+    "contest_name": "Nebula Digital Art Challenge",
+    "submitted_task_info": {
+      "title": "Neon Dreams of Saturn",
+      "description": "A 3D render focusing on lighting and high-contrast space textures.",
+      "file_url": "https://storage.contesthub.com/submissions/jordan_vance_nebula.zip",
+      "file_size": "45.2MB",
+      "preview_image": "https://example.com/previews/nebula_jordan.jpg"
+    },
+    "submission_date": "2026-02-08T14:30:00Z",
+    "status": "Pending Review",
+    "version": 1
+  },
+  {
+    "id": "sub_99a2",
+    "participant_name": "Elena Rossi",
+    "email": "elena.rossi@example.com",
+    "contest_name": "Eco-Friendly App Sprint",
+    "submitted_task_info": {
+      "title": "GreenPath MVP",
+      "description": "Functional React Native app with a custom API for tracking local recycling centers.",
+      "github_link": "https://github.com/elena-rossi/greenpath-app",
+      "demo_video_url": "https://vimeo.com/greenpath-demo",
+      "notes": "Admin login is 'admin/password123' for testing."
+    },
+    "submission_date": "2026-02-07T09:15:00Z",
+    "status": "Shortlisted",
+    "version": 2
+  },
+  {
+    "id": "sub_99a3",
+    "participant_name": "Samira Khan",
+    "email": "samira.khan@example.com",
+    "contest_name": "The Minimalist Logo Quest",
+    "submitted_task_info": {
+      "title": "EverThread Brand Identity",
+      "description": "Single-line vector logo representing sustainable textiles.",
+      "file_url": "https://storage.contesthub.com/submissions/samira_minimalist.pdf",
+      "file_size": "1.2MB",
+      "preview_image": "https://example.com/previews/logo_samira.jpg"
+    },
+    "submission_date": "2026-02-09T11:00:00Z",
+    "status": "Rejected",
+    "version": 1
+  }
+]

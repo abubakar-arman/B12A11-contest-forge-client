@@ -18,6 +18,7 @@ const CreatedContests = () => {
 
     return (
         <div>
+            <h3 className='text-3xl font-bold text-accent-content mb-5 text-center'>My Created Contests</h3>
             <div className="overflow-x-auto">
                 <table className="table table-zebra">
                     {/* head */}
