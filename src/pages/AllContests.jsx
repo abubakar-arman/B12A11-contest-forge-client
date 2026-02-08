@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaTrophy, FaUsers } from 'react-icons/fa6';
-import ContestCard from '../Components/ContestCard';
+import ContestCard from './Shared/ContestCard';
 
 const AllContests = () => {
     const [contests, setContests] = useState([])

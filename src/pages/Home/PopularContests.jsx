@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import ContestCard from './ContestCard';
+import ContestCard from '../Shared/ContestCard';
 
 const PopularContents = ({ contests }) => {
     console.log('contests', contests);

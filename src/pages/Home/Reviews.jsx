@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ReviewCard from './ReviewCard';
+import ReviewCard from '../../Components/ReviewCard';
 import { Autoplay, EffectCoverflow, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 

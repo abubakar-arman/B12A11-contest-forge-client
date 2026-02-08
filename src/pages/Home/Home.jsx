@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth';
-import Banner from '../../Components/Banner';
-import PopularContents from '../../Components/PopularContests';
-import Winners from '../../Components/Winners';
-import Stats from '../../Components/Stats';
-import Reviews from '../../Components/Reviews';
+import Banner from './Banner';
+import PopularContents from './PopularContests';
+import Winners from './Winners';
+import Stats from './Stats';
+import Reviews from './Reviews';
 
 const Home = () => {
     const {user} = useAuth()

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Logo from '../../Components/Logo';
+import Logo from './Logo';
 import { NavLink, useNavigate } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 import { MdDarkMode } from "react-icons/md";

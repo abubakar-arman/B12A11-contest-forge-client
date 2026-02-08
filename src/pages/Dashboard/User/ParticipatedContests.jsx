@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import ContestCard from '../../../Components/ContestCard';
-import ContestListCard from '../../../Components/ContestListCard';
+import ContestCard from '../../Shared/ContestCard';
+import ContestListCard from '../../Shared/ContestListCard';
 
 const ParticipatedContests = () => {
     const [contests, setContests] = useState([])
