@@ -7,6 +7,7 @@ import NotFound from "../pages/Shared/NotFound";
 import AllContests from "../pages/AllContests";
 import ContestDetails from "../pages/ContestDetails";
 import DashboardLayout from "../layouts/DashboardLayout";
+import ParticipatedContests from "../pages/Dashboard/User/ParticipatedContests";
 
 export const router = createBrowserRouter([
     {
@@ -43,6 +44,12 @@ export const router = createBrowserRouter([
     },
     {
         path: '/dashboard',
-        element: <DashboardLayout />
+        element: <DashboardLayout />,
+        children: [
+            {
+                path: 'my-participated-contests',
+                Component: ParticipatedContests
+            }
+        ]
     },
 ]);

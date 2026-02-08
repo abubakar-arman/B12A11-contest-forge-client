@@ -33,7 +33,13 @@ const Navbar = () => {
         <li key={2}>
             <NavLink to='/all-contests' >All Contests</NavLink>
         </li>
-        {!isAuthenticated &&
+        {isAuthenticated ?
+            <>
+                <li key={3}>
+                    <NavLink to='/dashboard/my-participated-contests' >My Contests</NavLink>
+                </li>
+            </>
+            :
             <>
                 <li key={3}>
                     <NavLink to='/login' >Login</NavLink>
