@@ -11,6 +11,7 @@ import ParticipatedContests from "../pages/Dashboard/User/ParticipatedContests";
 import WinningContests from "../pages/Dashboard/User/WinningContests";
 import UserProfile from "../pages/Dashboard/User/UserProfile";
 import AddContest from "../pages/Dashboard/Creator/AddContest";
+import CreatedContests from "../pages/Dashboard/Creator/CreatedContests";
 
 export const router = createBrowserRouter([
     {
@@ -64,6 +65,10 @@ export const router = createBrowserRouter([
             {
                 path: 'add-contest',
                 Component: AddContest
+            },
+            {
+                path: 'created-contests',
+                Component: CreatedContests
             }
         ]
     },
