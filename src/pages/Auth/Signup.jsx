@@ -6,32 +6,45 @@ import useAuth from '../../hooks/useAuth'
 import signupImg from '../../assets/signup.png'
 import { useForm } from "react-hook-form"
 import { useEffect } from 'react';
+import api from '../../config/api';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const Signup = () => {
     const { signup, user, loginWithGoogle } = useAuth()
-    const {register , handleSubmit, formState: {errors}} = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm()
     const navigate = useNavigate()
+
+    const queryClient = useQueryClient();
+    const mutation = useMutation({
+        mutationFn: (user) => api.post('/api/users', user),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['users'] })
+        }
+    })
+
     useEffect(() => {
         console.log(user);
-        
-    },[user])
+
+    }, [user])
 
     const invalidPassErr = (`Enter a valid password:
     - Must have an Uppercase letter in the password 
     - Must have a Lowercase letter in the password 
     `)
 
-    const handleRegister = async (data) => {        
-        const {name, email, password, photoUrl} = data
-        
+    const handleRegister = async (data) => {
+        // console.log('data', data);
+        const { name, email, password, photoUrl } = data
+
         try {
+
             await signup(email, password, name, photoUrl)
             toast.success('Account created successfully')
             console.log('user:', user);
-            
+
             navigate('/')
         } catch (err) {
-            if(err.code === 'auth/email-already-in-use'){
+            if (err.code === 'auth/email-already-in-use') {
                 toast.error('Email is already in use')
                 return
             }
@@ -44,7 +57,7 @@ const Signup = () => {
         try {
             await loginWithGoogle()
             navigate('/')
-        } catch(err){
+        } catch (err) {
             toast.error('Error occured while Logging in')
             return err.message
         }
@@ -62,12 +75,12 @@ const Signup = () => {
                             <form onSubmit={handleSubmit(handleRegister)}>
                                 <fieldset className="fieldset">
                                     <label className="label">Name</label>
-                                    <input type="text" className="input" {...register('name', {required: true})} placeholder="Name" />
+                                    <input type="text" className="input" {...register('name', { required: true })} placeholder="Name" />
                                     {errors.name?.type === 'required' && (
                                         <p className="text-red-600">* Name is required.</p>
                                     )}
                                     <label className="label">Email</label>
-                                    <input type="email" className="input" {...register('email', {required: true})} placeholder="Email" />
+                                    <input type="email" className="input" {...register('email', { required: true })} placeholder="Email" />
                                     {errors.email?.type === 'required' && (
                                         <p className="text-red-600">* Email is required.</p>
                                     )}
@@ -90,7 +103,7 @@ const Signup = () => {
                                     <input type="text" className="input" {...register('photoUrl')} placeholder="abc.jpg" />
                                     <button className="btn btn-primary mt-4">Signup</button>
                                     {/* Google */}
-                                    
+
                                 </fieldset>
                             </form>
                             <button onClick={handleGoogleLogin} className="btn bg-white text-black border-[#e5e5e5] mt-2">
@@ -108,7 +121,7 @@ const Signup = () => {
                                 Signup with Google
                             </button>
                             <div className='mt-2'>
-                                        Already have an account? <Link to='/login' className="link link-hover text-primary">Login Now.</Link></div>
+                                Already have an account? <Link to='/login' className="link link-hover text-primary">Login Now.</Link></div>
                         </div>
                     </div>
                 </div>
