@@ -6,6 +6,9 @@ import { Link } from 'react-router';
 
 const ManageUsers = () => {
     const [users, setUsers] = useState([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemsPerPage = 10
+
     useEffect(() => {
         const fetchData = async () => {
             const res = await fetch('/users.json')
@@ -15,6 +18,12 @@ const ManageUsers = () => {
         fetchData()
     }, [setUsers])
     console.log('users', users);
+
+    // pagination
+    const totalPages = Math.ceil(users.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentItems = users.slice(startIndex, endIndex);
 
     return (
         <div>
@@ -37,7 +46,7 @@ const ManageUsers = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map((user, i) => (
+                        {currentItems.map((user, i) => (
                             <tr key={i}>
                                 <th>
                                     <label>
@@ -80,6 +89,18 @@ const ManageUsers = () => {
                         </tr>
                     </tfoot>
                 </table>
+                {/* Pagination */}
+                <div className="join flex justify-center mt-5">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <button
+                            key={page}
+                            className={`join-item btn ${currentPage === page ? 'btn-active' : ''}`}
+                            onClick={() => setCurrentPage(page)}
+                        >
+                            {page}
+                        </button>
+                    ))}
+                </div>
             </div>
         </div>
     );

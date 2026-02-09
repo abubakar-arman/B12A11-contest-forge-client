@@ -8,6 +8,9 @@ import Swal from 'sweetalert2';
 
 const SubmittedTasks = () => {
     const [submissions, setSubmissions] = useState([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemsPerPage = 10
+
     useEffect(() => {
         const fetchData = async () => {
             const res = await fetch('/submissions.json')
@@ -17,6 +20,12 @@ const SubmittedTasks = () => {
         fetchData()
     }, [setSubmissions])
     console.log('submissions', submissions);
+
+    // pagination
+    const totalPages = Math.ceil(submissions.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentItems = submissions.slice(startIndex, endIndex);
 
     const handleOpenSubmission = (name, description, url) => {
         Swal.fire({
@@ -29,7 +38,7 @@ const SubmittedTasks = () => {
     </div>
   `,
             showCloseButton: true,
-            customClass: {htmlContainer: 'content'}
+            customClass: { htmlContainer: 'content' }
         });
     }
 
@@ -50,7 +59,7 @@ const SubmittedTasks = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {submissions.map((submission, i) => (
+                        {currentItems.map((submission, i) => (
                             <tr key={i}>
                                 <td>
                                     {submission.id}
@@ -91,6 +100,18 @@ const SubmittedTasks = () => {
                         </tr>
                     </tfoot>
                 </table>
+                {/* Pagination */}
+                <div className="join flex justify-center mt-5">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <button
+                            key={page}
+                            className={`join-item btn ${currentPage === page ? 'btn-active' : ''}`}
+                            onClick={() => setCurrentPage(page)}
+                        >
+                            {page}
+                        </button>
+                    ))}
+                </div>
             </div>
         </div>
     );

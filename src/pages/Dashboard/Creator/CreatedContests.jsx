@@ -6,6 +6,9 @@ import { Link } from 'react-router';
 
 const CreatedContests = () => {
     const [contests, setContests] = useState([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemsPerPage = 10
+
     useEffect(() => {
         const fetchData = async () => {
             const res = await fetch('/api.json')
@@ -15,6 +18,12 @@ const CreatedContests = () => {
         fetchData()
     }, [setContests])
     console.log('contests', contests);
+
+    // pagination
+    const totalPages = Math.ceil(contests.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentItems = contests.slice(startIndex, endIndex);
 
     return (
         <div>
@@ -36,7 +45,7 @@ const CreatedContests = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {contests.map((contest, i) => (
+                        {currentItems.map((contest, i) => (
                             <tr key={i}>
                                 <th>
                                     <label>
@@ -82,6 +91,18 @@ const CreatedContests = () => {
                         </tr>
                     </tfoot>
                 </table>
+                {/* Pagination */}
+                <div className="join flex justify-center mt-5">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <button
+                            key={page}
+                            className={`join-item btn ${currentPage === page ? 'btn-active' : ''}`}
+                            onClick={() => setCurrentPage(page)}
+                        >
+                            {page}
+                        </button>
+                    ))}
+                </div>
             </div>
         </div>
     );
