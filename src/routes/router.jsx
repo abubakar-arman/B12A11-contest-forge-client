@@ -15,6 +15,7 @@ import CreatedContests from "../pages/Dashboard/Creator/CreatedContests";
 import SubmittedTasks from "../pages/Dashboard/Creator/SubmittedTasks";
 import UpdateContest from "../pages/Dashboard/Creator/UpdateContest";
 import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
+import ManageContests from "../pages/Dashboard/Admin/ManageContests";
 
 export const router = createBrowserRouter([
     {
@@ -84,6 +85,10 @@ export const router = createBrowserRouter([
             {
                 path: 'manage-users',
                 Component: ManageUsers
+            },
+            {
+                path: 'manage-contests',
+                Component: ManageContests
             }
         ]
     },
