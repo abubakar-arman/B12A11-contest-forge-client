@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import api from '../../../config/api';
+import useAuth from '../../../hooks/useAuth';
 
 const UserProfile = () => {
-  const [user, setUser] = useState({})
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch('/user.json')
-      const data = await res.json()
-      setUser(data)
-      console.log('user', data);
-    }
-    fetchData()
-  }, [setUser])
-  if (!user) return <div className="text-center p-10">Loading Profile...</div>;
+  const {user: usr} = useAuth()
+  // console.log('usr:', usr.email);
+
+  const {data, isLoading, error} = useQuery({
+    queryKey: ['userProfile', usr?.email],
+    queryFn: () => api.get(`/api/user/${usr.email}`),
+    enabled: !!usr?.email
+  })
+  // console.log('data:', data);
+  
+  if(isLoading) return <div className="text-center p-10">Loading Profile...</div>;
+  if(error) return <p>Error: {error.message}</p>
+  const user = data.data.result
 
   return (
     <div>
@@ -20,7 +24,7 @@ const UserProfile = () => {
           <div className="flex items-center">
             <div className="avatar mx-50">
               <div className="ring-primary ring-offset-base-100 w-72 rounded-full ring-2 ring-offset-2">
-                <img src={'https://i.pravatar.cc/300'} />
+                <img src={user.photoUrl} />
               </div>
             </div>
             <div className='flex flex-col gap-3'>
@@ -41,7 +45,7 @@ const UserProfile = () => {
         <p><span className='text-accent'>Total Wins:</span> {user.total_wins}</p>
         <p><span className='text-accent'>Total Participated:</span> {user.total_participated}</p>
         <p><span className='text-accent'>Win Percentage:</span> {user.total_participated ? ((user.total_wins / user.total_participated) * 100).toFixed(2) : 0}%</p>
-        <p><span className='text-accent'>Joined Date:</span> {user.joined_date}</p>
+        <p><span className='text-accent'>Joined Date:</span> {user.joined_date.split('T')[0]}</p>
       </div>
     </div>
   );
