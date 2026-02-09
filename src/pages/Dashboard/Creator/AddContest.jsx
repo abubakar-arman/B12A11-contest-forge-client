@@ -2,6 +2,9 @@ import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import api from '../../../config/api';
+import { toast } from 'react-toastify';
 
 const AddContest = () => {
   const { register, handleSubmit, control, formState: { errors } } = useForm({
@@ -11,22 +14,45 @@ const AddContest = () => {
     }
   });
 
-  const onSubmit = (data) => {
-    console.log("Contest Data Submitted:", data);
-    alert("Contest Created Successfully!");
-  };
+  const queryClient = useQueryClient();
+  const mutationAddContest = useMutation({
+    mutationFn: (contest) => api.post('/api/contests', contest),
+    onSuccess: (res) => {
+      console.log('Server Response :', res.data);
+      queryClient.invalidateQueries({ queryKey: ['contests'] })
+
+      toast.success('Contest Created Successfully!')
+    },
+    onError: (err) => console.error('Mutation Failed :', err)
+  })
+
+  const handleAddContest = (data) => {
+    // console.log('data', data);
+    // const { 
+    //   name,
+    //   contest_type,
+    //   image,
+    //   description,
+    //   task_instruction,
+    //   price,
+    //   prize_money,
+    //   deadline
+    //  } = data
+
+    mutationAddContest.mutate(data)
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-        <h3 className='text-center text-3xl font-bold text-accent-content mb-5'>Create New Contest</h3>
+      <h3 className='text-center text-3xl font-bold text-accent-content mb-5'>Create New Contest</h3>
       <div className="max-w-6xl mx-auto bg-white shadow-xl overflow-hidden">
 
-        <form onSubmit={handleSubmit(onSubmit)} className="p-8 space-y-6">
-          
+        <form onSubmit={handleSubmit(handleAddContest)} className="p-8 space-y-6">
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Contest Name</label>
-              <input 
+              <input
                 {...register("name", { required: "Name is required" })}
                 placeholder="e.g. Nebula Art Quest"
                 className={`w-full p-3 rounded-xl border-2 transition-all outline-none ${errors.name ? 'border-red-500 bg-red-50' : 'border-gray-100 focus:border-indigo-500'}`}
@@ -36,7 +62,7 @@ const AddContest = () => {
 
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Contest Type</label>
-              <select 
+              <select
                 {...register("contest_type")}
                 className="w-full p-3 rounded-xl border-2 border-gray-100 bg-white focus:border-indigo-500 outline-none"
               >
@@ -49,16 +75,16 @@ const AddContest = () => {
 
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Banner Image</label>
-            <input 
-              type="file"
-              {...register("image", { required: "Please upload a banner" })}
-              className="w-full p-2 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer"
-            />
+            <input
+                {...register("image", { required: "Please upload a banner" })}
+                placeholder="e.g. abc.jpg"
+                className={`w-full p-3 rounded-xl border-2 transition-all outline-none ${errors.name ? 'border-red-500 bg-red-50' : 'border-gray-100 focus:border-indigo-500'}`}
+              />
           </div>
 
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Description</label>
-            <textarea 
+            <textarea
               {...register("description", { required: "Brief description required" })}
               rows="3"
               placeholder="What is this contest about?"
@@ -68,7 +94,7 @@ const AddContest = () => {
 
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Task Instructions</label>
-            <textarea 
+            <textarea
               {...register("task_instruction", { required: "Instructions are needed for participants" })}
               rows="4"
               placeholder="Step 1, Step 2, Submission specs..."
@@ -79,7 +105,7 @@ const AddContest = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Entry Fee ($)</label>
-              <input 
+              <input
                 type="number"
                 {...register("price", { required: true, min: 0 })}
                 className="w-full p-3 rounded-xl border-2 border-gray-100 focus:border-indigo-500 outline-none"
@@ -88,7 +114,7 @@ const AddContest = () => {
 
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Prize Money ($)</label>
-              <input 
+              <input
                 type="number"
                 {...register("prize_money", { required: true, min: 1 })}
                 className="w-full p-3 rounded-xl border-2 border-gray-100 focus:border-indigo-500 outline-none font-bold text-green-600"
@@ -114,7 +140,7 @@ const AddContest = () => {
           </div>
 
           <div className="pt-4 text-center">
-            <button 
+            <button
               type="submit"
               className="btn btn-neutral w-sm "
             >
