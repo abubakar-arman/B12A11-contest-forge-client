@@ -1,22 +1,68 @@
-import React, { useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import React, { useState } from 'react';
 import { FaCheckCircle, FaEdit, FaTrash } from 'react-icons/fa';
 import { IoIosOpen } from "react-icons/io";
 import { IoIosCloseCircle } from "react-icons/io";
 import { Link } from 'react-router';
+import api from '../../../config/api';
+import { toast } from 'react-toastify';
 
 const ManageContests = () => {
-    const [contests, setContests] = useState([])
+    const { data, isLoading, error } = useQuery({
+        queryKey: ['contests'],
+        queryFn: () => api.get(`/api/contests`),
+    })
+    console.log(data);
+    
+
+    const queryClient = useQueryClient();
+    const mutationDelete = useMutation({
+        mutationFn: (_id) => api.delete(`/api/contests/${_id}`),
+        onSuccess: (res) => {
+            console.log('Server Response :', res.data);
+            queryClient.invalidateQueries({ queryKey: ['contests'] })
+
+            toast.success('Contest deleted')
+        },
+        onError: (err) => console.error('Mutation Failed :', err)
+    })
+    const mutationReject = useMutation({
+        mutationFn: (contest) => {
+            const { _id, status, ...rest } = contest // eslint-disable-line
+            const newData = { ...rest, status: "rejected" }
+            return api.put(`/api/contests/${_id}`, newData)
+        },
+        onSuccess: (res) => {
+            console.log('Server Response :', res.data);
+            queryClient.invalidateQueries({ queryKey: ['contests'] })
+
+            toast.success('Status Updated')
+        },
+        onError: (err) => console.error('Mutation Failed :', err)
+    })
+    const mutationApprove = useMutation({
+        mutationFn: (contest) => {
+            const { _id, status, ...rest } = contest // eslint-disable-line
+            const newData = { ...rest, status: "approved" }
+            return api.put(`/api/contests/${_id}`, newData)
+        },
+        onSuccess: (res) => {
+            console.log('Server Response :', res.data);
+            queryClient.invalidateQueries({ queryKey: ['contests'] })
+
+            toast.success('Status updated')
+        },
+        onError: (err) => console.error('Mutation Failed :', err)
+    })
+
     const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = 10
-    useEffect(() => {
-        const fetchData = async () => {
-            const res = await fetch('/api.json')
-            const data = await res.json()
-            setContests(data)
-        }
-        fetchData()
-    }, [setContests])
-    console.log('contests', contests);
+
+    if (isLoading) return <div className="text-center p-10">Loading contests...</div>;
+    if (error) return <p>Error: {error.message}</p>
+    const contests = data.data.result
+    console.log(contests);
+    
 
     // pagination
     const totalPages = Math.ceil(contests.length / itemsPerPage);
@@ -38,6 +84,7 @@ const ManageContests = () => {
                                 </label>
                             </th>
                             <th>Contest</th>
+                            <th>Created By</th>
                             <th>Deadline</th>
                             <th>Status</th>
                             <th>Actions</th>
@@ -56,7 +103,7 @@ const ManageContests = () => {
                                         <div className="avatar">
                                             <div className="mask mask-squircle h-12 w-12">
                                                 <img
-                                                    src={`/posters/${contest.banner_url}`}
+                                                    src={`/posters/${contest.image}`}
                                                     alt="Avatar Tailwind CSS Component" />
                                             </div>
                                         </div>
@@ -67,14 +114,29 @@ const ManageContests = () => {
                                     </div>
                                 </td>
                                 <td>
-                                    {contest.deadline.split('T')[0]}
+                                    {contest.created_by}
                                 </td>
-                                <td>Approved</td>
+                                <td>
+                                    {contest.deadline?.split('T')[0]}
+                                </td>
+                                <td><span className={`font-bold ${contest.status == 'approved' ? 'text-green-600' : 'text-red-600'}`}>{contest.status?.toUpperCase()}</span></td>
                                 <th className='flex gap-1'>
-                                    <Link to={`/contest-details/${contest.id}`} className="btn btn-primary btn-square tooltip" data-tip="Open"><IoIosOpen /></Link>
-                                    <button className="btn btn-primary btn-square tooltip" data-tip="Confirm"><FaCheckCircle /></button>
-                                    <button className="btn btn-primary btn-square tooltip" data-tip="Reject"><IoIosCloseCircle /></button>
-                                    <button className="btn btn-primary btn-square tooltip" data-tip="Delete"><FaTrash /></button>
+                                    <Link to={`/contest-details/${contest._id}`} className="btn btn-primary btn-square tooltip" data-tip="Open"><IoIosOpen /></Link>
+                                    <button
+                                        className="btn btn-primary btn-square tooltip"
+                                        data-tip="Confirm"
+                                        onClick={() => mutationApprove.mutate(contest)}
+                                    ><FaCheckCircle /></button>
+                                    <button
+                                        className="btn btn-primary btn-square tooltip"
+                                        data-tip="Reject"
+                                        onClick={() => mutationReject.mutate(contest)}
+                                    ><IoIosCloseCircle /></button>
+                                    <button
+                                        className="btn btn-primary btn-square tooltip"
+                                        data-tip="Delete"
+                                        onClick={() => mutationDelete.mutate(contest._id)}
+                                    ><FaTrash /></button>
                                 </th>
                             </tr>
                         ))}
