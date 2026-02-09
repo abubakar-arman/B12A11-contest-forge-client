@@ -1,10 +1,12 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { IoIosOpen } from "react-icons/io";
 import { MdCancel, MdSubject } from "react-icons/md";
 import { Link } from 'react-router';
 import api from '../../../config/api';
+import { toast } from 'react-toastify';
+import { useRef } from 'react';
 
 const ManageUsers = () => {
     const { data, isLoading, error } = useQuery({
@@ -12,6 +14,53 @@ const ManageUsers = () => {
         queryFn: () => api.get(`/api/users`),
     })
     // console.log('data:', data);
+
+    const queryClient = useQueryClient();
+    const mutationChangeRole = useMutation({
+        mutationFn: (updatedUser) => {
+            const { _id, ...userData } = updatedUser
+            return api.put(`/api/users/${_id}`, userData)
+        },
+        onSuccess: (res) => {
+            console.log('Server Response :', res.data);
+            queryClient.invalidateQueries({ queryKey: ['users'] })
+
+            toast.success('Role updated')
+            // console.log('Role Updated');
+        },
+        onError: (err) => console.error('Mutation Failed :', err)
+    })
+
+    const mutationDelete = useMutation({
+        mutationFn: (_id) => api.delete(`/api/users/${_id}`),
+        onSuccess: (res) => {
+            console.log('Server Response :', res.data);
+            queryClient.invalidateQueries({ queryKey: ['users'] })
+
+            toast.success('User deleted')
+        },
+        onError: (err) => console.error('Mutation Failed :', err)
+    })
+
+    const [selectedUser, setSelectedUser] = useState(null)
+    const [newRole, setNewRole] = useState('user')
+    const modalRef = useRef(null)
+
+    const handleChangeRole = (user) => {
+        setSelectedUser(user)
+        setNewRole(user.role)
+        modalRef.current?.showModal()
+    }
+
+    const handleSubmitRoleChange = async () => {
+        if (newRole === selectedUser.role) {
+            toast.warning('Select a different role');
+            return;
+        }
+        // return
+        mutationChangeRole.mutateAsync({ ...selectedUser, role: newRole })
+        modalRef.current?.close()
+    }
 
     const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = 10
@@ -63,6 +112,7 @@ const ManageUsers = () => {
                                                     alt="Avatar Tailwind CSS Component" />
                                             </div>
                                         </div>
+                                        {user.name}
                                     </div>
                                 </td>
                                 <td>
@@ -71,9 +121,11 @@ const ManageUsers = () => {
                                 <td>{user.email}</td>
                                 <td>{user.role.toUpperCase()}</td>
                                 <th className='flex gap-1'>
-                                    <Link to={`/user-profile/${user.id}`} className="btn btn-primary btn-square tooltip" data-tip="Open Profile"><IoIosOpen /></Link>
-                                    <button className="btn btn-primary btn-square tooltip" data-tip="Change Role"><FaEdit /></button>
-                                    <button className="btn btn-primary btn-square tooltip" data-tip="Remove User"><MdCancel /></button>
+                                    <Link to={`/dashboard/profile/${user._id}`} className="btn btn-primary btn-square tooltip" data-tip="Open Profile"><IoIosOpen /></Link>
+                                    <button className="btn btn-primary btn-square tooltip" data-tip="Change Role"
+                                        onClick={() => handleChangeRole(user)}><FaEdit /></button>
+                                    <button className="btn btn-primary btn-square tooltip" data-tip="Remove User"
+                                    onClick={() => mutationDelete.mutate(user._id)}><MdCancel /></button>
                                 </th>
                             </tr>
                         ))}
@@ -103,6 +155,37 @@ const ManageUsers = () => {
                     ))}
                 </div>
             </div>
+            {/* Modal */}
+            <dialog ref={modalRef} className="modal">
+                <div className="modal-box">
+                    <h3 className="font-bold text-lg">Change User Role</h3>
+                    {selectedUser && (
+                        <div>
+                            <p className="py-4">User: <strong>{selectedUser.name || selectedUser.email}</strong></p>
+                            <select
+                                value={newRole}
+                                onChange={(e) => setNewRole(e.target.value)}
+                                className="select select-bordered w-full"
+                            >
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                                <option value="creator">Creator</option>
+                            </select>
+                        </div>
+                    )}
+                    <div className="modal-action">
+                        <button onClick={() => handleSubmitRoleChange()} className="btn btn-primary">
+                            Save
+                        </button>
+                        <button onClick={() => modalRef.current?.close()} className="btn">
+                            Close
+                        </button>
+                    </div>
+                </div>
+                <form method="dialog" className="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
         </div>
     );
 };
