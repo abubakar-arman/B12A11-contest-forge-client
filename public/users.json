@@ -1,10 +1,13 @@
 [
   {
+    "id": 1,
     "name": "Jordan Vance",
     "photo": "https://randomuser.me/api/portraits/men/44.jpg",
     "address": "742 Evergreen Terrace, Portland, OR 97205",
     "bio": "Full-stack developer by day, competitive UI/UX designer by night.",
     "username": "@j_vance99",
+    "email": "user1@gmail.com",
+    "role": "creator",
     "rank_title": "Elite Competitor",
     "total_wins": 12,
     "skills": ["React", "Figma", "Node.js"],
@@ -16,11 +19,14 @@
     "badges": ["Top Finisher", "Fast Learner"]
   },
   {
+    "id": 2,
     "name": "Elena Rossi",
     "photo": "https://randomuser.me/api/portraits/women/68.jpg",
     "address": "Via del Corso 12, Rome, Italy 00186",
     "bio": "Concept artist specializing in cyberpunk aesthetics.",
     "username": "NeonElena",
+    "email": "user2@gmail.com",
+    "role": "admin",
     "rank_title": "Grandmaster",
     "total_wins": 25,
     "skills": ["Illustration", "Photoshop", "Concept Art"],
@@ -32,11 +38,14 @@
     "badges": ["Creative Legend", "Monthly Champion"]
   },
   {
+    "id": 3,
     "name": "Samira Khan",
     "photo": "https://randomuser.me/api/portraits/women/11.jpg",
     "address": "221B Baker St, London, UK NW1 6XE",
     "bio": "Brand identity specialist with a minimalist heart.",
     "username": "SamiraDesigns",
+    "email": "user3@gmail.com",
+    "role": "user",
     "rank_title": "Rising Star",
     "total_wins": 3,
     "skills": ["Logo Design", "Vector Art", "Branding"],
