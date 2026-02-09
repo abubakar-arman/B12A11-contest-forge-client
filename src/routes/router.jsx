@@ -41,7 +41,7 @@ export const router = createBrowserRouter([
             {
                 path: '/contest-details/:id',
                 element: <ContestDetails />,
-                loader: () => fetch('/contest.json')
+                // loader: () => fetch('/contest.json')
                 // loader: ({ params }) => fetch('https://moviemaster-pro.vercel.app/movies/' + params.id)
             },
             {

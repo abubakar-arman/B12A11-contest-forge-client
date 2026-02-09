@@ -1,12 +1,20 @@
 import React from 'react';
 import { FaTrophy, FaUsers } from 'react-icons/fa6';
-import { useLoaderData } from 'react-router';
+import {  useParams } from 'react-router';
 import CountdownTimer from '../Components/CountdownTimer';
 import Swal from 'sweetalert2'
+import { useQuery } from '@tanstack/react-query';
+import api from '../config/api';
+import { FaDollarSign } from 'react-icons/fa';
 
 const ContestDetails = () => {
-    const contest = useLoaderData()
-    console.log('contestDetails', contest);
+    const { id } = useParams()
+
+    const { data, isLoading, error} = useQuery({
+        queryKey: ['contestDetails'],
+        queryFn: () => api.get(`/api/contest/${id}`),
+    })
+    console.log('data:', data);
     const showSubmissionModal = () => {
         Swal.fire({
             title: "Write your solution here",
@@ -25,22 +33,28 @@ const ContestDetails = () => {
             }
         });
     }
+    if (isLoading) return <div className="text-center p-10">Loading contest...</div>;
+    if (error) return <p>Error: {error.message}</p>
+    const contest = data.data.result
+    // console.log('contestDetails', contest);
+
     return (
         <div className='mt-10 mb-10 px-20'>
             <div className="lg:flex lg:flex-row-reverse">
-                <img src={'/posters/' + contest.banner_url} alt=""
+                <img src={'/posters/' + contest.image} alt=""
                     className='w-3/12 object-cover hidden lg:block' />
                 <div className="lg:w-8/12 flex flex-col gap-5">
                     <h2 className="text-6xl font-bold">{contest.contest_name}</h2>
 
-                    <img src={'/posters/' + contest.banner_url} alt=""
+                    <img src={'/posters/' + contest.image} alt=""
                         className='w-11/12 object-cover lg:hidden' />
                     <div className="flex items-center gap-40">
-                        <div className="font-bold size-10 flex items-center text-3xl"><FaTrophy />{contest.prize_money}</div>
+                        <p className="font-bold size-10 flex items-center text-3xl"><FaTrophy />{contest.prize_money}</p>
                         <p className="border-l-3 border-primary pl-30 ml-4 font-bold flex items-center text-3xl"><FaUsers />{contest.participants_count}</p>
+                        <p className="border-l-3 border-primary pl-30 ml-4 font-bold flex items-center text-3xl"><FaDollarSign />{contest.price}</p>
                     </div>
                     <p className="">{contest.description}</p>
-                    <div className='flex flex-col justify-center mt-14'>
+                    {!!Object.keys(contest.winner).length && <div className='flex flex-col justify-center mt-14'>
                         <p className="font-bold text-3xl ml-8">Winner</p>
                         <div className="card bg-base-100 w-84 shadow-sm mt-14">
 
@@ -56,14 +70,15 @@ const ContestDetails = () => {
                             </div>
                         </div>
                     </div>
+                    }
                     <div className='counter mt-20 flex flex-col justify-center items-center'>
                         <p className='font-bold text-4xl mb-10'>Contest Ends In </p>
-                        <CountdownTimer />
+                        <CountdownTimer deadline={contest.deadline} />
                     </div>
                     <div className='flex flex-col items-center gap-2'>
                         <button className='btn btn-neutral w-50 py-8 btn-disabled'>Contest Ended</button>
                         <button className='btn btn-neutral w-50 py-8'>Register</button>
-                        <button className="btn btn-neutral w-50 py-8" onClick={showSubmissionModal}>Submit</button>          
+                        <button className="btn btn-neutral w-50 py-8" onClick={showSubmissionModal}>Submit</button>
                     </div>
                 </div>
             </div>

@@ -29,7 +29,7 @@ const AddContest = () => {
   const handleAddContest = (data) => {
     // console.log('data', data);
     // const { 
-    //   name,
+    //   contest_name,
     //   contest_type,
     //   image,
     //   description,
@@ -53,7 +53,7 @@ const AddContest = () => {
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Contest Name</label>
               <input
-                {...register("name", { required: "Name is required" })}
+                {...register("contest_name", { required: "Name is required" })}
                 placeholder="e.g. Nebula Art Quest"
                 className={`w-full p-3 rounded-xl border-2 transition-all outline-none ${errors.name ? 'border-red-500 bg-red-50' : 'border-gray-100 focus:border-indigo-500'}`}
               />

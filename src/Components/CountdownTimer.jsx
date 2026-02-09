@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-const CountdownTimer = () => {
-  // 1. Initialize state with the starting time (in seconds)
-  // Example: 15 days, 10 hours, 24 mins, 59 secs = 1333499 seconds
-  const [timeLeft, setTimeLeft] = useState(1333499);
+const CountdownTimer = ({ deadline }) => {
+  const [timeLeft, setTimeLeft] = useState(() => {
+    const diff = Date.parse(deadline) - Date.now();
+    return diff > 0 ? Math.floor(diff / 1000) : 0;
+  });
 
   useEffect(() => {
     // 2. Create the interval
