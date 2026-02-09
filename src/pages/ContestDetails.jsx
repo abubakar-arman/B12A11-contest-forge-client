@@ -41,12 +41,12 @@ const ContestDetails = () => {
     return (
         <div className='mt-10 mb-10 px-20'>
             <div className="lg:flex lg:flex-row-reverse">
-                <img src={'/posters/' + contest.image} alt=""
+                <img src={contest.image} alt=""
                     className='w-3/12 object-cover hidden lg:block' />
                 <div className="lg:w-8/12 flex flex-col gap-5">
                     <h2 className="text-6xl font-bold">{contest.contest_name}</h2>
 
-                    <img src={'/posters/' + contest.image} alt=""
+                    <img src={contest.image} alt=""
                         className='w-11/12 object-cover lg:hidden' />
                     <div className="flex items-center gap-40">
                         <p className="font-bold size-10 flex items-center text-3xl"><FaTrophy />{contest.prize_money}</p>
@@ -61,11 +61,11 @@ const ContestDetails = () => {
                             <div className='flex flex-col gap-5 mx-10'>
                                 <div className="avatar size-20">
                                     <div className="ring-primary ring-offset-base-100 w-24 rounded-full ring-2 ring-offset-2">
-                                        <img src="https://img.daisyui.com/images/profile/demo/spiderperson@192.webp" />
+                                        <img src={contest?.winner?.photo_url} />
                                     </div>
                                 </div>
                                 <div className='text-left'>
-                                    <p className='font-bold'>{contest.winner.name}</p>
+                                    <p className='font-bold'>{contest?.winner?.name}</p>
                                 </div>
                             </div>
                         </div>

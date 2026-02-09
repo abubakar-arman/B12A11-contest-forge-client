@@ -3,6 +3,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import { Link, Outlet } from 'react-router';
 import { GiDiamondTrophy } from "react-icons/gi";
 import { GrTrophy } from "react-icons/gr";
+import { ToastContainer } from 'react-toastify';
 
 
 const DashboardLayout = () => {
@@ -63,6 +64,19 @@ const DashboardLayout = () => {
                     </ul>
                 </div>
             </div>
+
+            <ToastContainer
+                position="bottom-right"
+                autoClose={4000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </div>
     );
 };

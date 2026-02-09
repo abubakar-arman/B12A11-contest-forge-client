@@ -79,7 +79,7 @@ export const router = createBrowserRouter([
                 Component: SubmittedTasks
             },
             {
-                path: 'update-contest',
+                path: 'update-contest/:id',
                 Component: UpdateContest
             },
             {

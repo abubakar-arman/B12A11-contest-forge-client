@@ -10,7 +10,7 @@ const ContestListCard = ({ contest }) => {
             <Link to={`/contest-details/${contest.id}`}>
                 <figure className='relative overflow-hidden rounded-lg group'>
                     <img
-                        src={'/posters/' + contest.banner_url}
+                        src={contest.banner_url}
                         alt="contest Poster"
                         className='size-30 object-cover transition-transform duration-300 group-hover:scale-105'
                     />

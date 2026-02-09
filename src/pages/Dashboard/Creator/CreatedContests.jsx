@@ -74,7 +74,7 @@ const CreatedContests = () => {
                                         <div className="avatar">
                                             <div className="mask mask-squircle h-12 w-12">
                                                 <img
-                                                    src={`/posters/${contest.image}`}
+                                                    src={contest.image}
                                                     alt="Avatar Tailwind CSS Component" />
                                             </div>
                                         </div>

@@ -2,32 +2,95 @@ import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import api from '../../../config/api';
+import { useParams } from 'react-router';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 const UpdateContest = () => {
-  const { register, handleSubmit, control, formState: { errors } } = useForm({
-    defaultValues: {
-      contest_type: 'Design',
-      deadline: new Date(),
-    }
-  });
+  const { id } = useParams()
 
-  const onSubmit = (data) => {
-    console.log("Contest Data Submitted:", data);
-    alert("Contest Created Successfully!");
-  };
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['contestDetails'],
+    queryFn: () => api.get(`/api/contest/${id}`),
+  })
+  // console.log('data:', data);
+  const queryClient = useQueryClient();
+  const mutationUpdateContest = useMutation({
+    mutationFn: (contest) => api.put(`/api/contests/${id}`, contest),
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({ queryKey: ['contests'] })
+      
+      toast.success('Contest Updated Successfully!')
+      console.log('Server Response :', res.data);
+      return res
+    },
+    onError: (err) => console.error('Mutation Failed :', err)
+  })
+
+  const handleUpdateContest = (data) => {
+    // console.log('data', data);
+    // const { 
+    //   contest_name,
+    //   contest_type,
+    //   image,
+    //   description,
+    //   task_instruction,
+    //   price,
+    //   prize_money,
+    //   deadline
+    //  } = data
+
+    mutationUpdateContest.mutate(data)
+  }
+
+
+  const { register, handleSubmit, control, reset, formState: { errors } } = useForm();
+
+  useEffect(() => {
+    if (data?.data?.result) {
+      const contest = data.data.result
+      // console.log('contest', contest);
+      const {
+        contest_name,
+        contest_type,
+        image,
+        description,
+        task_instruction,
+        price,
+        prize_money,
+        deadline
+      } = contest
+
+      reset({
+        contest_name,
+        contest_type,
+        image,
+        description,
+        task_instruction,
+        price,
+        prize_money,
+        deadline
+      })
+    }
+  }, [data, reset])
+
+  if (isLoading) return <div className="text-center p-10">Loading contest...</div>;
+  if (error) return <p>Error: {error.message}</p>
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-        <h3 className='text-center text-3xl font-bold text-accent-content mb-5'>Update Contest</h3>
+      <h3 className='text-center text-3xl font-bold text-accent-content mb-5'>Update Contest</h3>
       <div className="max-w-6xl mx-auto bg-white shadow-xl overflow-hidden">
 
-        <form onSubmit={handleSubmit(onSubmit)} className="p-8 space-y-6">
-          
+        <form onSubmit={handleSubmit(handleUpdateContest)} className="p-8 space-y-6">
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Contest Name</label>
-              <input 
-                {...register("name", { required: "Name is required" })}
+              <input
+                {...register("contest_name", { required: "Name is required" })}
                 placeholder="e.g. Nebula Art Quest"
                 className={`w-full p-3 rounded-xl border-2 transition-all outline-none ${errors.name ? 'border-red-500 bg-red-50' : 'border-gray-100 focus:border-indigo-500'}`}
               />
@@ -36,7 +99,7 @@ const UpdateContest = () => {
 
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Contest Type</label>
-              <select 
+              <select
                 {...register("contest_type")}
                 className="w-full p-3 rounded-xl border-2 border-gray-100 bg-white focus:border-indigo-500 outline-none"
               >
@@ -49,16 +112,15 @@ const UpdateContest = () => {
 
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Banner Image</label>
-            <input 
-              type="file"
+            <input
               {...register("image", { required: "Please upload a banner" })}
-              className="w-full p-2 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer"
+              className={`w-full p-3 rounded-xl border-2 transition-all outline-none border-gray-100 focus:border-indigo-500`}
             />
           </div>
 
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Description</label>
-            <textarea 
+            <textarea
               {...register("description", { required: "Brief description required" })}
               rows="3"
               placeholder="What is this contest about?"
@@ -68,7 +130,7 @@ const UpdateContest = () => {
 
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Task Instructions</label>
-            <textarea 
+            <textarea
               {...register("task_instruction", { required: "Instructions are needed for participants" })}
               rows="4"
               placeholder="Step 1, Step 2, Submission specs..."
@@ -79,7 +141,7 @@ const UpdateContest = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Entry Fee ($)</label>
-              <input 
+              <input
                 type="number"
                 {...register("price", { required: true, min: 0 })}
                 className="w-full p-3 rounded-xl border-2 border-gray-100 focus:border-indigo-500 outline-none"
@@ -88,7 +150,7 @@ const UpdateContest = () => {
 
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Prize Money ($)</label>
-              <input 
+              <input
                 type="number"
                 {...register("prize_money", { required: true, min: 1 })}
                 className="w-full p-3 rounded-xl border-2 border-gray-100 focus:border-indigo-500 outline-none font-bold text-green-600"
@@ -114,11 +176,11 @@ const UpdateContest = () => {
           </div>
 
           <div className="pt-4 text-center">
-            <button 
+            <button
               type="submit"
               className="btn btn-neutral w-sm "
             >
-              Launch Contest
+              Update Contest
             </button>
           </div>
         </form>

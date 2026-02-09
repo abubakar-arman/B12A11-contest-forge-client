@@ -7,7 +7,7 @@ const ContestCard = ({ contest }) => {
         <div className="card bg-base-100 shadow-sm">
             <figure className='relative overflow-hidden rounded-lg group'>
                 <img
-                    src={'/posters/' + contest.image}
+                    src={contest.image}
                     alt="contest Poster"
                     className='h-72 w-full object-cover transition-transform duration-300 group-hover:scale-105'
                 />
