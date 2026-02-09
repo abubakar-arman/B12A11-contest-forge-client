@@ -1,14 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 import api from '../../../config/api';
 import useAuth from '../../../hooks/useAuth';
+import { useParams } from 'react-router';
 
 const UserProfile = () => {
   const {user: usr} = useAuth()
+  const {id} = useParams()
+  
   // console.log('usr:', usr.email);
 
   const {data, isLoading, error} = useQuery({
-    queryKey: ['userProfile', usr?.email],
-    queryFn: () => api.get(`/api/user/${usr.email}`),
+    queryKey: ['userProfile'],
+    queryFn: () => api.get(`/api/user/${id}`),
     enabled: !!usr?.email
   })
   // console.log('data:', data);

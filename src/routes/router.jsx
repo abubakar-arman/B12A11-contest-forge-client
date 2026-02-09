@@ -63,7 +63,7 @@ export const router = createBrowserRouter([
                 Component: WinningContests
             },
             {
-                path: 'profile',
+                path: 'profile/:id',
                 Component: UserProfile
             },
             {

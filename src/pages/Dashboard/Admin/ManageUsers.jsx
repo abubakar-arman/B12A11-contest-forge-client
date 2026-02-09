@@ -1,23 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import React, { useState } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { IoIosOpen } from "react-icons/io";
 import { MdCancel, MdSubject } from "react-icons/md";
 import { Link } from 'react-router';
+import api from '../../../config/api';
 
 const ManageUsers = () => {
-    const [users, setUsers] = useState([])
+    const { data, isLoading, error } = useQuery({
+        queryKey: ['users'],
+        queryFn: () => api.get(`/api/users`),
+    })
+    // console.log('data:', data);
+
     const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = 10
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const res = await fetch('/users.json')
-            const data = await res.json()
-            setUsers(data)
-        }
-        fetchData()
-    }, [setUsers])
-    console.log('users', users);
+    if (isLoading) return <div className="text-center p-10">Loading Users...</div>;
+    if (error) return <p>Error: {error.message}</p>
+    const users = data.data.result
 
     // pagination
     const totalPages = Math.ceil(users.length / itemsPerPage);
@@ -58,7 +59,7 @@ const ManageUsers = () => {
                                         <div className="avatar">
                                             <div className="mask mask-squircle h-12 w-12 ">
                                                 <img
-                                                    src={`${user.photo}`}
+                                                    src={`${user.photoUrl}`}
                                                     alt="Avatar Tailwind CSS Component" />
                                             </div>
                                         </div>
