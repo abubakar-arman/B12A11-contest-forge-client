@@ -3,12 +3,28 @@ import loginImg from '../../assets/login.png'
 import { toast } from 'react-toastify';
 import useAuth from '../../hooks/useAuth'
 import { useForm } from 'react-hook-form';
+import api from '../../config/api';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const Login = () => {
     const { login, loginWithGoogle } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
-    const {register , handleSubmit, formState: {errors}} = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm()
+
+    const queryClient = useQueryClient();
+    const mutation = useMutation({
+        mutationFn: (user) => api.post('/api/users', user),
+        onSuccess: (res) => {
+            console.log('Server Response :', res.data);
+            queryClient.invalidateQueries({ queryKey: ['users'] })
+
+            toast.success('New user found! Registered in System.')
+            // console.log('New user found! Registered in System.');
+            navigate(from)
+        },
+        onError: (err) => console.error('Mutation Failed :', err)
+    })
 
     const from = location.state?.from || '/'
     const invalidPassErr = (`Enter a valid password:
@@ -17,8 +33,8 @@ const Login = () => {
         `)
 
     const handleEmailLogin = async (data) => {
-        const {email, password} = data
-      
+        const { email, password } = data
+
         // toast('pass')
         try {
             await login(email, password)
@@ -31,10 +47,37 @@ const Login = () => {
         }
     }
 
+    const isUserExist = async (email) => {
+        let userExists = true
+        const res = await api.get(`/api/user/exists/${email}`)
+        userExists = res.data.msg
+        // console.log('userExists:', userExists);
+        return userExists
+    }
+
     const handleGoogleLogin = async () => {
         try {
-            await loginWithGoogle()
-            navigate(from)
+            const creds = await loginWithGoogle()
+            const {
+                email,
+                displayName: name,
+                photoURL: photoUrl,
+            } = creds.user
+            
+            const userExists = await isUserExist(email)
+            if (userExists) {
+                toast.success('User already exists. Logged In')
+                // console.log('user already exists. Logged In');
+                navigate(from)
+                return
+            }
+
+            mutation.mutate({
+                email,
+                name,
+                photoUrl,
+                password: null
+            })
         } catch (err) {
             toast.error('Error occured while Logging in')
             return err.message
@@ -53,7 +96,7 @@ const Login = () => {
                             <form onSubmit={handleSubmit(handleEmailLogin)}>
                                 <fieldset className="fieldset">
                                     <label className="label">Email</label>
-                                    <input type="email" className="input" {...register('email', {required: true})} placeholder="Email" />
+                                    <input type="email" className="input" {...register('email', { required: true })} placeholder="Email" />
                                     {errors.email?.type === 'required' && (
                                         <p className="text-red-600">* Email is required.</p>
                                     )}

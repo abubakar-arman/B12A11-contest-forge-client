@@ -8,15 +8,9 @@
     "username": "@j_vance99",
     "email": "user1@gmail.com",
     "role": "creator",
-    "rank_title": "Elite Competitor",
     "total_wins": 12,
-    "skills": ["React", "Figma", "Node.js"],
-    "joined_date": "2024-03-12",
-    "social_links": {
-      "github": "https://github.com/j_vance",
-      "portfolio": "https://jordanvance.dev"
-    },
-    "badges": ["Top Finisher", "Fast Learner"]
+    "total_participated": 50,
+    "joined_date": "2024-03-12"
   },
   {
     "id": 2,

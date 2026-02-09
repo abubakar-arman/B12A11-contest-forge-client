@@ -11,15 +11,21 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const Signup = () => {
     const { signup, user, loginWithGoogle } = useAuth()
-    const { register, handleSubmit, formState: { errors } } = useForm()
+    const { register, handleSubmit, formState: { errors }, setError } = useForm()
     const navigate = useNavigate()
 
     const queryClient = useQueryClient();
     const mutation = useMutation({
         mutationFn: (user) => api.post('/api/users', user),
-        onSuccess: () => {
+        onSuccess: (res) => {
+            console.log('Server Response :', res.data);
             queryClient.invalidateQueries({ queryKey: ['users'] })
-        }
+
+            toast.success('Registration successful')
+            // console.log('Registration successful');
+            navigate('/')
+        },
+        onError: (err) => console.error('Mutation Failed :', err)
     })
 
     useEffect(() => {
@@ -32,15 +38,33 @@ const Signup = () => {
     - Must have a Lowercase letter in the password 
     `)
 
+    const isUserExist = async (email) => {
+        let userExists = true
+        const res = await api.get(`/api/user/exists/${email}`)
+        userExists = res.data.msg
+        // console.log('userExists:', userExists);
+        return userExists
+    }
+
     const handleRegister = async (data) => {
         // console.log('data', data);
         const { name, email, password, photoUrl } = data
 
-        try {
+        const userExists = await isUserExist(email)
+        if (userExists) {
+            setError('email', {
+                type: 'manual',
+                message: 'User already exists'
+            })
+            toast.error('User already exists')
+            // console.log('user already exists');
+            return
+        }
 
+        try {
             await signup(email, password, name, photoUrl)
-            toast.success('Account created successfully')
-            console.log('user:', user);
+            mutation.mutate(data)
+            // console.log('user:', user);
 
             navigate('/')
         } catch (err) {
@@ -49,14 +73,33 @@ const Signup = () => {
                 return
             }
             toast.error('Incorrect information')
-            console.log(err.code)
+            console.error(err.code)
         }
     }
 
     const handleGoogleLogin = async () => {
         try {
-            await loginWithGoogle()
-            navigate('/')
+            const creds = await loginWithGoogle()
+            const {
+                email,
+                displayName: name,
+                photoURL: photoUrl,
+            } = creds.user
+
+            const userExists = await isUserExist(email)
+            if (userExists) {
+                toast.success('User already exists. Logged In')
+                // console.log('user already exists. Logged In');
+                navigate('/')
+                return
+            }
+
+            mutation.mutate({
+                email,
+                name,
+                photoUrl,
+                password: null
+            })
         } catch (err) {
             toast.error('Error occured while Logging in')
             return err.message
@@ -83,6 +126,9 @@ const Signup = () => {
                                     <input type="email" className="input" {...register('email', { required: true })} placeholder="Email" />
                                     {errors.email?.type === 'required' && (
                                         <p className="text-red-600">* Email is required.</p>
+                                    )}
+                                    {errors.email?.type=='manual' && (
+                                        <p className='text-red-600'>{errors.email.message}</p>
                                     )}
                                     <label className="label">Password</label>
                                     <input type="password" className="input" {...register('password', {
