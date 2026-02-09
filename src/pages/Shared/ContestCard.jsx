@@ -7,7 +7,7 @@ const ContestCard = ({ contest }) => {
         <div className="card bg-base-100 shadow-sm">
             <figure className='relative overflow-hidden rounded-lg group'>
                 <img
-                    src={'/posters/' + contest.banner_url}
+                    src={'/posters/' + contest.image}
                     alt="contest Poster"
                     className='h-72 w-full object-cover transition-transform duration-300 group-hover:scale-105'
                 />
@@ -20,7 +20,7 @@ const ContestCard = ({ contest }) => {
                             <FaUsers />
                             <span>{contest.participants_count}</span>
                         </div>
-                        <Link to={`/contest-details/${contest.id}`} className="btn btn-sm btn-primary">Details</Link>
+                        <Link to={`/contest-details/${contest._id}`} className="btn btn-sm btn-primary">Details</Link>
                     </div>
                 </div>
             </figure>

@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from 'react';
 import { FaTrophy, FaUsers } from 'react-icons/fa6';
 import ContestCard from './Shared/ContestCard';
+import { useQuery } from '@tanstack/react-query';
+import api from '../config/api';
 
 const AllContests = () => {
-    const [contests, setContests] = useState([])
-    useEffect(() => {
-        const fetchData = async () => {
-            const res = await fetch('/api.json')
-            const data = await res.json()
-            setContests(data)
-        }
-        fetchData()
-    }, [setContests])
-    console.log('contests', contests);
+    const { data, isLoading, error } = useQuery({
+        queryKey: ['contests'],
+        queryFn: () => api.get(`/api/contests`),
+    })
+    // console.log('data:', data);
+
+    if (isLoading) return <div className="text-center p-10">Loading contests...</div>;
+    if (error) return <p>Error: {error.message}</p>
+    const contests = data.data.result
+    
 
     return (
         <div className='mt-10 mb-10 text-center'>
@@ -35,7 +36,7 @@ const AllContests = () => {
                     <div className="cards grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 lg:gap-8 space-y-8 lg:space-y-0 px-20">
                         {
                             contests
-                                .filter((contest) => contest.category == 'app')
+                                .filter((contest) => contest.contest_type == 'app')
                                 .map((contest, i) => (
                                     <ContestCard contest={contest} key={i} />
                                 ))
@@ -48,7 +49,7 @@ const AllContests = () => {
                     <div className="cards grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 lg:gap-8 space-y-8 lg:space-y-0 px-20">
                         {
                             contests
-                                .filter((contest) => contest.category == 'logo')
+                                .filter((contest) => contest.contest_type == 'logo')
                                 .map((contest, i) => (
                                     <ContestCard contest={contest} key={i} />
                                 ))
@@ -61,7 +62,7 @@ const AllContests = () => {
                     <div className="cards grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 lg:gap-8 space-y-8 lg:space-y-0 px-20">
                         {
                             contests
-                                .filter((contest) => contest.category == 'art')
+                                .filter((contest) => contest.contest_type == 'art')
                                 .map((contest, i) => (
                                     <ContestCard contest={contest} key={i} />
                                 ))
