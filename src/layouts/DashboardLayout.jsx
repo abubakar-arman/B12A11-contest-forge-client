@@ -12,14 +12,15 @@ import { MdCreateNewFolder, MdDarkMode, MdLightMode } from 'react-icons/md';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import ErrorBoundary from '../Components/ErrorBoundary';
+import Spinner2 from '../Components/Spinner2';
 
 
 const DashboardLayout = () => {
     const { user, isAuthenticated, logout } = useAuth()
-    const { data, isLoading, error } = useQuery({
-        queryKey: ['userData'],
-        queryFn: () => api.get(`/api/user/find/` + user.email),
-        enabled: !!user
+    const { data: _id, isLoading, error } = useQuery({
+        queryKey: ['userId'],
+        queryFn: () => api.get(`/api/user/find/` + user.email).then(res => res.data.result._id),
+        enabled: !!user?.email
     })
     // console.log(_id);
 
@@ -43,10 +44,8 @@ const DashboardLayout = () => {
     }
 
 
-    if (isLoading) return <div className="text-center p-10">Loading user...</div>;
+    if (isLoading) return <Spinner2 />
     if (error) return <p>Error: {error.message}</p>
-    const userData = data?.data?.result
-    const _id = userData._id
 
     return (
         <div className="drawer lg:drawer-open">

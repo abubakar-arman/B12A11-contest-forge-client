@@ -7,12 +7,15 @@ import { Link } from 'react-router';
 import api from '../../../config/api';
 import { toast } from 'react-toastify';
 import useAuth from '../../../hooks/useAuth';
+import Spinner2 from '../../../Components/Spinner2';
 
 const CreatedContests = () => {
     const {user} = useAuth()
-    const { data, isLoading, error } = useQuery({
+    const { data: contests, isLoading, error } = useQuery({
         queryKey: ['contests'],
-        queryFn: () => api.get(`/api/contests`),
+        queryFn: () => api.get(`/api/contests`).then(res => res.data.result),
+        select: (contests) => contests.filter(c => c.created_by == user.email),
+        enabled: !!user?.email,
     })
 
     const queryClient = useQueryClient();
@@ -30,16 +33,14 @@ const CreatedContests = () => {
     const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = 10
 
-    if (isLoading) return <div className="text-center p-10">Loading contests...</div>;
+    if (isLoading) return <Spinner2 />
     if (error) return <p>Error: {error.message}</p>
-    const contests = data.data.result
-    const creatorContests = contests.filter(contest => contest.created_by == user.email)
 
     // pagination
-    const totalPages = Math.ceil(creatorContests.length / itemsPerPage);
+    const totalPages = Math.ceil(contests.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const currentItems = creatorContests.slice(startIndex, endIndex);
+    const currentItems = contests.slice(startIndex, endIndex);
     
     return (
         <div>

@@ -7,11 +7,12 @@ import { Link } from 'react-router';
 import api from '../../../config/api';
 import { toast } from 'react-toastify';
 import { useRef } from 'react';
+import Spinner2 from '../../../Components/Spinner2';
 
 const ManageUsers = () => {
-    const { data, isLoading, error } = useQuery({
+    const { data: users, isLoading, error } = useQuery({
         queryKey: ['users'],
-        queryFn: () => api.get(`/api/users`),
+        queryFn: () => api.get(`/api/users`).then(res => res.data.result),
     })
     // console.log('data:', data);
 
@@ -65,9 +66,8 @@ const ManageUsers = () => {
     const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = 10
 
-    if (isLoading) return <div className="text-center p-10">Loading Users...</div>;
+    if (isLoading) return <Spinner2 />
     if (error) return <p>Error: {error.message}</p>
-    const users = data.data.result
 
     // pagination
     const totalPages = Math.ceil(users.length / itemsPerPage);

@@ -3,34 +3,34 @@ import ContestListWinCard from '../../Shared/ContestListWinCard';
 import useAuth from '../../../hooks/useAuth';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../../config/api';
+import Spinner2 from '../../../Components/Spinner2';
 
 const WinningContests = () => {
     const {user} = useAuth()
-    const {data: userData } = useQuery({
+    const {data: winning_contest_ids, isLoading: idsLoading } = useQuery({
         queryKey: ['userData', user?.email],
-        queryFn: () => api.get('/api/user/find/' + user.email),
+        queryFn: () => api.get('/api/user/find/' + user.email).then(res => res.data.result.winning_contests),
         enabled: !!user?.email
     })
-    const winning_contest_ids = userData?.data.result.winning_contests || []
 
-    const { data: contestData, isLoading : contestIsLoading, error: contestError } = useQuery({
+    const { data: contests, isLoading : contestsLoading, error: contestError } = useQuery({
         queryKey: ['contests'],
-        queryFn: () => api.get(`/api/contests`),
+        queryFn: () => api.get(`/api/contests`).then(res => res.data.result),
+        select: (contests) => contests.filter(c => c.status === 'approved' && winning_contest_ids.includes(c._id)),
+        enabled: !!winning_contest_ids,
     })
 
     const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = 10
 
-    if (contestIsLoading) return <div className="text-center p-10">Loading contests...</div>;
+    if (contestsLoading || idsLoading) return <Spinner2 />
     if (contestError) return <p>Error: {contestError.message}</p>
-    const contests = contestData?.data?.result
-    const filteredContests = contests.filter(contest => winning_contest_ids?.includes(contest._id))
     
     // pagination
-    const totalPages = Math.ceil(filteredContests.length / itemsPerPage);
+    const totalPages = Math.ceil(contests.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const currentItems = filteredContests.slice(startIndex, endIndex);
+    const currentItems = contests.slice(startIndex, endIndex);
 
     return (
         <div className='mt-10 mb-10 text-center'>

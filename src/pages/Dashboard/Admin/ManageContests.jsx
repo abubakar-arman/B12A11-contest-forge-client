@@ -6,14 +6,13 @@ import { IoIosCloseCircle } from "react-icons/io";
 import { Link } from 'react-router';
 import api from '../../../config/api';
 import { toast } from 'react-toastify';
+import Spinner2 from '../../../Components/Spinner2';
 
 const ManageContests = () => {
-    const { data, isLoading, error } = useQuery({
+    const { data: contests, isLoading, error } = useQuery({
         queryKey: ['contests'],
-        queryFn: () => api.get(`/api/contests`),
-    })
-    console.log(data);
-    
+        queryFn: () => api.get(`/api/contests`).then(res => res.data.result),
+    })    
 
     const queryClient = useQueryClient();
     const mutationDelete = useMutation({
@@ -58,10 +57,8 @@ const ManageContests = () => {
     const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = 10
 
-    if (isLoading) return <div className="text-center p-10">Loading contests...</div>;
+    if (isLoading) return <Spinner2 />
     if (error) return <p>Error: {error.message}</p>
-    const contests = data.data.result
-    console.log(contests);
     
 
     // pagination

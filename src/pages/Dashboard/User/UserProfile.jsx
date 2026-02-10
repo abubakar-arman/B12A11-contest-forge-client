@@ -2,21 +2,20 @@ import { useQuery } from '@tanstack/react-query';
 import api from '../../../config/api';
 import useAuth from '../../../hooks/useAuth';
 import { useParams } from 'react-router';
+import Spinner2 from '../../../Components/Spinner2';
 
 const UserProfile = () => {
   const { user: usr } = useAuth();
   const { id } = useParams();
 
-  const { data, isLoading, error } = useQuery({
+  const { data: user, isLoading, error } = useQuery({
     queryKey: ['userProfile', id],
-    queryFn: () => api.get(`/api/user/${id}`),
+    queryFn: () => api.get(`/api/user/${id}`).then(res => res.data.result),
     enabled: !!usr?.email,
   });
 
-  if (isLoading) return <div className="text-center py-20">Loading Profile...</div>;
+  if (isLoading) return <Spinner2 />
   if (error) return <p className="text-center text-error">Error: {error.message}</p>;
-
-  const user = data.data.result;
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10 space-y-8">
