@@ -119,7 +119,7 @@ const ManageUsers = () => {
                                     {user.id}
                                 </td>
                                 <td>{user.email}</td>
-                                <td>{user.role.toUpperCase()}</td>
+                                <td>{user?.role?.toUpperCase()}</td>
                                 <th className='flex gap-1'>
                                     <Link to={`/dashboard/profile/${user._id}`} className="btn btn-primary btn-square tooltip" data-tip="Open Profile"><IoIosOpen /></Link>
                                     <button className="btn btn-primary btn-square tooltip" data-tip="Change Role"
