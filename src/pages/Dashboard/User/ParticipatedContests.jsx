@@ -1,25 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import ContestListCard from '../../Shared/ContestListCard';
+import useAuth from '../../../hooks/useAuth';
+import { useQuery } from '@tanstack/react-query';
+import api from '../../../config/api';
 
 const ParticipatedContests = () => {
-    const [contests, setContests] = useState([])
+    const {user} = useAuth()
+    const {data: userData } = useQuery({
+        queryKey: ['userData', user?.email],
+        queryFn: () => api.get('/api/user/find/' + user.email),
+        enabled: !!user?.email
+    })
+    const participated_contest_ids = userData?.data.result.participated_contests || []
+    // console.log(participated_contest_ids);
+
+    const { data: contestData, isLoading : contestIsLoading, error: contestError } = useQuery({
+        queryKey: ['contests'],
+        queryFn: () => api.get(`/api/contests`),
+    })
+    
+    
     const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = 10
-    useEffect(() => {
-        const fetchData = async () => {
-            const res = await fetch('/api.json')
-            const data = await res.json()
-            setContests(data)
-        }
-        fetchData()
-    }, [setContests])
-    console.log('contests', contests);
-
+    
+    if (contestIsLoading) return <div className="text-center p-10">Loading contests...</div>;
+    if (contestError) return <p>Error: {contestError.message}</p>
+    const contests = contestData?.data?.result
+    const filteredContests = contests.filter(contest => participated_contest_ids?.includes(contest._id))
+    // console.log('ff',contests);
+    
     // pagination
-    const totalPages = Math.ceil(contests.length / itemsPerPage);
+    const totalPages = Math.ceil(filteredContests?.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const currentItems = contests.slice(startIndex, endIndex);
+    const currentItems = filteredContests.slice(startIndex, endIndex);
 
     return (
         <div className='mt-10 mb-10 text-center'>
