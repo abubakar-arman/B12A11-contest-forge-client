@@ -4,16 +4,15 @@ import { useQuery } from '@tanstack/react-query';
 import api from '../config/api';
 
 const AllContests = () => {
-    const { data, isLoading, error } = useQuery({
+    const { data: contests, isLoading, error } = useQuery({
         queryKey: ['contests'],
-        queryFn: () => api.get(`/api/contests`),
+        queryFn: () => api.get(`/api/contests`).then(res => res.data.result),
+        select: (contests) => contests.filter(c => c.status === 'approved')
     })
-    // console.log('data:', data);
+    // console.log('data:', contests);
 
     if (isLoading) return <div className="text-center p-10">Loading contests...</div>;
     if (error) return <p>Error: {error.message}</p>
-    const contests = data.data.result
-    
 
     return (
         <div className='mt-10 mb-10 text-center'>

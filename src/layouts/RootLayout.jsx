@@ -2,12 +2,17 @@ import { Outlet } from 'react-router';
 import Navbar from '../pages/Shared/Navbar';
 import Footer from '../pages/Shared/Footer';
 import { ToastContainer } from 'react-toastify';
+import ErrorBoundary from '../Components/ErrorBoundary';
 
 const RootLayout = () => {
     return (
         <div>
             <Navbar />
-            <Outlet />
+            <ErrorBoundary>
+                <main>
+                    <Outlet />
+                </main>
+            </ErrorBoundary>
             <Footer />
             <ToastContainer
                 position="bottom-right"

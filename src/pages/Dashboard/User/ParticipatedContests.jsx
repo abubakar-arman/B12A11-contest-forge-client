@@ -6,17 +6,18 @@ import api from '../../../config/api';
 
 const ParticipatedContests = () => {
     const {user} = useAuth()
-    const {data: userData } = useQuery({
+    const {data: participated_contest_ids } = useQuery({
         queryKey: ['userData', user?.email],
-        queryFn: () => api.get('/api/user/find/' + user.email),
+        queryFn: () => api.get('/api/user/find/' + user.email).then(res => res.data.result.participated_contests),
         enabled: !!user?.email
     })
-    const participated_contest_ids = userData?.data.result.participated_contests || []
-    // console.log(participated_contest_ids);
+    // console.log('kkk',participated_contest_ids);
 
-    const { data: contestData, isLoading : contestIsLoading, error: contestError } = useQuery({
+    const { data: contests, isLoading : contestIsLoading, error: contestError } = useQuery({
         queryKey: ['contests'],
-        queryFn: () => api.get(`/api/contests`),
+        queryFn: () => api.get(`/api/contests`).then(res => res.data.result),
+        select: (contests) => contests.filter(c => c.status === 'approved' && participated_contest_ids.includes(c._id)),
+        enabled: !!participated_contest_ids,
     })
     
     
@@ -25,15 +26,13 @@ const ParticipatedContests = () => {
     
     if (contestIsLoading) return <div className="text-center p-10">Loading contests...</div>;
     if (contestError) return <p>Error: {contestError.message}</p>
-    const contests = contestData?.data?.result
-    const filteredContests = contests.filter(contest => participated_contest_ids?.includes(contest._id))
     // console.log('ff',contests);
     
     // pagination
-    const totalPages = Math.ceil(filteredContests?.length / itemsPerPage);
+    const totalPages = Math.ceil(contests?.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const currentItems = filteredContests.slice(startIndex, endIndex);
+    const currentItems = contests.slice(startIndex, endIndex);
 
     return (
         <div className='mt-10 mb-10 text-center'>
