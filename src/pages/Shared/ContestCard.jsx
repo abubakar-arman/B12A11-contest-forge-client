@@ -3,6 +3,7 @@ import { FaTrophy, FaUsers } from 'react-icons/fa6';
 import { Link } from 'react-router';
 
 const ContestCard = ({ contest }) => {
+    
     return (
         <div className="card bg-base-100 shadow-sm">
             <figure className='relative overflow-hidden rounded-lg group'>
