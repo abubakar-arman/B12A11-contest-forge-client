@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaTrophy, FaUsers } from 'react-icons/fa6';
-import {  useParams } from 'react-router';
+import { useParams } from 'react-router';
 import CountdownTimer from '../Components/CountdownTimer';
 import Swal from 'sweetalert2'
 import { useQuery } from '@tanstack/react-query';
@@ -10,7 +10,7 @@ import { FaDollarSign } from 'react-icons/fa';
 const ContestDetails = () => {
     const { id } = useParams()
 
-    const { data, isLoading, error} = useQuery({
+    const { data, isLoading, error } = useQuery({
         queryKey: ['contestDetails'],
         queryFn: () => api.get(`/api/contest/${id}`),
     })
@@ -42,21 +42,28 @@ const ContestDetails = () => {
         <div className='mt-10 mb-10 px-20'>
             <div className="lg:flex lg:flex-row-reverse">
                 <img src={contest.image} alt=""
-                    className='w-3/12 object-cover hidden lg:block' />
+                    className='w-1/2 rounded-tl-4xl rounded-bl-4xl object-cover hidden lg:block' />
                 <div className="lg:w-8/12 flex flex-col gap-5">
-                    <h2 className="text-6xl font-bold">{contest.contest_name}</h2>
+                    <h2 className="text-2xl lg:text-4xl font-bold">{contest.contest_name}</h2>
 
                     <img src={contest.image} alt=""
-                        className='w-11/12 object-cover lg:hidden' />
-                    <div className="flex items-center gap-40">
-                        <p className="font-bold size-10 flex items-center text-3xl"><FaTrophy />{contest.prize_money}</p>
-                        <p className="border-l-3 border-primary pl-30 ml-4 font-bold flex items-center text-3xl"><FaUsers />{contest.participants_count}</p>
-                        <p className="border-l-3 border-primary pl-30 ml-4 font-bold flex items-center text-3xl"><FaDollarSign />{contest.price}</p>
+                        className='w-11/12 object-cover lg:hidden rounded-xl' />
+                    <div className="flex items-center lg:gap-40">
+                        <p className="border-l-3 border-primary pl-2 ml-5 lg:ml-2 font-bold flex items-center text-2xl gap-1"><FaTrophy className='size-6' />{contest.prize_money}</p>
+                        <p className="border-l-3 border-primary pl-2 ml-5 lg:ml-2 gap-1 font-bold flex items-center text-3xl"><FaDollarSign className='size-6' />{contest.price}</p>
+                        <p className="border-l-3 border-primary pl-2 ml-5 lg:ml-2 gap-1 font-bold flex items-center text-3xl"><FaUsers className='size-6' />{contest.participants_count}</p>
                     </div>
-                    <p className="">{contest.description}</p>
-                    {!!Object.keys(contest.winner).length && <div className='flex flex-col justify-center mt-14'>
-                        <p className="font-bold text-3xl ml-8">Winner</p>
-                        <div className="card bg-base-100 w-84 shadow-sm mt-14">
+                    <p>
+                        <span className='block font-bold text-neutral-700'>Contest Description:</span>
+                        {contest.description}
+                    </p>
+                    <p>
+                        <span className='block font-bold text-neutral-700'>Task Instructions:</span>
+                        {contest.task_instruction}
+                    </p>
+                    {!!Object.keys(contest.winner).length && <div className='flex flex-col justify-center lg:mt-14'>
+                        <div className="card bg-base-100 w-84 py-10 border-b-amber-600 border-2 shadow-sm lg:mt-14 flex flex-col justify-center items-center">
+                            <p className="font-bold text-3xl mb-10">Winner</p>
 
                             <div className='flex flex-col gap-5 mx-10'>
                                 <div className="avatar size-20">
