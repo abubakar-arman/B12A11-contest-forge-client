@@ -10,11 +10,11 @@ import useAuth from '../../../hooks/useAuth';
 import Spinner2 from '../../../Components/Spinner2';
 
 const CreatedContests = () => {
-    const {user} = useAuth()
+    const { user } = useAuth()
     const { data: contests, isLoading, error } = useQuery({
         queryKey: ['contests'],
         queryFn: () => api.get(`/api/contests`).then(res => res.data.result),
-        select: (contests) => contests.filter(c => c.created_by == user.email),
+        select: (contests) => contests.filter(c => c.created_by === user.email),
         enabled: !!user?.email,
     })
 
@@ -41,7 +41,7 @@ const CreatedContests = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const currentItems = contests.slice(startIndex, endIndex);
-    
+
     return (
         <div>
             <h3 className='text-3xl font-bold text-accent-content mb-5 text-center'>My Created Contests</h3>
@@ -91,13 +91,19 @@ const CreatedContests = () => {
                                 <td>
                                     {contest.deadline?.split('T')[0]}
                                 </td>
-                                <td>Approved</td>
+                                <td>
+                                    <span
+                                        className={`font-bold ${contest.status == 'approved' ? 'text-green-600'
+                                            : contest.status === 'rejected' ? 'text-red-600' : 'text-gray-500'}`}>
+                                        {contest.status?.toUpperCase()}
+                                    </span>
+                                </td>
                                 <th className='flex gap-1'>
-                                    <Link to={`/contest-details/${contest._id}`} className="btn btn-primary btn-square tooltip" data-tip="Open"><IoIosOpen /></Link>
-                                    <Link to={`/dashboard/update-contest/${contest._id}`} className="btn btn-primary btn-square tooltip" data-tip="Edit"><FaEdit /></Link>
-                                    <Link to={`/dashboard/submitted-tasks/${contest._id}`} className="btn btn-primary btn-square tooltip" data-tip="Submissions"><MdSubject /></Link>
+                                    <Link to={`/contest-details/${contest._id}`} className={`btn btn-primary btn-square tooltip`} data-tip="Open"><IoIosOpen /></Link>
+                                    <Link to={`/dashboard/update-contest/${contest._id}`} className={`btn btn-primary btn-square tooltip ${contest.status === 'pending' ? '' : 'btn-disabled'}`} data-tip="Edit"><FaEdit /></Link>
+                                    <Link to={`/dashboard/submitted-tasks/${contest._id}`} className={`btn btn-primary btn-square tooltip`} data-tip="Submissions"><MdSubject /></Link>
                                     <button
-                                        className="btn btn-primary btn-square tooltip"
+                                        className={`btn btn-primary btn-square tooltip ${contest.status === 'pending' ? '' : 'btn-disabled'}`}
                                         data-tip="Delete"
                                         onClick={() => mutationDelete.mutate(contest._id)}
                                     ><FaTrash /></button>

@@ -12,7 +12,7 @@ const ManageContests = () => {
     const { data: contests, isLoading, error } = useQuery({
         queryKey: ['contests'],
         queryFn: () => api.get(`/api/contests`).then(res => res.data.result),
-    })    
+    })
 
     const queryClient = useQueryClient();
     const mutationDelete = useMutation({
@@ -59,7 +59,7 @@ const ManageContests = () => {
 
     if (isLoading) return <Spinner2 />
     if (error) return <p>Error: {error.message}</p>
-    
+
 
     // pagination
     const totalPages = Math.ceil(contests.length / itemsPerPage);
@@ -116,16 +116,22 @@ const ManageContests = () => {
                                 <td>
                                     {contest.deadline?.split('T')[0]}
                                 </td>
-                                <td><span className={`font-bold ${contest.status == 'approved' ? 'text-green-600' : 'text-red-600'}`}>{contest.status?.toUpperCase()}</span></td>
+                                <td>
+                                    <span
+                                        className={`font-bold ${contest.status == 'approved' ? 'text-green-600'
+                                            : contest.status === 'rejected' ? 'text-red-600' : 'text-gray-500'}`}>
+                                        {contest.status?.toUpperCase()}
+                                    </span>
+                                </td>
                                 <th className='flex gap-1'>
                                     <Link to={`/contest-details/${contest._id}`} className="btn btn-primary btn-square tooltip" data-tip="Open"><IoIosOpen /></Link>
                                     <button
-                                        className="btn btn-primary btn-square tooltip"
-                                        data-tip="Confirm"
+                                        className={`btn btn-primary btn-square tooltip${contest.status === 'approved' ? ' btn-disabled' : ''}`}
+                                        data-tip="Approve"
                                         onClick={() => mutationApprove.mutate(contest)}
                                     ><FaCheckCircle /></button>
                                     <button
-                                        className="btn btn-primary btn-square tooltip"
+                                        className={`btn btn-primary btn-square tooltip${contest.status === 'rejected' ? ' btn-disabled' : ''}`}
                                         data-tip="Reject"
                                         onClick={() => mutationReject.mutate(contest)}
                                     ><IoIosCloseCircle /></button>
