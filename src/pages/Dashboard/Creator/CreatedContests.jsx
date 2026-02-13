@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaUsers } from 'react-icons/fa';
 import { IoIosOpen } from "react-icons/io";
 import { MdSubject } from "react-icons/md";
 import { Link } from 'react-router';
@@ -29,7 +29,18 @@ const CreatedContests = () => {
         },
         onError: (err) => console.error('Mutation Failed :', err)
     })
+    
+    const mutationDeregister = useMutation({
+        mutationFn: (data) => api.put(`/api/contest/deregister/${data.id}`, {email: data.email}),
+        onSuccess: (res) => {
+            console.log('Server response:', res.data)
+            queryClient.invalidateQueries({ queryKey: ['contests']})
+            toast.success('Contest Deregistration successful')
+        },
+        onError: (err) => console.error('Mutation Failed:', err)
+    })
 
+    const [selectedContestId, setSelectedContestId] = useState(null);
     const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = 10
 
@@ -41,6 +52,8 @@ const CreatedContests = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const currentItems = contests.slice(startIndex, endIndex);
+
+    const selectedContest = contests?.find(c => c._id === selectedContestId)
 
     return (
         <div>
@@ -102,6 +115,16 @@ const CreatedContests = () => {
                                     <Link to={`/contest-details/${contest._id}`} className={`btn btn-primary btn-square tooltip`} data-tip="Open"><IoIosOpen /></Link>
                                     <Link to={`/dashboard/update-contest/${contest._id}`} className={`btn btn-primary btn-square tooltip ${contest.status === 'pending' ? '' : 'btn-disabled'}`} data-tip="Edit"><FaEdit /></Link>
                                     <Link to={`/dashboard/submitted-tasks/${contest._id}`} className={`btn btn-primary btn-square tooltip`} data-tip="Submissions"><MdSubject /></Link>
+
+                                    <button
+                                        className={`btn btn-primary btn-square tooltip`}
+                                        data-tip="Participants"
+                                        onClick={() => {
+                                            setSelectedContestId(contest._id);
+                                            document.getElementById('contest_participants_modal').showModal();
+                                        }}
+                                    ><FaUsers /></button>
+
                                     <button
                                         className={`btn btn-primary btn-square tooltip ${contest.status === 'pending' ? '' : 'btn-disabled'}`}
                                         data-tip="Delete"
@@ -135,6 +158,38 @@ const CreatedContests = () => {
                         </button>
                     ))}
                 </div>
+
+                <dialog id="contest_participants_modal" className="modal modal-bottom sm:modal-middle">
+                    <div className="modal-box">
+                        <h3 className="font-bold text-lg">Participants</h3>
+                        <ul className="menu bg-base-200 min-h-full w-80 p-4">
+                            {
+                                selectedContest?.participated_users.map((usr, i) => (
+                                    <li key={i} className="my-1">
+                                        <div className="flex justify-between items-center w-full">
+                                            <span className="font-medium">{i + 1}. {usr}</span>
+
+                                            <button
+                                                className="btn btn-ghost btn-square btn-sm text-red-700 tooltip"
+                                                data-tip="Remove"
+                                                onClick={() => mutationDeregister.mutate({id: selectedContest._id, email: usr})}
+                                            >
+                                                <FaTrash />
+                                            </button>
+                                        </div>
+                                    </li>))
+                            }
+
+                        </ul>
+                        <p className="py-4">Press ESC key or click the button below to close</p>
+                        <div className="modal-action">
+                            <form method="dialog">
+                                {/* if there is a button in form, it will close the modal */}
+                                <button className="btn">Close</button>
+                            </form>
+                        </div>
+                    </div>
+                </dialog>
             </div>
         </div>
     );
