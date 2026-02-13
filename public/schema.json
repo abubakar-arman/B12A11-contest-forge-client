@@ -17,6 +17,7 @@
         "deadline": "2026-03-15T23:59:59Z",
         "contest_type": "art",
         "created_by": "bdcybergang1@gmail.com",
-        "status": "pending / approved / rejected "
+        "status": "pending / approved / rejected ",
+        "participated_users": []
     }
 }

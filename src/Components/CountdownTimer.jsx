@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-const CountdownTimer = ({ deadline }) => {
+const CountdownTimer = ({ deadline, setIsContestEnded }) => {
   const [timeLeft, setTimeLeft] = useState(() => {
-    const diff = Date.parse(deadline) - Date.now();
+    const diff = Date.parse(deadline) - Date.now();  
     return diff > 0 ? Math.floor(diff / 1000) : 0;
   });
 
@@ -16,6 +16,12 @@ const CountdownTimer = ({ deadline }) => {
     return () => clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    if(timeLeft === 0){
+      setIsContestEnded(true)
+    }    
+  }, [timeLeft, setIsContestEnded])
+  
   // 4. Helper function to break total seconds into units
   const formatTime = (seconds) => {
     const d = Math.floor(seconds / (3600 * 24));
@@ -24,7 +30,6 @@ const CountdownTimer = ({ deadline }) => {
     const s = seconds % 60;
     return { d, h, m, s };
   };
-
   const { d, h, m, s } = formatTime(timeLeft);
 
   return (

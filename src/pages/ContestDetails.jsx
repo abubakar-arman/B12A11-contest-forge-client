@@ -1,20 +1,37 @@
-import React from 'react';
 import { FaTrophy, FaUsers } from 'react-icons/fa6';
 import { useParams } from 'react-router';
 import CountdownTimer from '../Components/CountdownTimer';
 import Swal from 'sweetalert2'
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import api from '../config/api';
 import { FaDollarSign } from 'react-icons/fa';
+import { useState } from 'react';
+import useAuth from '../hooks/useAuth';
+import { toast } from 'react-toastify';
+
 
 const ContestDetails = () => {
     const { id } = useParams()
+    const { user } = useAuth()
 
-    const { data, isLoading, error } = useQuery({
-        queryKey: ['contestDetails'],
-        queryFn: () => api.get(`/api/contest/${id}`),
+    const { data: contest, isLoading, error } = useQuery({
+        queryKey: ['contestDetails', id],
+        queryFn: () => api.get(`/api/contest/${id}`).then(res => res.data.result),
     })
-    console.log('data:', data);
+    
+    const queryClient = useQueryClient()
+    const mutationRegister = useMutation({
+        mutationFn: (_id) => api.put(`/api/contest/register/${_id}`, user),
+        onSuccess: (res) => {
+            console.log('Server response:', res.data)
+            queryClient.invalidateQueries({ queryKey: ['contestDetails', id]})
+            toast.success('Contest registration successful')
+        },
+        onError: (err) => console.error('Mutation Failed:', err)
+    })
+
+    const [isContestEnded, setIsContestEnded] = useState(false)
+
     const showSubmissionModal = () => {
         Swal.fire({
             title: "Write your solution here",
@@ -33,10 +50,9 @@ const ContestDetails = () => {
             }
         });
     }
+
     if (isLoading) return <div className="text-center p-10">Loading contest...</div>;
     if (error) return <p>Error: {error.message}</p>
-    const contest = data.data.result
-    // console.log('contestDetails', contest);
 
     return (
         <div className='mt-10 mb-10 px-20'>
@@ -61,7 +77,7 @@ const ContestDetails = () => {
                         <span className='block font-bold text-neutral-700'>Task Instructions:</span>
                         {contest.task_instruction}
                     </p>
-                    {!!Object.keys(contest.winner).length && <div className='flex flex-col justify-center lg:mt-14'>
+                    {!!Object.keys(contest.winner).length && isContestEnded && <div className='flex flex-col justify-center lg:mt-14'>
                         <div className="card bg-base-100 w-84 py-10 border-b-amber-600 border-2 shadow-sm lg:mt-14 flex flex-col justify-center items-center">
                             <p className="font-bold text-3xl mb-10">Winner</p>
 
@@ -78,14 +94,26 @@ const ContestDetails = () => {
                         </div>
                     </div>
                     }
-                    <div className='counter mt-20 flex flex-col justify-center items-center'>
-                        <p className='font-bold text-4xl mb-10'>Contest Ends In </p>
-                        <CountdownTimer deadline={contest.deadline} />
-                    </div>
+                    {!isContestEnded &&
+                        <div className='counter mt-20 flex flex-col justify-center items-center'>
+                            <p className='font-bold text-4xl mb-10'>Contest Ends In </p>
+                            <CountdownTimer deadline={contest.deadline} setIsContestEnded={setIsContestEnded} />
+                        </div>
+                    }
                     <div className='flex flex-col items-center gap-2'>
-                        <button className='btn btn-neutral w-50 py-8 btn-disabled'>Contest Ended</button>
-                        <button className='btn btn-neutral w-50 py-8'>Register</button>
-                        <button className="btn btn-neutral w-50 py-8" onClick={showSubmissionModal}>Submit</button>
+                        {isContestEnded ?
+                            <button className='btn btn-neutral w-50 py-8 btn-disabled'>Contest Ended</button>
+                            :
+                            <>{contest.participated_users.includes(user.email) ?
+                                <button className="btn btn-neutral w-50 py-8" onClick={showSubmissionModal}>Submit</button>
+                                :
+                                <button 
+                                className='btn btn-neutral w-50 py-8'
+                                onClick={() => mutationRegister.mutate(contest._id)}
+                                >Register</button>
+                            }
+                            </>
+                        }
                     </div>
                 </div>
             </div>
