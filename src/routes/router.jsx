@@ -75,6 +75,10 @@ export const router = createBrowserRouter([
                 Component: CreatedContests
             },
             {
+                path: 'submitted-tasks/:id',
+                Component: SubmittedTasks
+            },
+            {
                 path: 'submitted-tasks',
                 Component: SubmittedTasks
             },

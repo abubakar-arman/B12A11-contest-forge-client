@@ -78,14 +78,14 @@ const ContestDetails = () => {
                         <span className='block font-bold text-neutral-700'>Task Instructions:</span>
                         {contest.task_instruction}
                     </p>
-                    {!!Object.keys(contest.winner).length && isContestEnded && <div className='flex flex-col justify-center lg:mt-14'>
+                    {!!Object.keys(contest.winner).length  && <div className='flex flex-col justify-center lg:mt-14'>
                         <div className="card bg-base-100 w-84 py-10 border-b-amber-600 border-2 shadow-sm lg:mt-14 flex flex-col justify-center items-center">
                             <p className="font-bold text-3xl mb-10">Winner</p>
 
                             <div className='flex flex-col gap-5 mx-10'>
                                 <div className="avatar size-20">
                                     <div className="ring-primary ring-offset-base-100 w-24 rounded-full ring-2 ring-offset-2">
-                                        <img src={contest?.winner?.photo_url} />
+                                        <img src={contest?.winner.photoUrl} />
                                     </div>
                                 </div>
                                 <div className='text-left'>
