@@ -6,24 +6,22 @@ import api from '../../../config/api';
 import Spinner2 from '../../../Components/Spinner2';
 
 const WinningContests = () => {
-    const {user} = useAuth()
-    const {data: winning_contest_ids, isLoading: idsLoading } = useQuery({
-        queryKey: ['userData', user?.email],
-        queryFn: () => api.get('/api/user/find/' + user.email).then(res => res.data.result.winning_contests),
-        enabled: !!user?.email
-    })
+    const {user} = useAuth()    
 
     const { data: contests, isLoading : contestsLoading, error: contestError } = useQuery({
         queryKey: ['contests'],
         queryFn: () => api.get(`/api/contests`).then(res => res.data.result),
-        select: (contests) => contests.filter(c => c.status === 'approved' && winning_contest_ids.includes(c._id)),
-        enabled: !!winning_contest_ids,
+        select: (contests) => {
+            const x = contests.filter(c => c.status === 'approved' && c.winner?.email === user.email)
+            return x.sort((a, b) => new Date(a.deadline) - new Date(b.deadline))
+        },
+        enabled: !!user,
     })
 
     const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = 10
 
-    if (contestsLoading || idsLoading) return <Spinner2 />
+    if (contestsLoading) return <Spinner2 />
     if (contestError) return <p>Error: {contestError.message}</p>
     
     // pagination
@@ -35,6 +33,7 @@ const WinningContests = () => {
     return (
         <div className='mt-10 mb-10 text-center'>
             <h3 className='text-3xl font-bold text-accent-content mb-5'>My Winning Contests</h3>
+            {!contests.length ? <h5 className='text-xl font-bold text-neutral mb-5'>No items to show</h5> : ''}
             <div className="cards grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 lg:gap-8 space-y-8 lg:space-y-0 px-20">
                 {
                     currentItems.map((contest, i) => (
