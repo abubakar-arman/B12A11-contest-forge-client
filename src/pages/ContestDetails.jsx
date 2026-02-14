@@ -8,6 +8,7 @@ import { FaDollarSign } from 'react-icons/fa';
 import { useState } from 'react';
 import useAuth from '../hooks/useAuth';
 import { toast } from 'react-toastify';
+import { useRef } from 'react';
 
 
 const ContestDetails = () => {
@@ -18,38 +19,38 @@ const ContestDetails = () => {
         queryKey: ['contestDetails', id],
         queryFn: () => api.get(`/api/contest/${id}`).then(res => res.data.result),
     })
-    
+
     const queryClient = useQueryClient()
     const mutationRegister = useMutation({
         mutationFn: (_id) => api.put(`/api/contest/register/${_id}`, user),
         onSuccess: (res) => {
             console.log('Server response:', res.data)
-            queryClient.invalidateQueries({ queryKey: ['contestDetails', id]})
+            queryClient.invalidateQueries({ queryKey: ['contestDetails', id] })
             toast.success('Contest registration successful')
         },
         onError: (err) => console.error('Mutation Failed:', err)
     })
 
-    const [isContestEnded, setIsContestEnded] = useState(false)
-
-    const showSubmissionModal = () => {
-        Swal.fire({
-            title: "Write your solution here",
-            html: `<textarea className="textarea" rows='8' columns='40' style="width: 100%; box-sizing: border-box;" placeholder="Solution..."></textarea>`,
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Submit"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: "Submitted!",
-                    text: "Your solution has been submitted.",
-                    icon: "success"
-                });
+    const mutationSubmitTask = useMutation({
+        mutationFn: (solution) => {
+            const data = {
+                contestId: id,
+                email: user.email,
+                solution
             }
-        });
-    }
+            return api.post(`/api/submissions`, data)
+        },
+        onSuccess: (res) => {
+            console.log('Server Response :', res.data);
+            queryClient.invalidateQueries({ queryKey: ['submissions'] })
+
+            toast.success('Task submitted successfully!')
+        },
+        onError: (err) => console.error('Mutation Failed :', err)
+    })
+
+    const [isContestEnded, setIsContestEnded] = useState(false)
+    const textareaRef = useRef(null);
 
     if (isLoading) return <div className="text-center p-10">Loading contest...</div>;
     if (error) return <p>Error: {error.message}</p>
@@ -105,11 +106,14 @@ const ContestDetails = () => {
                             <button className='btn btn-neutral w-50 py-8 btn-disabled'>Contest Ended</button>
                             :
                             <>{contest.participated_users.includes(user.email) ?
-                                <button className="btn btn-neutral w-50 py-8" onClick={showSubmissionModal}>Submit</button>
+                                <button
+                                    className="btn btn-neutral w-50 py-8"
+                                    onClick={() => document.getElementById('submissionModal').showModal()}>
+                                    Submit</button>
                                 :
-                                <button 
-                                className='btn btn-neutral w-50 py-8'
-                                onClick={() => mutationRegister.mutate(contest._id)}
+                                <button
+                                    className='btn btn-neutral w-50 py-8'
+                                    onClick={() => mutationRegister.mutate(contest._id)}
                                 >Register</button>
                             }
                             </>
@@ -117,6 +121,23 @@ const ContestDetails = () => {
                     </div>
                 </div>
             </div>
+            {/* Open the modal using document.getElementById('ID').showModal() method */}
+
+            <dialog id="submissionModal" className="modal modal-bottom sm:modal-middle">
+                <div className="modal-box">
+                    <h3 className="font-bold text-lg">Write you solution here</h3>
+                    <textarea ref={textareaRef} className="textarea" rows='8' columns='40' placeholder="Solution..."></textarea>
+                    <div className="modal-action">
+                        <form method="dialog" className='flex gap-3'>
+                            <button
+                                className="btn bg-green-700 text-base-100"
+                                onClick={() => mutationSubmitTask.mutate(textareaRef?.current.value)}
+                            >Submit</button>
+                            <button className="btn bg-red-700 text-base-100">Close</button>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
         </div>
     );
 };
