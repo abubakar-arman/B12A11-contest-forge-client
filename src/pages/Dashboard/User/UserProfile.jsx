@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form'; // 1. Import Hook Form
+import { useForm } from 'react-hook-form'; 
 import api from '../../../config/api';
 import useAuth from '../../../hooks/useAuth';
 import { useParams } from 'react-router';
@@ -12,14 +12,12 @@ const UserProfile = () => {
   const { id } = useParams();
   const queryClient = useQueryClient();
 
-  // 2. Initialize Hook Form
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
   const { data: user, isLoading, error } = useQuery({
     queryKey: ['userProfile', id],
     queryFn: () => api.get(`/api/user/${id}`).then(res => res.data.result),
     enabled: !!usr?.email,
-    // Reset form with user data once it's loaded
     onSuccess: (data) => reset(data) 
   });
 
@@ -42,7 +40,6 @@ const UserProfile = () => {
     onError: () => toast.error("Failed to update profile.")
   });
 
-  // 3. Update Handler for Hook Form
   const onUpdateSubmit = (data) => {
     updateProfileMutation.mutate(data);
   };
@@ -58,7 +55,6 @@ const UserProfile = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10 space-y-8">
-      {/* Profile Header */}
       <div className="card bg-base-100 shadow-md">
         <div className="card-body">
           <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8">
@@ -74,7 +70,7 @@ const UserProfile = () => {
                 <button
                   className="btn btn-primary btn-sm"
                   onClick={() => {
-                    reset(user); // Ensure form has latest data when opening
+                    reset(user);
                     document.getElementById('update_modal').showModal();
                   }}
                 >
@@ -161,7 +157,7 @@ const UserProfile = () => {
             </div>
 
             <div className="form-control">
-              <label className="label"><span className="label-text">Bio / Extra Info</span></label>
+              <label className="label"><span className="label-text">Bio </span></label>
               <textarea 
                 {...register("bio")}
                 className="textarea textarea-bordered h-24" 

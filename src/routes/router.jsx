@@ -16,6 +16,7 @@ import SubmittedTasks from "../pages/Dashboard/Creator/SubmittedTasks";
 import UpdateContest from "../pages/Dashboard/Creator/UpdateContest";
 import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
 import ManageContests from "../pages/Dashboard/Admin/ManageContests";
+import Leaderboard from "../pages/Leaderboard";
 
 export const router = createBrowserRouter([
     {
@@ -43,6 +44,10 @@ export const router = createBrowserRouter([
                 element: <ContestDetails />,
                 // loader: () => fetch('/contest.json')
                 // loader: ({ params }) => fetch('https://moviemaster-pro.vercel.app/movies/' + params.id)
+            },
+            {
+                path: '/leaderboard',
+                Component: Leaderboard
             },
             {
                 path: '/*',

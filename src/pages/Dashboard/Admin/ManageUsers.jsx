@@ -78,6 +78,7 @@ const ManageUsers = () => {
     return (
         <div>
             <h3 className='text-3xl font-bold text-accent-content mb-5 text-center'>Manage Users</h3>
+            {!currentItems.length ? <h5 className='text-xl font-bold text-neutral mb-5'>No items to show</h5> : ''}
             <div className="overflow-x-auto">
                 <table className="table table-zebra">
                     {/* head */}

@@ -21,7 +21,7 @@ const ContestCard = ({ contest }) => {
                             <FaUsers />
                             <span>{contest.participants_count}</span>
                         </div>
-                        <Link to={`/contest-details/${contest._id}`} className="btn btn-sm btn-primary">Details</Link>
+                        <button className="btn btn-sm btn-primary">Details</button>
                     </div>
                 </Link>
             </figure>

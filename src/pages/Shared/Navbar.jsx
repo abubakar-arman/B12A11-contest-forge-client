@@ -38,6 +38,9 @@ const Navbar = () => {
                 <li key={3}>
                     <NavLink to='/dashboard/my-participated-contests' >My Contests</NavLink>
                 </li>
+                <li key={33}>
+                    <NavLink to='/leaderboard' >Leaderboard</NavLink>
+                </li>
             </>
             :
             <>
