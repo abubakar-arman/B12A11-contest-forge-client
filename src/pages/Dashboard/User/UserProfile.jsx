@@ -1,30 +1,31 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form'; 
-import api from '../../../config/api';
 import useAuth from '../../../hooks/useAuth';
 import { useParams } from 'react-router';
 import Spinner2 from '../../../Components/Spinner2';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { toast } from 'react-toastify';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const UserProfile = () => {
+  const axiosSecure = useAxiosSecure()
   const { user: usr } = useAuth();
   const { id } = useParams();
   const queryClient = useQueryClient();
-  console.log('kk', usr);
+  // console.log('kk', usr);
   
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
   const { data: user, isLoading, error } = useQuery({
     queryKey: ['userProfile', id],
-    queryFn: () => api.get(`/api/user/${id}`).then(res => res.data.result),
+    queryFn: () => axiosSecure.get(`/api/user/${id}`).then(res => res.data.result),
     enabled: !!usr?.email,
     onSuccess: (data) => reset(data) 
   });
 
   const { data: contests, isLoading: contestsLoading } = useQuery({
     queryKey: ['contests'],
-    queryFn: () => api.get(`/api/contests`).then(res => res.data.result)
+    queryFn: () => axiosSecure.get(`/api/contests`).then(res => res.data.result)
   });
 
   const email = user?.email;
@@ -32,7 +33,7 @@ const UserProfile = () => {
   const total_participated = contests?.filter(c => c.participated_users?.includes(email)).length || 0;
 
   const updateProfileMutation = useMutation({
-    mutationFn: (updatedData) => api.put(`/api/users/${id}`, updatedData),
+    mutationFn: (updatedData) => axiosSecure.put(`/api/users/${id}`, updatedData),
     onSuccess: () => {
       queryClient.invalidateQueries(['userProfile', id]);
       toast.success("Profile updated successfully!");
@@ -79,7 +80,7 @@ const UserProfile = () => {
                 </button>
               </div>
               <p className="text-lg opacity-70">{user.email}</p>
-              <p className="badge badge-outline badge-secondary">{user.rank_title}</p>
+              <p className="badge badge-outline badge-secondary font-bold">{user?.role.toUpperCase()}</p>
               {user.bio && (
                 <div className="mt-4">
                   <p className="text-accent font-semibold">Bio</p>

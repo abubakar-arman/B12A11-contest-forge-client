@@ -2,14 +2,15 @@
 // // import api from '../../../config/api';
 // import Spinner2 from '../../../Components/Spinner2';
 import { FaTrophy, FaMedal } from 'react-icons/fa';
-import api from '../config/api';
 import { useQuery } from '@tanstack/react-query';
 import Spinner2 from '../Components/Spinner2';
+import useAxiosSecure from '../hooks/useAxiosSecure'
 
 const Leaderboard = () => {
+    const axiosSecure = useAxiosSecure()
   const { data: users, isLoading, error } = useQuery({
     queryKey: ['leaderboard'],
-    queryFn: () => api.get('/api/users').then(res => res.data.result),
+    queryFn: () => axiosSecure.get('/api/users').then(res => res.data.result),
     select: (users) => users.filter(u => u.total_wins > 0)
   });
 

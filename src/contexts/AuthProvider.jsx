@@ -28,6 +28,7 @@ export const AuthProvider = ({ children }) => {
     }, [])
 
     const signup = async (email, password, name, photoUrl) => {
+        // console.log('kkk', email,password, name,photoUrl)
         const userCred = await createUserWithEmailAndPassword(auth, email, password)
         await updateProfile(userCred.user, {
             displayName: name,

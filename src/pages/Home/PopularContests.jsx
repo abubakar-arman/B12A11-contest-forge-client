@@ -1,13 +1,14 @@
 import { Link } from 'react-router';
 import ContestCard from '../Shared/ContestCard';
 import { useQuery } from '@tanstack/react-query';
-import api from '../../config/api';
 import Spinner2 from '../../Components/Spinner2';
+import useAxiosSecure from '../../hooks/useAxiosSecure'
 
 const PopularContents = () => {
+    const axiosSecure = useAxiosSecure()
     const { data: contests, isLoading, error } = useQuery({
         queryKey: ['popularContests'],
-        queryFn: () => api.get(`/api/popular-contests`).then(res => res.data.result),
+        queryFn: () => axiosSecure.get(`/api/popular-contests`).then(res => res.data.result),
         select: (contests) => contests.filter(c => c.status === 'approved')
     })
     // console.log('data:', data);

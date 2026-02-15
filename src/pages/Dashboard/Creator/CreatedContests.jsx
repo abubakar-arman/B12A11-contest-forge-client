@@ -4,23 +4,24 @@ import { FaEdit, FaTrash, FaUsers } from 'react-icons/fa';
 import { IoIosOpen } from "react-icons/io";
 import { MdSubject } from "react-icons/md";
 import { Link } from 'react-router';
-import api from '../../../config/api';
 import { toast } from 'react-toastify';
 import useAuth from '../../../hooks/useAuth';
 import Spinner2 from '../../../Components/Spinner2';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const CreatedContests = () => {
+    const axiosSecure = useAxiosSecure()
     const { user } = useAuth()
     const { data: contests, isLoading, error } = useQuery({
         queryKey: ['contests'],
-        queryFn: () => api.get(`/api/contests`).then(res => res.data.result),
+        queryFn: () => axiosSecure.get(`/api/contests`).then(res => res.data.result),
         select: (contests) => contests.filter(c => c.created_by === user.email),
         enabled: !!user?.email,
     })
 
     const queryClient = useQueryClient();
     const mutationDelete = useMutation({
-        mutationFn: (_id) => api.delete(`/api/contests/${_id}`),
+        mutationFn: (_id) => axiosSecure.delete(`/api/contests/${_id}`),
         onSuccess: (res) => {
             console.log('Server Response :', res.data);
             queryClient.invalidateQueries({ queryKey: ['contests'] })
@@ -31,7 +32,7 @@ const CreatedContests = () => {
     })
 
     const mutationDeregister = useMutation({
-        mutationFn: (data) => api.put(`/api/contest/deregister/${data.id}`, { email: data.email }),
+        mutationFn: (data) => axiosSecure.put(`/api/contest/deregister/${data.id}`, { email: data.email }),
         onSuccess: (res) => {
             console.log('Server response:', res.data)
             queryClient.invalidateQueries({ queryKey: ['contests'] })
@@ -60,7 +61,7 @@ const CreatedContests = () => {
             <h3 className='text-3xl font-bold text-accent-content mb-5 text-center'>My Created Contests</h3>
             {!currentItems.length ? <h5 className='text-xl text-center font-bold text-neutral mb-5'>No items to show</h5> : ''}
             <div className="overflow-x-auto">
-                {currentItems.length &&
+                {!!currentItems.length &&
                     <table className="table table-zebra">
                         <thead>
                             <tr>
@@ -163,6 +164,7 @@ const CreatedContests = () => {
                 <dialog id="contest_participants_modal" className="modal modal-bottom sm:modal-middle">
                     <div className="modal-box">
                         <h3 className="font-bold text-lg">Participants</h3>
+                        {!selectedContest?.participated_users.length && <p className='text-center'>No participants</p>}
                         <ul className="menu bg-base-200 min-h-full w-80 p-4">
                             {
                                 selectedContest?.participated_users.map((usr, i) => (
@@ -182,7 +184,6 @@ const CreatedContests = () => {
                             }
 
                         </ul>
-                        <p className="py-4">Press ESC key or click the button below to close</p>
                         <div className="modal-action">
                             <form method="dialog">
                                 {/* if there is a button in form, it will close the modal */}

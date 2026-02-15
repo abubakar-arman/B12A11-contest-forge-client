@@ -3,8 +3,8 @@ import { useForm, Controller } from 'react-hook-form';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import api from '../../../config/api';
 import { toast } from 'react-toastify';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const AddContest = () => {
   const { register, handleSubmit, control, formState: { errors } } = useForm({
@@ -13,10 +13,12 @@ const AddContest = () => {
       deadline: new Date(),
     }
   });
+  
+  const axiosSecure = useAxiosSecure()
 
   const queryClient = useQueryClient();
   const mutationAddContest = useMutation({
-    mutationFn: (contest) => api.post('/api/contests', contest),
+    mutationFn: (contest) => axiosSecure.post('/api/contests', contest),
     onSuccess: (res) => {
       console.log('Server Response :', res.data);
       queryClient.invalidateQueries({ queryKey: ['contests'] })

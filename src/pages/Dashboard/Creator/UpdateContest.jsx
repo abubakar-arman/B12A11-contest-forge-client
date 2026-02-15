@@ -3,23 +3,24 @@ import { useForm, Controller } from 'react-hook-form';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import api from '../../../config/api';
 import { useParams } from 'react-router';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import Spinner2 from '../../../Components/Spinner2';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const UpdateContest = () => {
+  const axiosSecure = useAxiosSecure()
   const { id } = useParams()
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['contestDetails'],
-    queryFn: () => api.get(`/api/contest/${id}`),
+    queryFn: () => axiosSecure.get(`/api/contest/${id}`),
   })
   // console.log('data:', data);
   const queryClient = useQueryClient();
   const mutationUpdateContest = useMutation({
-    mutationFn: (contest) => api.put(`/api/contests/${id}`, contest),
+    mutationFn: (contest) => axiosSecure.put(`/api/contests/${id}`, contest),
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: ['contests'] })
       

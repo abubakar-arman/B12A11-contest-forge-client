@@ -1,23 +1,53 @@
 {
     "contest": {
         "_id": {
-            "$oid": "698a5b8990e32fd051af2bd6"
+            "$oid": "6991e5167ea70fab44434458"
         },
-        "contest_name": "Nebula Digital Art Challenge",
-        "image": "nebula.png",
-        "participants_count": 1240,
-        "description": "Create a stunning visual representation of deep space using only a neon color palette.",
-        "task_instruction": "Submit one original .PNG or .TIFF file. Resolution must be at least 3000x2000px. AI-generated entries are not permitted for this specific round.",
-        "prize_money": "5000",
-        "price": "200",
+        "contest_type": "logo",
+        "deadline": "2026-02-15T15:23:42.550Z",
+        "contest_name": "LKJLKJJKJ",
+        "image": "asdfasdfdsaf",
+        "description": "asdfasdfsadf",
+        "task_instruction": "asdfasdf",
+        "price": "333",
+        "prize_money": "333",
+        "participants_count": 0,
         "winner": {
-            "name": "Alex Rivera",
-            "photo_url": "https://example.com/profiles/alex-rivera.jpg"
+            "name": "Ultimate Hacker 4",
+            "photoUrl": "https://lh3.googleusercontent.com/a/ACg8ocLuYOFg5qgZRYaaXEWRGa7XVW5GT1atEKGyFeIfC3lBVLPOgg=s96-c",
+            "email": "bdcybergang.4@gmail.com"
         },
-        "deadline": "2026-03-15T23:59:59Z",
-        "contest_type": "art",
-        "created_by": "bdcybergang1@gmail.com",
-        "status": "pending / approved / rejected ",
-        "participated_users": []
+        "participated_users": [],
+        "status": "pending",
+        "created_by": "bdcybergang1@gmail.com"
+    },
+    "users": {
+        "_id": {
+            "$oid": "6991d2e8dfc2a5b27f9cc9bc"
+        },
+        "name": "Biplob jj",
+        "email": "biplob@gmail.com",
+        "password": "F@CEbooK422",
+        "photoUrl": "https://i.pravatar.cc/150?img=10",
+        "role": "user",
+        "rank_title": "Newbie",
+        "joined_date": "2026-02-15T14:06:32.471Z",
+        "address": "No address yet",
+        "bio": "My bio asdlfjk",
+        "total_wins": 0,
+        "total_participated": 4
+    },
+    "submissions": {
+        "_id": {
+            "$oid": "6991e0f67ea70fab44434457"
+        },
+        "contestId": "698a5c8b90e32fd051af2bdc",
+        "email": "bdcybergang.4@gmail.com",
+        "solution": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "submission_date": {
+            "$date": "2026-02-15T15:06:30.847Z"
+        },
+        "is_winner": false,
+        "status": "pending"
     }
 }

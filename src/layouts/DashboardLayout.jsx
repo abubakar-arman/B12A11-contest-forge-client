@@ -6,20 +6,23 @@ import { GrTrophy } from "react-icons/gr";
 import { ToastContainer } from 'react-toastify';
 import useAuth from '../hooks/useAuth';
 import { useQuery } from '@tanstack/react-query';
-import api from '../config/api';
 import { IoIosAddCircle } from 'react-icons/io';
 import { MdCreateNewFolder, MdDarkMode, MdLightMode } from 'react-icons/md';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import ErrorBoundary from '../Components/ErrorBoundary';
 import Spinner2 from '../Components/Spinner2';
+import useRole from '../hooks/useRole';
+import useAxiosSecure from '../hooks/useAxiosSecure';
 
 
 const DashboardLayout = () => {
+    const axiosSecure = useAxiosSecure()
     const { user, isAuthenticated, logout } = useAuth()
+    const { role } = useRole()
     const { data: _id, isLoading, error } = useQuery({
         queryKey: ['userId'],
-        queryFn: () => api.get(`/api/user/find/` + user.email).then(res => res.data.result._id),
+        queryFn: () => axiosSecure.get(`/api/user/find/` + user.email).then(res => res.data.result._id),
         enabled: !!user?.email
     })
     // console.log(_id);
@@ -111,52 +114,59 @@ const DashboardLayout = () => {
                         </li> */}
 
                         {/* User Nav*/}
-                        <li>
-                            <Link to="/dashboard/my-participated-contests" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Participated Contests">
-                                <GrTrophy />
-                                <span className="is-drawer-close:hidden">Participated Contests</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/dashboard/my-winning-contests" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Winning Contests">
-                                <GiDiamondTrophy />
-                                <span className="is-drawer-close:hidden">Winning Contests</span>
-                            </Link>
-                        </li>
+
+                        {role === 'user' && <>
+                            <li>
+                                <Link to="/dashboard/my-participated-contests" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Participated Contests">
+                                    <GrTrophy />
+                                    <span className="is-drawer-close:hidden">Participated Contests</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/dashboard/my-winning-contests" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Winning Contests">
+                                    <GiDiamondTrophy />
+                                    <span className="is-drawer-close:hidden">Winning Contests</span>
+                                </Link>
+                            </li>
+                        </>}
 
                         {/* Creator Nav*/}
-                        <li>
-                            <Link to="/dashboard/add-contest" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Add Contest">
-                                <IoIosAddCircle />
-                                <span className="is-drawer-close:hidden">Add Contest</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/dashboard/created-contests" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Created Contests">
-                                <MdCreateNewFolder />
-                                <span className="is-drawer-close:hidden">My Created Contests</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/dashboard/submitted-tasks" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Submitted Tasks">
-                                <FaTasks />
-                                <span className="is-drawer-close:hidden">Submitted Tasks</span>
-                            </Link>
-                        </li>
+                        {role === 'creator' && <>
+                            <li>
+                                <Link to="/dashboard/add-contest" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Add Contest">
+                                    <IoIosAddCircle />
+                                    <span className="is-drawer-close:hidden">Add Contest</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/dashboard/created-contests" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Created Contests">
+                                    <MdCreateNewFolder />
+                                    <span className="is-drawer-close:hidden">My Created Contests</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/dashboard/submitted-tasks" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Submitted Tasks">
+                                    <FaTasks />
+                                    <span className="is-drawer-close:hidden">Submitted Tasks</span>
+                                </Link>
+                            </li>
+                        </>}
 
                         {/* Admin Nav*/}
-                        <li>
-                            <Link to="/dashboard/manage-contests" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Contests">
-                                <MdCreateNewFolder />
-                                <span className="is-drawer-close:hidden">Manage Contests</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/dashboard/manage-users" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Users">
-                                <GiDiamondTrophy />
-                                <span className="is-drawer-close:hidden">Manage Users</span>
-                            </Link>
-                        </li>
+                        {role === 'admin' && <>
+                            <li>
+                                <Link to="/dashboard/manage-contests" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Contests">
+                                    <MdCreateNewFolder />
+                                    <span className="is-drawer-close:hidden">Manage Contests</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/dashboard/manage-users" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Users">
+                                    <GiDiamondTrophy />
+                                    <span className="is-drawer-close:hidden">Manage Users</span>
+                                </Link>
+                            </li>
+                        </>}
                         <li>
                             <Link to={"/dashboard/profile/" + _id} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Profile">
                                 <FaUserCircle />

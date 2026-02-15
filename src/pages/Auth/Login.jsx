@@ -3,21 +3,22 @@ import loginImg from '../../assets/login.png';
 import { toast } from 'react-toastify';
 import useAuth from '../../hooks/useAuth';
 import { useForm } from 'react-hook-form';
-import api from '../../config/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const Login = () => {
+  const axiosSecure = useAxiosSecure()
   const { login, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const from = location.state?.from || '/';
-  console.log('kjkj', location)
+  // console.log('kjkj', location)
   // return
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (user) => api.post('/api/users', user),
+    mutationFn: (user) => axiosSecure.post('/api/users', user),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       toast.success('New user found! Registered in System.');
@@ -40,7 +41,7 @@ const Login = () => {
   };
 
   const isUserExist = async (email) => {
-    const res = await api.get(`/api/user/exists/${email}`);
+    const res = await axiosSecure.get(`/api/user/exists/${email}`);
     return res.data.msg;
   };
 

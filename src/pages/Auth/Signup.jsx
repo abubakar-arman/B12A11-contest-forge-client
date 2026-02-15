@@ -4,17 +4,18 @@ import useAuth from '../../hooks/useAuth';
 import signupImg from '../../assets/signup.png';
 import { useForm } from "react-hook-form";
 import { useEffect } from 'react';
-import api from '../../config/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const Signup = () => {
+  const axiosSecure = useAxiosSecure()
   const { signup, user, loginWithGoogle } = useAuth();
   const { register, handleSubmit, formState: { errors }, setError } = useForm();
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (user) => api.post('/api/users', user),
+    mutationFn: (user) => axiosSecure.post('/api/users', user),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       toast.success('Registration successful');
@@ -32,20 +33,21 @@ const Signup = () => {
 - Must have a Lowercase letter`;
 
   const isUserExist = async (email) => {
-    const res = await api.get(`/api/user/exists/${email}`);
+    const res = await axiosSecure.get(`/api/user/exists/${email}`);
     return res.data.msg;
   };
 
   const handleRegister = async (data) => {
     const { email } = data;
-
+    
     const userExists = await isUserExist(email);
     if (userExists) {
       setError('email', { type: 'manual', message: 'User already exists' });
       toast.error('User already exists');
       return;
     }
-
+    
+    // console.log('kk', userExists)
     try {
       await signup(data.email, data.password, data.name, data.photoUrl);
       mutation.mutate(data);

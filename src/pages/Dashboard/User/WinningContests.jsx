@@ -2,15 +2,16 @@ import { useState } from 'react';
 import ContestListWinCard from '../../Shared/ContestListWinCard';
 import useAuth from '../../../hooks/useAuth';
 import { useQuery } from '@tanstack/react-query';
-import api from '../../../config/api';
 import Spinner2 from '../../../Components/Spinner2';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const WinningContests = () => {
+    const axiosSecure = useAxiosSecure()
     const {user} = useAuth()    
 
     const { data: contests, isLoading : contestsLoading, error: contestError } = useQuery({
         queryKey: ['contests'],
-        queryFn: () => api.get(`/api/contests`).then(res => res.data.result),
+        queryFn: () => axiosSecure.get(`/api/contests`).then(res => res.data.result),
         select: (contests) => {
             const x = contests.filter(c => c.status === 'approved' && c.winner?.email === user.email)
             return x.sort((a, b) => new Date(a.deadline) - new Date(b.deadline))

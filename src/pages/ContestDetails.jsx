@@ -10,20 +10,24 @@ import useAuth from '../hooks/useAuth';
 import { toast } from 'react-toastify';
 import { useRef } from 'react';
 import Spinner2 from '../Components/Spinner2';
+import useRole from '../hooks/useRole';
+import useAxiosSecure from '../hooks/useAxiosSecure';
 
 
 const ContestDetails = () => {
+    const axiosSecure = useAxiosSecure()
     const { id } = useParams()
     const { user } = useAuth()
+    const { role, roleLoading } = useRole()
 
     const { data: contest, isLoading, error } = useQuery({
         queryKey: ['contestDetails', id],
-        queryFn: () => api.get(`/api/contest/${id}`).then(res => res.data.result),
+        queryFn: () => axiosSecure.get(`/api/contest/${id}`).then(res => res.data.result),
     })
 
     const queryClient = useQueryClient()
     const mutationRegister = useMutation({
-        mutationFn: (_id) => api.put(`/api/contest/register/${_id}`, user),
+        mutationFn: (_id) => axiosSecure.put(`/api/contest/register/${_id}`, user),
         onSuccess: (res) => {
             console.log('Server response:', res.data)
             queryClient.invalidateQueries({ queryKey: ['contestDetails', id] })
@@ -39,7 +43,7 @@ const ContestDetails = () => {
                 email: user.email,
                 solution
             }
-            return api.post(`/api/submissions`, data)
+            return axiosSecure.post(`/api/submissions`, data)
         },
         onSuccess: (res) => {
             console.log('Server Response :', res.data);
@@ -53,7 +57,7 @@ const ContestDetails = () => {
     const [isContestEnded, setIsContestEnded] = useState(false)
     const textareaRef = useRef(null);
 
-    if (isLoading) return <Spinner2 />
+    if (isLoading || roleLoading) return <Spinner2 />
     if (error) return <p>Error: {error.message}</p>
 
     return (
@@ -79,23 +83,30 @@ const ContestDetails = () => {
                         <span className='block font-bold text-neutral-700'>Task Instructions:</span>
                         {contest.task_instruction}
                     </p>
-                    {!!Object.keys(contest.winner).length  && <div className='flex flex-col justify-center lg:mt-14'>
+                    <p>
+                        <span className='block font-bold text-neutral-700'>Contest Creator:</span>
+                        {contest.created_by}
+                    </p>
+                    <div className='flex flex-col justify-center lg:mt-14'>
                         <div className="card bg-base-100 w-84 py-10 border-b-amber-600 border-2 shadow-sm lg:mt-14 flex flex-col justify-center items-center">
                             <p className="font-bold text-3xl mb-10">Winner</p>
-
-                            <div className='flex flex-col gap-5 mx-10'>
-                                <div className="avatar size-20">
-                                    <div className="ring-primary ring-offset-base-100 w-24 rounded-full ring-2 ring-offset-2">
-                                        <img src={contest?.winner.photoUrl} />
+                            {(Object.keys(contest.winner).length && isContestEnded) ?
+                                <div className='flex flex-col gap-5 mx-10'>
+                                    <div className="avatar size-20">
+                                        <div className="ring-primary ring-offset-base-100 w-24 rounded-full ring-2 ring-offset-2">
+                                            <img src={contest?.winner.photoUrl} />
+                                        </div>
+                                    </div>
+                                    <div className='text-left'>
+                                        <p className='font-bold'>{contest?.winner?.name}</p>
                                     </div>
                                 </div>
-                                <div className='text-left'>
-                                    <p className='font-bold'>{contest?.winner?.name}</p>
-                                </div>
-                            </div>
+                                :
+                                <p>Winner not announced yet</p>
+
+                            }
                         </div>
                     </div>
-                    }
                     {!isContestEnded &&
                         <div className='counter mt-20 flex flex-col justify-center items-center'>
                             <p className='font-bold text-4xl mb-10'>Contest Ends In </p>
@@ -111,11 +122,13 @@ const ContestDetails = () => {
                                     className="btn btn-neutral w-50 py-8"
                                     onClick={() => document.getElementById('submissionModal').showModal()}>
                                     Submit</button>
-                                :
-                                <button
-                                    className='btn btn-neutral w-50 py-8'
-                                    onClick={() => mutationRegister.mutate(contest._id)}
-                                >Register</button>
+                                : role === 'user' ?
+                                    <button
+                                        className='btn btn-neutral w-50 py-8'
+                                        onClick={() => mutationRegister.mutate(contest._id)}
+                                    >Register</button>
+                                    :
+                                    ''
                             }
                             </>
                         }

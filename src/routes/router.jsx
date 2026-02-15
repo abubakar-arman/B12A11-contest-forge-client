@@ -18,6 +18,10 @@ import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
 import ManageContests from "../pages/Dashboard/Admin/ManageContests";
 import Leaderboard from "../pages/Leaderboard";
 import RequireAuth from "./RequireAuth";
+import RequireAdmin from "./RequireAdmin";
+import DashboardIndex from "../pages/Dashboard/DashboardIndex";
+import RequireUser from "./RequireUser";
+import RequireCreator from "./RequireCreator";
 
 export const router = createBrowserRouter([
     {
@@ -71,12 +75,22 @@ export const router = createBrowserRouter([
         element: <DashboardLayout />,
         children: [
             {
+                index: true,
+                element: <DashboardIndex />
+            },
+            {
                 path: 'my-participated-contests',
-                Component: ParticipatedContests
+                element:
+                    <RequireUser>
+                        <ParticipatedContests />
+                    </RequireUser>
             },
             {
                 path: 'my-winning-contests',
-                Component: WinningContests
+                element:
+                    <RequireUser>
+                        <WinningContests />
+                    </RequireUser>
             },
             {
                 path: 'profile/:id',
@@ -84,31 +98,52 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'add-contest',
-                Component: AddContest
+                element:
+                    <RequireCreator>
+                        <AddContest />
+                    </RequireCreator>
             },
             {
                 path: 'created-contests',
-                Component: CreatedContests
+                element:
+                    <RequireCreator>
+                        <CreatedContests />
+                    </RequireCreator>
             },
             {
                 path: 'submitted-tasks/:id',
-                Component: SubmittedTasks
+                element:
+                    <RequireCreator>
+                        <SubmittedTasks />
+                    </RequireCreator>
             },
             {
                 path: 'submitted-tasks',
-                Component: SubmittedTasks
+                element:
+                    <RequireCreator>
+                        <SubmittedTasks />
+                    </RequireCreator>
             },
             {
                 path: 'update-contest/:id',
-                Component: UpdateContest
+                element:
+                    <RequireCreator>
+                        <UpdateContest />
+                    </RequireCreator>
             },
             {
                 path: 'manage-users',
-                Component: ManageUsers
+                element:
+                    <RequireAdmin>
+                        <ManageUsers />
+                    </RequireAdmin>
             },
             {
                 path: 'manage-contests',
-                Component: ManageContests
+                element:
+                    <RequireAdmin>
+                        <ManageContests />
+                    </RequireAdmin>
             }
         ]
     },

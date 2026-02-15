@@ -4,19 +4,20 @@ import { FaCheckCircle, FaEdit, FaTrash } from 'react-icons/fa';
 import { IoIosOpen } from "react-icons/io";
 import { IoIosCloseCircle } from "react-icons/io";
 import { Link } from 'react-router';
-import api from '../../../config/api';
 import { toast } from 'react-toastify';
 import Spinner2 from '../../../Components/Spinner2';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const ManageContests = () => {
+    const axiosSecure = useAxiosSecure()
     const { data: contests, isLoading, error } = useQuery({
         queryKey: ['contests'],
-        queryFn: () => api.get(`/api/contests`).then(res => res.data.result),
+        queryFn: () => axiosSecure.get(`/api/contests`).then(res => res.data.result),
     })
 
     const queryClient = useQueryClient();
     const mutationDelete = useMutation({
-        mutationFn: (_id) => api.delete(`/api/contests/${_id}`),
+        mutationFn: (_id) => axiosSecure.delete(`/api/contests/${_id}`),
         onSuccess: (res) => {
             console.log('Server Response :', res.data);
             queryClient.invalidateQueries({ queryKey: ['contests'] })
@@ -29,7 +30,7 @@ const ManageContests = () => {
         mutationFn: (contest) => {
             const { _id, status, ...rest } = contest // eslint-disable-line
             const newData = { ...rest, status: "rejected" }
-            return api.put(`/api/contests/${_id}`, newData)
+            return axiosSecure.put(`/api/contests/${_id}`, newData)
         },
         onSuccess: (res) => {
             console.log('Server Response :', res.data);
@@ -43,7 +44,7 @@ const ManageContests = () => {
         mutationFn: (contest) => {
             const { _id, status, ...rest } = contest // eslint-disable-line
             const newData = { ...rest, status: "approved" }
-            return api.put(`/api/contests/${_id}`, newData)
+            return axiosSecure.put(`/api/contests/${_id}`, newData)
         },
         onSuccess: (res) => {
             console.log('Server Response :', res.data);

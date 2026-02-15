@@ -4,18 +4,19 @@ import { IoIosOpen } from "react-icons/io";
 import { MdCancel, MdSubject } from "react-icons/md";
 import { TiTick } from 'react-icons/ti';
 import { Link, useParams } from 'react-router';
-import api from '../../../config/api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Spinner2 from '../../../Components/Spinner2';
 import { toast } from 'react-toastify';
 import { FaCircleMinus } from 'react-icons/fa6';
+import useAxiosSecure from '../../../hooks/useAxiosSecure'
 
 const SubmittedTasks = () => {
+    const axiosSecure = useAxiosSecure()
     const { id } = useParams()
 
     const { data: submissions, isLoading, error } = useQuery({
         queryKey: ['submissions'],
-        queryFn: () => api.get(`/api/submissions`).then(res => res.data.result),
+        queryFn: () => axiosSecure.get(`/api/submissions`).then(res => res.data.result),
         select: (submissions) => id ? submissions.filter(s => s.contestId === id) : submissions
     })
 
@@ -25,13 +26,13 @@ const SubmittedTasks = () => {
     // console.log('submissions:', submissions);
     const { data: contests, contestsIsLoading } = useQuery({
         queryKey: ['contests'],
-        queryFn: () => api.get(`/api/contests`).then(res => res.data.result),
+        queryFn: () => axiosSecure.get(`/api/contests`).then(res => res.data.result),
     })
 
     const queryClient = useQueryClient()
     const mutationDeclareWinner = useMutation({
         mutationFn: (submission) => {
-            return api.put(`/api/contest/declare-winner/${submission.contestId}`, submission)
+            return axiosSecure.put(`/api/contest/declare-winner/${submission.contestId}`, submission)
         },
         onSuccess: (res) => {
             console.log('Server Response :', res.data);
@@ -43,7 +44,7 @@ const SubmittedTasks = () => {
 
     const mutationUndoWinner = useMutation({
         mutationFn: (submission) => {
-            return api.put(`/api/contest/undo-winner/${submission.contestId}`, submission)
+            return axiosSecure.put(`/api/contest/undo-winner/${submission.contestId}`, submission)
         },
         onSuccess: (res) => {
             console.log('Server Response :', res.data);
@@ -54,7 +55,7 @@ const SubmittedTasks = () => {
     })
 
     const mutationDelete = useMutation({
-        mutationFn: (_id) => api.delete(`/api/submissions/${_id}`),
+        mutationFn: (_id) => axiosSecure.delete(`/api/submissions/${_id}`),
         onSuccess: (res) => {
             console.log('Server Response :', res.data);
             queryClient.invalidateQueries({ queryKey: ['submissions'] })
@@ -84,10 +85,10 @@ const SubmittedTasks = () => {
     return (
         <div>
             <h3 className='text-3xl font-bold text-accent-content mb-5 text-center'>Contest Submissions</h3>
-            {!currentItems.length ? <h5 className='text-xl text-center font-bold text-neutral mb-5'>No items to show</h5> : ''}
             <h4 className='font-bold text-xl py-10'>Contest Name : {id ? contests?.filter(c => c._id === id)[0].contest_name : 'All Contests'}</h4>
+            {!currentItems.length ? <h5 className='text-xl text-center font-bold text-neutral mb-5'>No items to show</h5> : ''}
             <div className="overflow-x-auto">
-                {currentItems.length &&
+                {!!currentItems.length &&
                     <table className="table table-zebra">
                         <thead>
                             <tr>

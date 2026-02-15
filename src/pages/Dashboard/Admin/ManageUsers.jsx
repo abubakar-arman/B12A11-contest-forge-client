@@ -4,7 +4,6 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 import { IoIosOpen } from "react-icons/io";
 import { MdCancel, MdSubject } from "react-icons/md";
 import { Link } from 'react-router';
-import api from '../../../config/api';
 import { toast } from 'react-toastify';
 import { useRef } from 'react';
 import Spinner2 from '../../../Components/Spinner2';
@@ -22,7 +21,7 @@ const ManageUsers = () => {
     const mutationChangeRole = useMutation({
         mutationFn: (updatedUser) => {
             const { _id, ...userData } = updatedUser
-            return api.put(`/api/users/${_id}`, userData)
+            return axiosSecure.put(`/api/users/${_id}`, userData)
         },
         onSuccess: (res) => {
             console.log('Server Response :', res.data);
@@ -35,7 +34,7 @@ const ManageUsers = () => {
     })
 
     const mutationDelete = useMutation({
-        mutationFn: (_id) => api.delete(`/api/users/${_id}`),
+        mutationFn: (_id) => axiosSecure.delete(`/api/users/${_id}`),
         onSuccess: (res) => {
             console.log('Server Response :', res.data);
             queryClient.invalidateQueries({ queryKey: ['users'] })
