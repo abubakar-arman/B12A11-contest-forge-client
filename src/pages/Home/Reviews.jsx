@@ -17,7 +17,7 @@ const Reviews = () => {
             .then(res => res.json())
             .then(data => setReviews(data))
     }, [])
-    console.log('reviews', reviews);
+    // console.log('reviews', reviews);
 
 
     useEffect(() => {

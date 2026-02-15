@@ -3,63 +3,63 @@
         "name": "Alex Rivera",
         "contest_name": "Nebula Digital Art Challenge",
         "prize_money": "$5,000",
-        "image_url": "https://i.pravatar.cc/300",
+        "image_url": "https://i.pravatar.cc/300?img=1",
         "contest_category": "Digital Art"
     },
     {
         "name": "Sarah Jenkins",
         "contest_name": "The Minimalist Logo Quest",
         "prize_money": "$1,200",
-        "image_url": "https://i.pravatar.cc/300",
+        "image_url": "https://i.pravatar.cc/300?img=2",
         "contest_category": "Graphic Design"
     },
     {
         "name": "Marcus Chen",
         "contest_name": "Eco-Friendly App Sprint",
         "prize_money": "$2,500",
-        "image_url": "https://i.pravatar.cc/300",
+        "image_url": "https://i.pravatar.cc/300?img=3",
         "contest_category": "Mobile Development"
     },
     {
         "name": "Sarah Jenkins",
         "contest_name": "The Minimalist Logo Quest",
         "prize_money": "$1,200",
-        "image_url": "https://i.pravatar.cc/300",
+        "image_url": "https://i.pravatar.cc/300?img=4",
         "contest_category": "Graphic Design"
     },
     {
         "name": "Marcus Chen",
         "contest_name": "Eco-Friendly App Sprint",
         "prize_money": "$2,500",
-        "image_url": "https://i.pravatar.cc/300",
+        "image_url": "https://i.pravatar.cc/300?img=5",
         "contest_category": "Mobile Development"
     },
     {
         "name": "Sarah Jenkins",
         "contest_name": "The Minimalist Logo Quest",
         "prize_money": "$1,200",
-        "image_url": "https://i.pravatar.cc/300",
+        "image_url": "https://i.pravatar.cc/300?img=6",
         "contest_category": "Graphic Design"
     },
     {
         "name": "Marcus Chen",
         "contest_name": "Eco-Friendly App Sprint",
         "prize_money": "$2,500",
-        "image_url": "https://i.pravatar.cc/300",
+        "image_url": "https://i.pravatar.cc/300?img=7",
         "contest_category": "Mobile Development"
     },
     {
         "name": "Sarah Jenkins",
         "contest_name": "The Minimalist Logo Quest",
         "prize_money": "$1,200",
-        "image_url": "https://i.pravatar.cc/300",
+        "image_url": "https://i.pravatar.cc/300?img=8",
         "contest_category": "Graphic Design"
     },
     {
         "name": "Marcus Chen",
         "contest_name": "Eco-Friendly App Sprint",
         "prize_money": "$2,500",
-        "image_url": "https://i.pravatar.cc/300",
+        "image_url": "https://i.pravatar.cc/300?img=9",
         "contest_category": "Mobile Development"
     }
 ]

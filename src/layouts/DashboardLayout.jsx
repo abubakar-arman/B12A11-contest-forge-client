@@ -133,15 +133,15 @@ const DashboardLayout = () => {
                         {/* Creator Nav*/}
                         {role === 'creator' && <>
                             <li>
-                                <Link to="/dashboard/add-contest" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Add Contest">
-                                    <IoIosAddCircle />
-                                    <span className="is-drawer-close:hidden">Add Contest</span>
-                                </Link>
-                            </li>
-                            <li>
                                 <Link to="/dashboard/created-contests" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Created Contests">
                                     <MdCreateNewFolder />
                                     <span className="is-drawer-close:hidden">My Created Contests</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/dashboard/add-contest" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Add Contest">
+                                    <IoIosAddCircle />
+                                    <span className="is-drawer-close:hidden">Add Contest</span>
                                 </Link>
                             </li>
                             <li>

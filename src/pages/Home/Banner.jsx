@@ -1,7 +1,18 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel'
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import Spinner2 from "../../Components/Spinner2";
+import { useQuery } from "@tanstack/react-query";
 
 const Banner = () => {
+    const axiosSecure = useAxiosSecure()
+    const { data: images, isLoading, error } = useQuery({
+        queryKey: ['contests'],
+        queryFn: () => axiosSecure.get(`/api/home/banner`).then(res => res.data.imgs)
+    })
+
+    if (isLoading) return <Spinner2 />;
+    if (error) return <p>Error: {error.message}</p>
     return (
         <div className="relative">
             <div className="absolute top-1/2 z-100 left-1/2 -translate-x-1/2 w-80">
@@ -25,14 +36,18 @@ const Banner = () => {
                 </form>
             </div>
             <Carousel autoPlay infiniteLoop dynamicHeight="false">
-                <div>
-                    <img src="/carousel/slide1.jpg" />
-                    <p className="legend">Legend 1</p>
-                </div>
-                <div>
+                {
+                    images.map((im, i) => (
+                        <div key={i} className="h-[70vh] w-full">
+                            <img src={im} className="h-full w-full object-cover" />
+                            {/* <p className="legend">Legend 1</p> */}
+                        </div>
+                    ))
+                }
+                {/* <div>
                     <img src="/carousel/slide2.jpg" />
                     <p className="legend">Legend 2</p>
-                </div>
+                </div> */}
             </Carousel>
 
         </div>
