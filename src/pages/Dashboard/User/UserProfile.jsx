@@ -11,7 +11,8 @@ const UserProfile = () => {
   const { user: usr } = useAuth();
   const { id } = useParams();
   const queryClient = useQueryClient();
-
+  console.log('kk', usr);
+  
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
   const { data: user, isLoading, error } = useQuery({

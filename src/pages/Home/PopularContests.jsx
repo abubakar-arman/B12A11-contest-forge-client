@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 import ContestCard from '../Shared/ContestCard';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../config/api';
+import Spinner2 from '../../Components/Spinner2';
 
 const PopularContents = () => {
     const { data: contests, isLoading, error } = useQuery({
@@ -11,7 +12,7 @@ const PopularContents = () => {
     })
     // console.log('data:', data);
 
-    if (isLoading) return <div className="text-center p-10">Loading contests...</div>;
+    if (isLoading) return <Spinner2 />
     if (error) return <p>Error: {error.message}</p>
     
     //TopRatedMVs

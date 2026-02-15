@@ -8,11 +8,13 @@ import api from '../../../config/api';
 import { toast } from 'react-toastify';
 import { useRef } from 'react';
 import Spinner2 from '../../../Components/Spinner2';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const ManageUsers = () => {
+    const axiosSecure = useAxiosSecure()
     const { data: users, isLoading, error } = useQuery({
         queryKey: ['users'],
-        queryFn: () => api.get(`/api/users`).then(res => res.data.result),
+        queryFn: () => axiosSecure.get(`/api/users`).then(res => res.data.result),
     })
     // console.log('data:', data);
 

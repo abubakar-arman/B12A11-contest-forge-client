@@ -13,7 +13,8 @@ const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const from = location.state?.from || '/';
-
+  console.log('kjkj', location)
+  // return
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (user) => api.post('/api/users', user),

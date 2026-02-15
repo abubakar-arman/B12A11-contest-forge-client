@@ -7,6 +7,7 @@ import api from '../../../config/api';
 import { useParams } from 'react-router';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
+import Spinner2 from '../../../Components/Spinner2';
 
 const UpdateContest = () => {
   const { id } = useParams()
@@ -76,7 +77,7 @@ const UpdateContest = () => {
     }
   }, [data, reset])
 
-  if (isLoading) return <div className="text-center p-10">Loading contest...</div>;
+  if (isLoading) return <Spinner2 />
   if (error) return <p>Error: {error.message}</p>
 
   return (

@@ -9,6 +9,7 @@ import { useState } from 'react';
 import useAuth from '../hooks/useAuth';
 import { toast } from 'react-toastify';
 import { useRef } from 'react';
+import Spinner2 from '../Components/Spinner2';
 
 
 const ContestDetails = () => {
@@ -52,7 +53,7 @@ const ContestDetails = () => {
     const [isContestEnded, setIsContestEnded] = useState(false)
     const textareaRef = useRef(null);
 
-    if (isLoading) return <div className="text-center p-10">Loading contest...</div>;
+    if (isLoading) return <Spinner2 />
     if (error) return <p>Error: {error.message}</p>
 
     return (

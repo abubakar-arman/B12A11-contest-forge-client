@@ -29,12 +29,12 @@ const CreatedContests = () => {
         },
         onError: (err) => console.error('Mutation Failed :', err)
     })
-    
+
     const mutationDeregister = useMutation({
-        mutationFn: (data) => api.put(`/api/contest/deregister/${data.id}`, {email: data.email}),
+        mutationFn: (data) => api.put(`/api/contest/deregister/${data.id}`, { email: data.email }),
         onSuccess: (res) => {
             console.log('Server response:', res.data)
-            queryClient.invalidateQueries({ queryKey: ['contests']})
+            queryClient.invalidateQueries({ queryKey: ['contests'] })
             toast.success('Contest Deregistration successful')
         },
         onError: (err) => console.error('Mutation Failed:', err)
@@ -58,95 +58,95 @@ const CreatedContests = () => {
     return (
         <div>
             <h3 className='text-3xl font-bold text-accent-content mb-5 text-center'>My Created Contests</h3>
-            {!contests.length ? <h5 className='text-xl font-bold text-neutral mb-5'>No items to show</h5> : ''}
+            {!currentItems.length ? <h5 className='text-xl text-center font-bold text-neutral mb-5'>No items to show</h5> : ''}
             <div className="overflow-x-auto">
-                <table className="table table-zebra">
-                    {/* head */}
-                    <thead>
-                        <tr>
-                            <th>
-                                <label>
-                                    <input type="checkbox" className="checkbox" />
-                                </label>
-                            </th>
-                            <th>Contest</th>
-                            <th>Created By</th>
-                            <th>Deadline</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {currentItems.map((contest, i) => (
-                            <tr key={i}>
+                {currentItems.length &&
+                    <table className="table table-zebra">
+                        <thead>
+                            <tr>
                                 <th>
                                     <label>
                                         <input type="checkbox" className="checkbox" />
                                     </label>
                                 </th>
-                                <td>
-                                    <div className="flex items-center gap-3">
-                                        <div className="avatar">
-                                            <div className="mask mask-squircle h-12 w-12">
-                                                <img
-                                                    src={contest.image}
-                                                    alt="Avatar Tailwind CSS Component" />
+                                <th>Contest</th>
+                                <th>Created By</th>
+                                <th>Deadline</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {currentItems.map((contest, i) => (
+                                <tr key={i}>
+                                    <th>
+                                        <label>
+                                            <input type="checkbox" className="checkbox" />
+                                        </label>
+                                    </th>
+                                    <td>
+                                        <div className="flex items-center gap-3">
+                                            <div className="avatar">
+                                                <div className="mask mask-squircle h-12 w-12">
+                                                    <img
+                                                        src={contest.image}
+                                                        alt="Avatar Tailwind CSS Component" />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div className="font-bold">{contest.contest_name}</div>
+                                                <div className="text-sm opacity-50">{contest.prize_money}</div>
                                             </div>
                                         </div>
-                                        <div>
-                                            <div className="font-bold">{contest.contest_name}</div>
-                                            <div className="text-sm opacity-50">{contest.prize_money}</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    {contest.created_by}
-                                </td>
-                                <td>
-                                    {contest.deadline?.split('T')[0]}
-                                </td>
-                                <td>
-                                    <span
-                                        className={`font-bold ${contest.status == 'approved' ? 'text-green-600'
-                                            : contest.status === 'rejected' ? 'text-red-600' : 'text-gray-500'}`}>
-                                        {contest.status?.toUpperCase()}
-                                    </span>
-                                </td>
-                                <th className='flex gap-1'>
-                                    <Link to={`/contest-details/${contest._id}`} className={`btn btn-primary btn-square tooltip`} data-tip="Open"><IoIosOpen /></Link>
-                                    <Link to={`/dashboard/update-contest/${contest._id}`} className={`btn btn-primary btn-square tooltip ${contest.status === 'pending' ? '' : 'btn-disabled'}`} data-tip="Edit"><FaEdit /></Link>
-                                    <Link to={`/dashboard/submitted-tasks/${contest._id}`} className={`btn btn-primary btn-square tooltip`} data-tip="Submissions"><MdSubject /></Link>
+                                    </td>
+                                    <td>
+                                        {contest.created_by}
+                                    </td>
+                                    <td>
+                                        {contest.deadline?.split('T')[0]}
+                                    </td>
+                                    <td>
+                                        <span
+                                            className={`font-bold ${contest.status == 'approved' ? 'text-green-600'
+                                                : contest.status === 'rejected' ? 'text-red-600' : 'text-gray-500'}`}>
+                                            {contest.status?.toUpperCase()}
+                                        </span>
+                                    </td>
+                                    <th className='flex gap-1'>
+                                        <Link to={`/contest-details/${contest._id}`} className={`btn btn-primary btn-square tooltip`} data-tip="Open"><IoIosOpen /></Link>
+                                        <Link to={`/dashboard/update-contest/${contest._id}`} className={`btn btn-primary btn-square tooltip ${contest.status === 'pending' ? '' : 'btn-disabled'}`} data-tip="Edit"><FaEdit /></Link>
+                                        <Link to={`/dashboard/submitted-tasks/${contest._id}`} className={`btn btn-primary btn-square tooltip`} data-tip="Submissions"><MdSubject /></Link>
 
-                                    <button
-                                        className={`btn btn-primary btn-square tooltip`}
-                                        data-tip="Participants"
-                                        onClick={() => {
-                                            setSelectedContestId(contest._id);
-                                            document.getElementById('contest_participants_modal').showModal();
-                                        }}
-                                    ><FaUsers /></button>
+                                        <button
+                                            className={`btn btn-primary btn-square tooltip`}
+                                            data-tip="Participants"
+                                            onClick={() => {
+                                                setSelectedContestId(contest._id);
+                                                document.getElementById('contest_participants_modal').showModal();
+                                            }}
+                                        ><FaUsers /></button>
 
-                                    <button
-                                        className={`btn btn-primary btn-square tooltip ${contest.status === 'pending' ? '' : 'btn-disabled'}`}
-                                        data-tip="Delete"
-                                        onClick={() => mutationDelete.mutate(contest._id)}
-                                    ><FaTrash /></button>
-                                </th>
+                                        <button
+                                            className={`btn btn-primary btn-square tooltip ${contest.status === 'pending' ? '' : 'btn-disabled'}`}
+                                            data-tip="Delete"
+                                            onClick={() => mutationDelete.mutate(contest._id)}
+                                        ><FaTrash /></button>
+                                    </th>
+                                </tr>
+                            ))}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th></th>
+                                <th>Contest</th>
+                                <th>Created By</th>
+                                <th>Deadline</th>
+                                <th>Status</th>
+                                <th>Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                    {/* foot */}
-                    <tfoot>
-                        <tr>
-                            <th></th>
-                            <th>Contest</th>
-                            <th>Created By</th>
-                            <th>Deadline</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </tfoot>
-                </table>
+                        </tfoot>
+                    </table>
+                }
                 {/* Pagination */}
                 <div className="join flex justify-center mt-5">
                     {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
@@ -173,7 +173,7 @@ const CreatedContests = () => {
                                             <button
                                                 className="btn btn-ghost btn-square btn-sm text-red-700 tooltip"
                                                 data-tip="Remove"
-                                                onClick={() => mutationDeregister.mutate({id: selectedContest._id, email: usr})}
+                                                onClick={() => mutationDeregister.mutate({ id: selectedContest._id, email: usr })}
                                             >
                                                 <FaTrash />
                                             </button>

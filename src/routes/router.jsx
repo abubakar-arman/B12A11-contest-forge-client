@@ -17,6 +17,7 @@ import UpdateContest from "../pages/Dashboard/Creator/UpdateContest";
 import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
 import ManageContests from "../pages/Dashboard/Admin/ManageContests";
 import Leaderboard from "../pages/Leaderboard";
+import RequireAuth from "./RequireAuth";
 
 export const router = createBrowserRouter([
     {
@@ -41,13 +42,19 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/contest-details/:id',
-                element: <ContestDetails />,
+                element:
+                    <RequireAuth>
+                        <ContestDetails />
+                    </RequireAuth>
                 // loader: () => fetch('/contest.json')
                 // loader: ({ params }) => fetch('https://moviemaster-pro.vercel.app/movies/' + params.id)
             },
             {
                 path: '/leaderboard',
-                Component: Leaderboard
+                element:
+                    <RequireAuth>
+                        <Leaderboard />
+                    </RequireAuth>
             },
             {
                 path: '/*',
@@ -57,6 +64,10 @@ export const router = createBrowserRouter([
     },
     {
         path: '/dashboard',
+        // element:
+        //     <RequireAuth>
+        //         <DashboardLayout />
+        //     </RequireAuth>,
         element: <DashboardLayout />,
         children: [
             {

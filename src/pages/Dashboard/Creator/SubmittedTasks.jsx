@@ -84,89 +84,89 @@ const SubmittedTasks = () => {
     return (
         <div>
             <h3 className='text-3xl font-bold text-accent-content mb-5 text-center'>Contest Submissions</h3>
-            {!currentItems.length ? <h5 className='text-xl font-bold text-neutral mb-5'>No items to show</h5> : ''}
+            {!currentItems.length ? <h5 className='text-xl text-center font-bold text-neutral mb-5'>No items to show</h5> : ''}
             <h4 className='font-bold text-xl py-10'>Contest Name : {id ? contests?.filter(c => c._id === id)[0].contest_name : 'All Contests'}</h4>
             <div className="overflow-x-auto">
-                <table className="table table-zebra">
-                    {/* head */}
-                    <thead>
-                        <tr>
-                            <th>Submission ID</th>
-                            <th>Participant</th>
-                            <th>Submitted At</th>
-                            <th>Contest Name</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {currentItems.map((submission, i) => (
-                            <tr key={i}>
-                                <td>
-                                    {submission._id}
-                                </td>
-                                <td>
-                                    {submission.email}
-                                </td>
-                                <td>
-                                    {submission.submission_date.split('.')[0]}
-                                </td>
-                                <td>
-                                    {
-                                        contests?.filter(c => c._id === submission.contestId)[0].contest_name
-                                    }
-                                </td>
-                                <td>
-                                    {submission?.status.toUpperCase()}
-                                </td>
-                                <th className='flex gap-1'>
-                                    <button
-                                        className="btn btn-primary btn-square tooltip"
-                                        data-tip="Open Task"
-                                        onClick={() => {
-                                            setSelectedSubmissionId(submission._id);
-                                            document.getElementById('submissionModal').showModal();
-                                        }}
-                                    ><IoIosOpen /></button>
-                                    <button
-                                        className={`btn btn-primary btn-square tooltip ${(winnerSubmissionIds.includes(submission._id)
-                                            || winnerContestIds.includes(submission.contestId)) ? 'btn-disabled' : ''}`}
-                                        data-tip="Declare Winner"
-                                        onClick={() => {
-                                            mutationDeclareWinner.mutate(submission)
-                                            // setWinnerSubmissionId(submission?._id)
-                                        }}
-                                    ><TiTick /></button>
-
-                                    <button
-                                        className={`btn btn-error btn-square tooltip ${winnerSubmissionIds.includes(submission._id) ? '' : 'btn-disabled'}`}
-                                        data-tip="Undo Winner"
-                                        onClick={() => {
-                                            mutationUndoWinner.mutate(submission)
-
-                                        }}
-                                    ><FaCircleMinus /></button>
-                                    <button
-                                        className="btn btn-primary btn-square tooltip"
-                                        data-tip="Delete"
-                                        onClick={() => mutationDelete.mutate(submission._id)}
-                                    ><MdCancel /></button>
-                                </th>
+                {currentItems.length &&
+                    <table className="table table-zebra">
+                        <thead>
+                            <tr>
+                                <th>Submission ID</th>
+                                <th>Participant</th>
+                                <th>Submitted At</th>
+                                <th>Contest Name</th>
+                                <th>Status</th>
+                                <th>Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                    {/* foot */}
-                    <tfoot>
-                        <tr>
-                            <th>Submission ID</th>
-                            <th>Participant</th>
-                            <th>Submitted At</th>
-                            <th>Contest Name</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </tfoot>
-                </table>
+                        </thead>
+                        <tbody>
+                            {currentItems.map((submission, i) => (
+                                <tr key={i}>
+                                    <td>
+                                        {submission._id}
+                                    </td>
+                                    <td>
+                                        {submission.email}
+                                    </td>
+                                    <td>
+                                        {submission.submission_date.split('.')[0]}
+                                    </td>
+                                    <td>
+                                        {
+                                            contests?.filter(c => c._id === submission.contestId)[0].contest_name
+                                        }
+                                    </td>
+                                    <td>
+                                        {submission?.status.toUpperCase()}
+                                    </td>
+                                    <th className='flex gap-1'>
+                                        <button
+                                            className="btn btn-primary btn-square tooltip"
+                                            data-tip="Open Task"
+                                            onClick={() => {
+                                                setSelectedSubmissionId(submission._id);
+                                                document.getElementById('submissionModal').showModal();
+                                            }}
+                                        ><IoIosOpen /></button>
+                                        <button
+                                            className={`btn btn-primary btn-square tooltip ${(winnerSubmissionIds.includes(submission._id)
+                                                || winnerContestIds.includes(submission.contestId)) ? 'btn-disabled' : ''}`}
+                                            data-tip="Declare Winner"
+                                            onClick={() => {
+                                                mutationDeclareWinner.mutate(submission)
+                                                // setWinnerSubmissionId(submission?._id)
+                                            }}
+                                        ><TiTick /></button>
+
+                                        <button
+                                            className={`btn btn-error btn-square tooltip ${winnerSubmissionIds.includes(submission._id) ? '' : 'btn-disabled'}`}
+                                            data-tip="Undo Winner"
+                                            onClick={() => {
+                                                mutationUndoWinner.mutate(submission)
+
+                                            }}
+                                        ><FaCircleMinus /></button>
+                                        <button
+                                            className="btn btn-primary btn-square tooltip"
+                                            data-tip="Delete"
+                                            onClick={() => mutationDelete.mutate(submission._id)}
+                                        ><MdCancel /></button>
+                                    </th>
+                                </tr>
+                            ))}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Submission ID</th>
+                                <th>Participant</th>
+                                <th>Submitted At</th>
+                                <th>Contest Name</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                }
                 {/* Pagination */}
                 <div className="join flex justify-center mt-5">
                     {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (

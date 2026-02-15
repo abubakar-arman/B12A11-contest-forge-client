@@ -2,6 +2,7 @@ import { FaTrophy, FaUsers } from 'react-icons/fa6';
 import ContestCard from './Shared/ContestCard';
 import { useQuery } from '@tanstack/react-query';
 import api from '../config/api';
+import Spinner2 from '../Components/Spinner2';
 
 const AllContests = () => {
     const { data: contests, isLoading, error } = useQuery({
@@ -11,7 +12,7 @@ const AllContests = () => {
     })
     // console.log('data:', contests);
 
-    if (isLoading) return <div className="text-center p-10">Loading contests...</div>;
+    if (isLoading) return <Spinner2 />;
     if (error) return <p>Error: {error.message}</p>
 
     return (

@@ -36,14 +36,14 @@ const Navbar = () => {
         {isAuthenticated ?
             <>
                 <li key={3}>
-                    <NavLink to='/dashboard/my-participated-contests' >My Contests</NavLink>
-                </li>
-                <li key={33}>
-                    <NavLink to='/leaderboard' >Leaderboard</NavLink>
+                    <NavLink to='/dashboard/my-participated-contests' >My Dashboard</NavLink>
                 </li>
             </>
             :
             <>
+                <li key={33}>
+                    <NavLink to='/leaderboard' >Leaderboard</NavLink>
+                </li>
                 <li key={3}>
                     <NavLink to='/login' >Login</NavLink>
                 </li>
