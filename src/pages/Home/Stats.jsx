@@ -2,7 +2,7 @@ import React from 'react';
 
 const Stats = () => {
     return (
-        <div className="bg-linear-to-br from-[#005461] to-[#00B7B5] text-white flex flex-col items-center justify-center py-16">
+        <div data-aos='zoom-out' className="bg-linear-to-br from-[#005461] to-[#00B7B5] text-white flex flex-col items-center justify-center py-16">
             <h3 className="text-4xl text-center font-bold w-9/12">Your Skills, Our Stage, Infinite Possibilities.</h3>
             <div className="flex flex-col lg:flex-row gap-12 lg:gap-40 mt-5">
                 <div className="flex flex-col items-center gap-5">

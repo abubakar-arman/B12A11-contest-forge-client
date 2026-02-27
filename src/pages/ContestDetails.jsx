@@ -3,7 +3,6 @@ import { useParams } from 'react-router';
 import CountdownTimer from '../Components/CountdownTimer';
 import Swal from 'sweetalert2'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import api from '../config/api';
 import { FaDollarSign } from 'react-icons/fa';
 import { useState } from 'react';
 import useAuth from '../hooks/useAuth';
@@ -119,7 +118,7 @@ const ContestDetails = () => {
                             :
                             <>{contest.participated_users.includes(user.email) ?
                                 <button
-                                    className="btn btn-neutral w-50 py-8"
+                                    className="btn btn-primary w-50 py-8"
                                     onClick={() => document.getElementById('submissionModal').showModal()}>
                                     Submit</button>
                                 : role === 'user' ?

@@ -34,7 +34,7 @@ const WinningContests = () => {
     return (
         <div className='mt-10 mb-10 text-center'>
             <h3 className='text-3xl font-bold text-accent-content mb-5'>My Winning Contests</h3>
-            {!contests.length ? <h5 className='text-xl font-bold text-neutral mb-5'>No items to show</h5> : ''}
+            {!contests.length ? <h5 className='text-xl text-center font-bold text-neutral mb-5'>No items to show</h5> : ''}
             <div className="cards grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 lg:gap-8 space-y-8 lg:space-y-0 px-20">
                 {
                     currentItems.map((contest, i) => (

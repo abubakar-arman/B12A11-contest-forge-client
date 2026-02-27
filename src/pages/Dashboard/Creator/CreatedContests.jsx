@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
-import { FaEdit, FaTrash, FaUsers } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaTrophy, FaUsers } from 'react-icons/fa';
 import { IoIosOpen } from "react-icons/io";
 import { MdSubject } from "react-icons/md";
 import { Link } from 'react-router';
@@ -96,7 +96,7 @@ const CreatedContests = () => {
                                             </div>
                                             <div>
                                                 <div className="font-bold">{contest.contest_name}</div>
-                                                <div className="text-sm opacity-50">{contest.prize_money}</div>
+                                                <div className="text-sm opacity-80 flex gap-1 items-center"><FaTrophy />{contest.prize_money}$</div>
                                             </div>
                                         </div>
                                     </td>

@@ -8,12 +8,15 @@ import { toast } from 'react-toastify';
 import { useRef } from 'react';
 import Spinner2 from '../../../Components/Spinner2';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import useAuth from '../../../hooks/useAuth';
 
 const ManageUsers = () => {
     const axiosSecure = useAxiosSecure()
+    const {user} = useAuth()
     const { data: users, isLoading, error } = useQuery({
         queryKey: ['users'],
         queryFn: () => axiosSecure.get(`/api/users`).then(res => res.data.result),
+        select: (users) => users.filter(u => u.email !== user.email)
     })
     // console.log('data:', data);
 
@@ -79,7 +82,7 @@ const ManageUsers = () => {
     return (
         <div>
             <h3 className='text-3xl font-bold text-accent-content mb-5 text-center'>Manage Users</h3>
-            {!currentItems.length ? <h5 className='text-xl font-bold text-neutral mb-5'>No items to show</h5> : ''}
+            {!currentItems.length ? <h5 className='text-xl text-center font-bold text-neutral mb-5'>No items to show</h5> : ''}
             <div className="overflow-x-auto">
                 <table className="table table-zebra">
                     {/* head */}

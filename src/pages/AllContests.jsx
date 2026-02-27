@@ -71,6 +71,7 @@ const AllContests = () => {
                     </div>
                 </div>
             </div>
+            {!contests.length ? <h5 className='text-xl text-center font-bold text-neutral mb-5'>No items to show</h5> : ''}
         </div>
     );
 };

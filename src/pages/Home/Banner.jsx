@@ -35,7 +35,7 @@ const Banner = () => {
                     <button className='btn btn-warning ml-4 '>Search</button>
                 </form>
             </div>
-            <Carousel autoPlay infiniteLoop dynamicHeight="false">
+            <Carousel autoPlay infiniteLoop dynamicHeight={false} showThumbs={false}>
                 {
                     images.map((im, i) => (
                         <div key={i} className="h-[70vh] w-full">
