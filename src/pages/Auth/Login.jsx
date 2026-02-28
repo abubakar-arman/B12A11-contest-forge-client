@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 
+
 const Login = () => {
   const axiosSecure = useAxiosSecure()
   const { login, loginWithGoogle } = useAuth();
@@ -32,6 +33,7 @@ const Login = () => {
 - Must have a Lowercase letter`;
 
   const handleEmailLogin = async (data) => {
+    console.log('ll', data)
     try {
       await login(data.email, data.password);
       navigate(from);
@@ -127,6 +129,33 @@ const Login = () => {
                   Login
                 </button>
               </form>
+              <button
+                className="btn btn-primary w-full"
+                onClick={() => handleEmailLogin({
+                  email: import.meta.env.VITE_admin_email,
+                  password: import.meta.env.VITE_admin_pass,
+                })}
+              >
+                Demo Admin Login
+              </button>
+              <button
+                className="btn btn-primary w-full"
+                onClick={() => handleEmailLogin({
+                  email: import.meta.env.VITE_creator_email,
+                  password: import.meta.env.VITE_creator_pass,
+                })}
+              >
+                Demo Creator Login
+              </button>
+              <button
+                className="btn btn-primary w-full"
+                onClick={() => handleEmailLogin({
+                  email: import.meta.env.VITE_user_email,
+                  password: import.meta.env.VITE_user_pass,
+                })}
+              >
+                Demo User Login
+              </button>
 
               <button
                 onClick={handleGoogleLogin}
