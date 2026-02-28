@@ -30,7 +30,7 @@ const Reviews = () => {
 
     return (
         <div className='mt-10 mb-10 text-center' data-aos='fade-right'>
-            <h3 className='text-3xl font-bold text-accent-content mb-5'>Reviews</h3>
+            <h3 className='text-3xl font-bold text-base-content mb-5'>Reviews</h3>
             <div className="cards w-full">
                 <Swiper
                     ref={swiperRef}

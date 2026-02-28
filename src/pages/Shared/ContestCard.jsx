@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 const ContestCard = ({ contest }) => {
     const MAX_DESC_LEN = 45
     return (
-        <div className="card bg-base-100 shadow-sm">
+        <div className="card bg-base-100 shadow-sm py-5">
             <figure className='relative overflow-hidden rounded-lg group'>
                 <img
                     src={contest.image}
@@ -32,7 +32,7 @@ const ContestCard = ({ contest }) => {
                 </div>
                 <h2 className="text-lg text-left">{contest.contest_name}</h2>
                 <div className="flex justify-between">
-                    <p className="p-0 m-0">{contest.description.length > MAX_DESC_LEN ? contest.description.slice(0, MAX_DESC_LEN)+'...' : contest.description}</p>
+                    <p className="p-0 m-0">{contest.description.length > MAX_DESC_LEN ? contest.description.slice(0, MAX_DESC_LEN) + '...' : contest.description}</p>
                 </div>
 
             </div>

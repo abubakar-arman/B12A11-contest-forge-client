@@ -18,7 +18,7 @@ const AllContests = () => {
 
     return (
         <div className='mt-10 mb-10 text-center'>
-            <h3 className='text-3xl font-bold text-accent-content mb-5'>All Contests</h3>
+            <h3 className='text-3xl font-bold text-base-content mb-5'>All Contests</h3>
 
             <div className="tabs tabs-border flex justify-center">
                 <input type="radio" name="my_tabs_2" className="tab" aria-label="All Contests" defaultChecked />

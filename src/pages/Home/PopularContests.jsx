@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import Spinner2 from '../../Components/Spinner2';
 import useAxiosSecure from '../../hooks/useAxiosSecure'
 
-const PopularContents = () => {
+const PopularContests = () => {
     const axiosSecure = useAxiosSecure()
     const { data: contests, isLoading, error } = useQuery({
         queryKey: ['popularContests'],
@@ -15,11 +15,11 @@ const PopularContents = () => {
 
     if (isLoading) return <Spinner2 />
     if (error) return <p>Error: {error.message}</p>
-    
+
     //TopRatedMVs
     return (
         <div className='mt-10 mb-10 text-center' data-aos='slide-up'>
-            <h3 className='text-3xl font-bold text-accent-content mb-5'>Popular Contests</h3>
+            <h3 className='text-3xl font-bold text-base-content mb-5'>Popular Contests</h3>
             {!contests.length ? <h5 className='text-xl text-center font-bold text-neutral mb-5'>No items to show</h5> : ''}
             <div className="cards grid grid-cols-1 md:grid-cols-3 justify-center lg:grid-cols-5 lg:gap-8 space-y-8 lg:space-y-0 px-20">
                 {
@@ -34,4 +34,4 @@ const PopularContents = () => {
     );
 };
 
-export default PopularContents;
+export default PopularContests;

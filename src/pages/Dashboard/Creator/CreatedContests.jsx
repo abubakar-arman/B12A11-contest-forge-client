@@ -58,7 +58,7 @@ const CreatedContests = () => {
 
     return (
         <div>
-            <h3 className='text-3xl font-bold text-accent-content mb-5 text-center'>My Created Contests</h3>
+            <h3 className='text-3xl font-bold text-base-content mb-5 text-center'>My Created Contests</h3>
             {!currentItems.length ? <h5 className='text-xl text-center font-bold text-neutral mb-5'>No items to show</h5> : ''}
             <div className="overflow-x-auto">
                 {!!currentItems.length &&

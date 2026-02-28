@@ -12,7 +12,7 @@ import useAuth from '../../../hooks/useAuth';
 
 const ManageUsers = () => {
     const axiosSecure = useAxiosSecure()
-    const {user} = useAuth()
+    const { user } = useAuth()
     const { data: users, isLoading, error } = useQuery({
         queryKey: ['users'],
         queryFn: () => axiosSecure.get(`/api/users`).then(res => res.data.result),
@@ -81,7 +81,7 @@ const ManageUsers = () => {
 
     return (
         <div>
-            <h3 className='text-3xl font-bold text-accent-content mb-5 text-center'>Manage Users</h3>
+            <h3 className='text-3xl font-bold text-base-content mb-5 text-center'>Manage Users</h3>
             {!currentItems.length ? <h5 className='text-xl text-center font-bold text-neutral mb-5'>No items to show</h5> : ''}
             <div className="overflow-x-auto">
                 <table className="table table-zebra">
@@ -130,7 +130,7 @@ const ManageUsers = () => {
                                     <button className="btn btn-primary btn-square tooltip" data-tip="Change Role"
                                         onClick={() => handleChangeRole(user)}><FaEdit /></button>
                                     <button className="btn btn-primary btn-square tooltip" data-tip="Remove User"
-                                    onClick={() => mutationDelete.mutate(user._id)}><MdCancel /></button>
+                                        onClick={() => mutationDelete.mutate(user._id)}><MdCancel /></button>
                                 </th>
                             </tr>
                         ))}

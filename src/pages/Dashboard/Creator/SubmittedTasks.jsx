@@ -84,7 +84,7 @@ const SubmittedTasks = () => {
 
     return (
         <div>
-            <h3 className='text-3xl font-bold text-accent-content mb-5 text-center'>Contest Submissions</h3>
+            <h3 className='text-3xl font-bold text-base-content mb-5 text-center'>Contest Submissions</h3>
             <h4 className='font-bold text-xl py-10'>Contest Name : {id ? contests?.filter(c => c._id === id)[0].contest_name : 'All Contests'}</h4>
             {!currentItems.length ? <h5 className='text-xl text-center font-bold text-neutral mb-5'>No items to show</h5> : ''}
             <div className="overflow-x-auto">

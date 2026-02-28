@@ -7,9 +7,9 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const WinningContests = () => {
     const axiosSecure = useAxiosSecure()
-    const {user} = useAuth()    
+    const { user } = useAuth()
 
-    const { data: contests, isLoading : contestsLoading, error: contestError } = useQuery({
+    const { data: contests, isLoading: contestsLoading, error: contestError } = useQuery({
         queryKey: ['contests'],
         queryFn: () => axiosSecure.get(`/api/contests`).then(res => res.data.result),
         select: (contests) => {
@@ -24,7 +24,7 @@ const WinningContests = () => {
 
     if (contestsLoading) return <Spinner2 />
     if (contestError) return <p>Error: {contestError.message}</p>
-    
+
     // pagination
     const totalPages = Math.ceil(contests.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -32,8 +32,8 @@ const WinningContests = () => {
     const currentItems = contests.slice(startIndex, endIndex);
 
     return (
-        <div className='mt-10 mb-10 text-center'>
-            <h3 className='text-3xl font-bold text-accent-content mb-5'>My Winning Contests</h3>
+        <div>
+            <h3 className='text-3xl text-center font-bold text-base-content mb-5'>My Winning Contests</h3>
             {!contests.length ? <h5 className='text-xl text-center font-bold text-neutral mb-5'>No items to show</h5> : ''}
             <div className="cards grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 lg:gap-8 space-y-8 lg:space-y-0 px-20">
                 {

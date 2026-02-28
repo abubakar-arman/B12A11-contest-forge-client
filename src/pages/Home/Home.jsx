@@ -1,5 +1,5 @@
 import Banner from './Banner';
-import PopularContents from './PopularContests';
+import PopularContests from './PopularContests';
 import Winners from './Winners';
 import Stats from './Stats';
 import Reviews from './Reviews';
@@ -21,7 +21,7 @@ const Home = () => {
     return (
         <div>
             <Banner />
-            <PopularContents />
+            <PopularContests />
             <Stats />
             <Winners />
             <Reviews />

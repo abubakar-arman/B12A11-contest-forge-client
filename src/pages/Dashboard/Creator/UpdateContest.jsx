@@ -23,7 +23,7 @@ const UpdateContest = () => {
     mutationFn: (contest) => axiosSecure.put(`/api/contests/${id}`, contest),
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: ['contests'] })
-      
+
       toast.success('Contest Updated Successfully!')
       console.log('Server Response :', res.data);
       return res
@@ -83,7 +83,7 @@ const UpdateContest = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <h3 className='text-center text-3xl font-bold text-accent-content mb-5'>Update Contest</h3>
+      <h3 className='text-center text-3xl font-bold text-base-content mb-5'>Update Contest</h3>
       <div className="max-w-6xl mx-auto bg-white shadow-xl overflow-hidden">
 
         <form onSubmit={handleSubmit(handleUpdateContest)} className="p-8 space-y-6">

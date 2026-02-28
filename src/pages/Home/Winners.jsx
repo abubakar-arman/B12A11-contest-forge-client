@@ -28,7 +28,7 @@ const Winners = () => {
     if (error) return <p>Error: {error.message}</p>
     return (
         <div className='mt-10 mb-10 text-center' data-aos='fade-right'>
-            <h3 className='text-3xl font-bold text-accent-content mb-5'>Contest Winners</h3>
+            <h3 className='text-3xl font-bold text-base-content mb-5'>Contest Winners</h3>
             <div className="cards w-full">
                 <Swiper
                     slidesPerView={1}
