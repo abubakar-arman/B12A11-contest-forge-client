@@ -66,12 +66,12 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-90px)] flex flex-col">
+    <div className="md:min-h-[calc(75vh)] lg:min-h-[calc(100vh-90px)] flex flex-col">
       <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center text-primary mt-8 mb-6">
         Login now!
       </h1>
 
-      <div className="flex-1 bg-base-200 flex items-center justify-center px-4">
+      <div className="lg:flex-1 bg-base-200 flex items-center justify-center px-4">
         <div className="w-full max-w-5xl flex flex-col lg:flex-row items-center gap-10">
 
           {/* Image (desktop only) */}

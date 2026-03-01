@@ -29,7 +29,7 @@
 }
 
 a.active {
-  @apply text-red-700 border-b-4
+  @apply text-red-700 lg:border-b-4
 }
 
 .label {

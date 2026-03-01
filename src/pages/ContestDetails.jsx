@@ -60,7 +60,7 @@ const ContestDetails = () => {
     if (error) return <p>Error: {error.message}</p>
 
     return (
-        <div className='mt-10 mb-10 px-20'>
+        <div className='mt-10 mb-10 px-5 lg:px-20'>
             <div className="lg:flex lg:flex-row-reverse">
                 <img src={contest.image} alt=""
                     className='w-1/2 rounded-tl-4xl rounded-bl-4xl object-cover hidden lg:block' />
@@ -68,11 +68,11 @@ const ContestDetails = () => {
                     <h2 className="text-2xl lg:text-4xl font-bold">{contest.contest_name}</h2>
 
                     <img src={contest.image} alt=""
-                        className='w-11/12 object-cover lg:hidden rounded-xl' />
+                        className='lg:w-11/12 object-cover lg:hidden rounded-xl' />
                     <div className="flex items-center lg:gap-40">
-                        <p className="border-l-3 border-primary pl-2 ml-5 lg:ml-2 font-bold flex items-center text-2xl gap-1"><FaTrophy className='size-6' />{contest.prize_money}</p>
-                        <p className="border-l-3 border-primary pl-2 ml-5 lg:ml-2 gap-1 font-bold flex items-center text-3xl"><FaDollarSign className='size-6' />{contest.price}</p>
-                        <p className="border-l-3 border-primary pl-2 ml-5 lg:ml-2 gap-1 font-bold flex items-center text-3xl"><FaUsers className='size-6' />{contest.participants_count}</p>
+                        <p className="border-l-3 border-primary pl-2 lg:ml-5 lg:ml-2 font-bold flex items-center lg:text-2xl gap-1"><FaTrophy className='size-6' />{contest.prize_money}</p>
+                        <p className="border-l-3 border-primary pl-2 ml-5 lg:ml-2 gap-1 font-bold flex items-center lg:text-3xl"><FaDollarSign className='size-6' />{contest.price}</p>
+                        <p className="border-l-3 border-primary pl-2 ml-5 lg:ml-2 gap-1 font-bold flex items-center lg:text-3xl"><FaUsers className='size-6' />{contest.participants_count}</p>
                     </div>
                     <p>
                         <span className='block font-bold text-neutral-700'>Contest Description:</span>

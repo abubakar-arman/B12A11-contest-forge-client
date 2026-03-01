@@ -66,7 +66,7 @@ const Navbar = () => {
                         {navLinks}
                     </ul>
                 </div>
-                <a className="btn btn-ghost text-xl">
+                <a className="btn btn-ghost pl-0 lg:pl-5">
                     <div>
                         <Logo />
                     </div>
@@ -78,6 +78,9 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
+                <div className="theme flex items-center lg:gap-2 px-2 lg:px-5">
+                    <MdLightMode /><input onChange={(e) => handleTheme(e.target.checked)} checked={theme === 'dark' ? 'checked' : ''} type="checkbox" className="toggle" /><MdDarkMode />
+                </div>
 
                 {isAuthenticated &&
                     <div className="dropdown">
@@ -98,9 +101,6 @@ const Navbar = () => {
                         </div>
                     </div>
                 }
-                <div className="theme flex items-center gap-2">
-                    <MdLightMode /><input onChange={(e) => handleTheme(e.target.checked)} checked={theme === 'dark' ? 'checked' : ''} type="checkbox" className="toggle" /><MdDarkMode />
-                </div>
             </div>
         </div>
     );
