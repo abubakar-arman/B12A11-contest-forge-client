@@ -91,11 +91,17 @@ const Login = () => {
                   <input
                     type="email"
                     className="input input-bordered w-full"
-                    {...register('email', { required: true })}
+                    {...register('email', {
+                      required: "Email is required",
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: "Enter a valid email address"
+                      }
+                    })}
                     placeholder="Email"
                   />
                   {errors.email && (
-                    <p className="text-red-600 text-sm">Email is required</p>
+                    <p className="text-red-600 text-sm">{errors.email.message}</p>
                   )}
                 </div>
 
@@ -105,14 +111,20 @@ const Login = () => {
                     type="password"
                     className="input input-bordered w-full"
                     {...register('password', {
-                      required: true,
-                      minLength: 6,
-                      pattern: /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
+                      required: 'Password is required',
+                      minLength: {
+                        value: 6,
+                        message: 'Password must be at least 6 characters'
+                      },
+                      pattern: {
+                        value: /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
+                        message: invalidPassErr
+                      }
                     })}
                     placeholder="Password"
                   />
                   {errors.password && (
-                    <p className="text-red-600 text-sm">{invalidPassErr}</p>
+                    <p className="text-red-600 text-sm">{errors.password.message}</p>
                   )}
                 </div>
 

@@ -57,21 +57,26 @@ const AddContest = () => {
               <input
                 {...register("contest_name", { required: "Name is required" })}
                 placeholder="e.g. Nebula Art Quest"
-                className={`w-full p-3 rounded-xl border-2 transition-all outline-none ${errors.name ? 'border-red-500 bg-red-50' : 'border-gray-100 focus:border-indigo-500'}`}
+                className={`w-full p-3 rounded-xl border-2 transition-all outline-none 
+                  ${errors.contest_name ? 'border-red-500 bg-red-50' : 'border-gray-100 focus:border-indigo-500'}`}
               />
-              {errors.name && <p className="text-red-500 text-xs mt-1 font-bold">{errors.name.message}</p>}
+              {errors.contest_name && <p className="text-red-500 text-xs mt-1 font-bold">{errors.contest_name.message}</p>}
             </div>
 
             <div>
               <label className="block text-sm font-bold text-base-content/60 mb-2 uppercase tracking-wide">Contest Type</label>
               <select
-                {...register("contest_type")}
-                className="w-full p-3 rounded-xl border-2 border-gray-100 focus:border-indigo-500 outline-none"
+                {...register("contest_type", {
+                  required: 'Contest Type is required'
+                })}
+                className={`w-full p-3 rounded-xl border-2 
+                  ${errors.contest_type ? 'border-red-500 bg-red-50' : 'border-gray-100 focus:border-indigo-500'} outline-none`}
               >
                 <option value="art">Digital Art</option>
                 <option value="logo">Logo</option>
                 <option value="app">App</option>
               </select>
+              {errors.contest_type && <p className="text-red-500 text-xs mt-1 font-bold">{errors.contest_type.message}</p>}
             </div>
           </div>
 
@@ -80,8 +85,9 @@ const AddContest = () => {
             <input
               {...register("image", { required: "Please upload a banner" })}
               placeholder="e.g. abc.jpg"
-              className={`w-full p-3 rounded-xl border-2 transition-all outline-none ${errors.name ? 'border-red-500 bg-red-50' : 'border-gray-100 focus:border-indigo-500'}`}
+              className={`w-full p-3 rounded-xl border-2 transition-all outline-none ${errors.image ? 'border-red-500 bg-red-50' : 'border-gray-100 focus:border-indigo-500'}`}
             />
+            {errors.image && <p className="text-red-500 text-xs mt-1 font-bold">{errors.image.message}</p>}
           </div>
 
           <div>
@@ -90,8 +96,10 @@ const AddContest = () => {
               {...register("description", { required: "Brief description required" })}
               rows="3"
               placeholder="What is this contest about?"
-              className="w-full p-3 rounded-xl border-2 border-gray-100 focus:border-indigo-500 outline-none"
+              className={`w-full p-3 rounded-xl border-2 
+                ${errors.description ? 'border-red-500 bg-red-50' : 'border-gray-100 focus:border-indigo-500'}outline-none`}
             ></textarea>
+            {errors.description && <p className="text-red-500 text-xs mt-1 font-bold">{errors.description.message}</p>}
           </div>
 
           <div>
@@ -100,8 +108,10 @@ const AddContest = () => {
               {...register("task_instruction", { required: "Instructions are needed for participants" })}
               rows="4"
               placeholder="Step 1, Step 2, Submission specs..."
-              className="w-full p-3 rounded-xl border-2 border-gray-100 focus:border-indigo-500 outline-none"
+              className={`w-full p-3 rounded-xl border-2 
+                ${errors.task_instruction ? 'border-red-500 bg-red-50' : 'border-gray-100 focus:border-indigo-500'} outline-none`}
             ></textarea>
+            {errors.task_instruction && <p className="text-red-500 text-xs mt-1 font-bold">{errors.task_instruction.message}</p>}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -109,18 +119,22 @@ const AddContest = () => {
               <label className="block text-sm font-bold text-base-content/60 mb-2 uppercase tracking-wide">Entry Fee ($)</label>
               <input
                 type="number"
-                {...register("price", { required: true, min: 0 })}
-                className="w-full p-3 rounded-xl border-2 border-gray-100 focus:border-indigo-500 outline-none"
+                {...register("price", { required: 'Price required', min: 0 })}
+                className={`w-full p-3 rounded-xl border-2 
+                  ${errors.price ? 'border-red-500 bg-red-50' : 'border-gray-100 focus:border-indigo-500'} outline-none`}
               />
+              {errors.price && <p className="text-red-500 text-xs mt-1 font-bold">{errors.price.message}</p>}
             </div>
 
             <div>
               <label className="block text-sm font-bold text-base-content/60 mb-2 uppercase tracking-wide">Prize Money ($)</label>
               <input
                 type="number"
-                {...register("prize_money", { required: true, min: 1 })}
-                className="w-full p-3 rounded-xl border-2 border-gray-100 focus:border-indigo-500 outline-none font-bold text-green-600"
+                {...register("prize_money", { required: 'Prize money required', min: 1 })}
+                className={`w-full p-3 rounded-xl border-2 
+                  ${errors.prize_money ? 'border-red-500 bg-red-50' : 'border-gray-100 focus:border-indigo-500'} outline-none`}
               />
+              {errors.prize_money && <p className="text-red-500 text-xs mt-1 font-bold">{errors.prize_money.message}</p>}
             </div>
 
             <div>

@@ -98,16 +98,24 @@ const Signup = () => {
                 <div>
                   <label className="label">Name</label>
                   <input className="input input-bordered w-full"
-                    {...register('name', { required: true })}
+                    {...register('name', {
+                      required: 'Name is required'
+                    })}
                     placeholder="Name"
                   />
-                  {errors.name && <p className="text-red-600 text-sm">Name is required</p>}
+                  {errors.name && <p className="text-red-600 text-sm">{errors.name.message}</p>}
                 </div>
 
                 <div>
                   <label className="label">Email</label>
                   <input className="input input-bordered w-full"
-                    {...register('email', { required: true })}
+                    {...register('email', {
+                      required: 'Email is required',
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: "Enter a valid email address",
+                      },
+                    })}
                     placeholder="Email"
                   />
                   {errors.email?.message && (
@@ -121,14 +129,20 @@ const Signup = () => {
                     type="password"
                     className="input input-bordered w-full"
                     {...register('password', {
-                      required: true,
-                      minLength: 6,
-                      pattern: /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/
+                      required: 'Password is required',
+                      minLength: {
+                        value: 6,
+                        message: 'Password must be atleast 6 characters'
+                      },
+                      pattern: {
+                        value: /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
+                        message: invalidPassErr
+                      }
                     })}
                     placeholder="Password"
                   />
-                  {errors.password && (
-                    <p className="text-red-600 text-sm">{invalidPassErr}</p>
+                  {errors.password?.message && (
+                    <p className="text-red-600 text-sm">{errors.password.message}</p>
                   )}
                 </div>
 
