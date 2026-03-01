@@ -33,7 +33,7 @@ const Login = () => {
 - Must have a Lowercase letter`;
 
   const handleEmailLogin = async (data) => {
-    console.log('ll', data)
+    // console.log('ll', data)
     try {
       await login(data.email, data.password);
       navigate(from);

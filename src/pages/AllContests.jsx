@@ -23,7 +23,7 @@ const AllContests = () => {
             <div className="tabs tabs-border flex justify-center">
                 <input type="radio" name="my_tabs_2" className="tab" aria-label="All Contests" defaultChecked />
                 <div className="tab-content border-base-300 bg-base-100 p-10">
-                    <div className="cards grid grid-cols-1 md:grid-cols-3 md:gap-4 lg:grid-cols-5 lg:gap-8 space-y-2 lg:space-y-0 lg:px-20">
+                    <div className="cards grid grid-cols-1 md:grid-cols-3 md:gap-4 lg:grid-cols-4 lg:gap-8 space-y-2 lg:space-y-0 lg:px-20">
                         {
                             contests.map((contest, i) => (
                                 <ContestCard contest={contest} key={i} />
@@ -34,7 +34,7 @@ const AllContests = () => {
 
                 <input type="radio" name="my_tabs_2" className="tab" aria-label="Apps" />
                 <div className="tab-content border-base-300 bg-base-100 p-10">
-                    <div className="cards grid grid-cols-1 md:grid-cols-3 md:gap-4 lg:grid-cols-5 lg:gap-8 space-y-2 lg:space-y-0 lg:px-20">
+                    <div className="cards grid grid-cols-1 md:grid-cols-3 md:gap-4 lg:grid-cols-4 lg:gap-8 space-y-2 lg:space-y-0 lg:px-20">
                         {
                             contests
                                 .filter((contest) => contest.contest_type == 'app')
@@ -47,7 +47,7 @@ const AllContests = () => {
 
                 <input type="radio" name="my_tabs_2" className="tab" aria-label="Logo" />
                 <div className="tab-content border-base-300 bg-base-100 p-10">
-                    <div className="cards grid grid-cols-1 md:grid-cols-3 md:gap-4 lg:grid-cols-5 lg:gap-8 space-y-w lg:space-y-0 lg:px-20">
+                    <div className="cards grid grid-cols-1 md:grid-cols-3 md:gap-4 lg:grid-cols-4 lg:gap-8 space-y-w lg:space-y-0 lg:px-20">
                         {
                             contests
                                 .filter((contest) => contest.contest_type == 'logo')
@@ -60,7 +60,7 @@ const AllContests = () => {
 
                 <input type="radio" name="my_tabs_2" className="tab" aria-label="Art" />
                 <div className="tab-content border-base-300 bg-base-100 p-10">
-                    <div className="cards grid grid-cols-1 md:grid-cols-3 md:gap-4 lg:grid-cols-5 lg:gap-8 space-y-2 lg:space-y-0 lg:px-20">
+                    <div className="cards grid grid-cols-1 md:grid-cols-3 md:gap-4 lg:grid-cols-4 lg:gap-8 space-y-2 lg:space-y-0 lg:px-20">
                         {
                             contests
                                 .filter((contest) => contest.contest_type == 'art')

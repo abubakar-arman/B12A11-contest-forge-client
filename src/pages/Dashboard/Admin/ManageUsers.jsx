@@ -27,11 +27,12 @@ const ManageUsers = () => {
             return axiosSecure.put(`/api/users/${_id}`, userData)
         },
         onSuccess: (res) => {
-            console.log('Server Response :', res.data);
+            // console.log('Server Response :', res.data);
             queryClient.invalidateQueries({ queryKey: ['users'] })
 
             toast.success('Role updated')
             // console.log('Role Updated');
+            return res
         },
         onError: (err) => console.error('Mutation Failed :', err)
     })
@@ -39,10 +40,11 @@ const ManageUsers = () => {
     const mutationDelete = useMutation({
         mutationFn: (_id) => axiosSecure.delete(`/api/users/${_id}`),
         onSuccess: (res) => {
-            console.log('Server Response :', res.data);
+            // console.log('Server Response :', res.data);
             queryClient.invalidateQueries({ queryKey: ['users'] })
 
             toast.success('User deleted')
+            return res
         },
         onError: (err) => console.error('Mutation Failed :', err)
     })

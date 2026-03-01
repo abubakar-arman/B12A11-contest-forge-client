@@ -22,6 +22,7 @@ import RequireAdmin from "./RequireAdmin";
 import DashboardIndex from "../pages/Dashboard/DashboardIndex";
 import RequireUser from "./RequireUser";
 import RequireCreator from "./RequireCreator";
+import Contact from "../pages/Contact";
 
 export const router = createBrowserRouter([
     {
@@ -47,9 +48,7 @@ export const router = createBrowserRouter([
             {
                 path: '/contest-details/:id',
                 element:
-                    <RequireAuth>
-                        <ContestDetails />
-                    </RequireAuth>
+                    <ContestDetails />
                 // loader: () => fetch('/contest.json')
                 // loader: ({ params }) => fetch('https://moviemaster-pro.vercel.app/movies/' + params.id)
             },
@@ -59,6 +58,10 @@ export const router = createBrowserRouter([
                     <RequireAuth>
                         <Leaderboard />
                     </RequireAuth>
+            },
+            {
+                path: 'Contact',
+                Component: Contact
             },
             {
                 path: '/*',

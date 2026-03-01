@@ -55,7 +55,7 @@ const DashboardLayout = () => {
             <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
             <div className="drawer-content">
                 {/* Navbar */}
-                <nav className="navbar w-full bg-base-300">
+                <nav className="navbar w-full bg-base-300 sticky top-0 z-50">
                     <div className='navbar-start'>
                         <label htmlFor="my-drawer-4" aria-label="open sidebar" className="btn btn-square btn-ghost">
                             {/* Sidebar toggle icon */}

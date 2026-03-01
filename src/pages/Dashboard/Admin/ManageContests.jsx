@@ -19,10 +19,11 @@ const ManageContests = () => {
     const mutationDelete = useMutation({
         mutationFn: (_id) => axiosSecure.delete(`/api/contests/${_id}`),
         onSuccess: (res) => {
-            console.log('Server Response :', res.data);
+            // console.log('Server Response :', res.data);
             queryClient.invalidateQueries({ queryKey: ['contests'] })
 
             toast.success('Contest deleted')
+            return res
         },
         onError: (err) => console.error('Mutation Failed :', err)
     })
@@ -33,10 +34,11 @@ const ManageContests = () => {
             return axiosSecure.put(`/api/contests/${_id}`, newData)
         },
         onSuccess: (res) => {
-            console.log('Server Response :', res.data);
+            // console.log('Server Response :', res.data);
             queryClient.invalidateQueries({ queryKey: ['contests'] })
 
             toast.success('Status Updated')
+            return res
         },
         onError: (err) => console.error('Mutation Failed :', err)
     })
@@ -47,10 +49,11 @@ const ManageContests = () => {
             return axiosSecure.put(`/api/contests/${_id}`, newData)
         },
         onSuccess: (res) => {
-            console.log('Server Response :', res.data);
+            // console.log('Server Response :', res.data);
             queryClient.invalidateQueries({ queryKey: ['contests'] })
 
             toast.success('Status updated')
+            return res
         },
         onError: (err) => console.error('Mutation Failed :', err)
     })

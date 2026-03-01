@@ -4,8 +4,9 @@ import useAuth from './useAuth';
 import { useNavigate } from 'react-router';
 
 const axiosSecure = axios.create({
+    baseURL: 'https://contest-forge-server.onrender.com/',
     //   baseURL: 'https://contestforge.vercel.app/', 
-    baseURL: 'http://localhost:3000/',
+    // baseURL: 'http://localhost:3000/',
 })
 
 const useAxiosSecure = () => {
@@ -23,7 +24,7 @@ const useAxiosSecure = () => {
         const resInterceptor = axiosSecure.interceptors.response.use((response) => {
             return response;
         }, (error) => {
-            console.log(error);
+            console.err(error);
 
             const statusCode = error.status;
             if (statusCode === 401 || statusCode === 403) {

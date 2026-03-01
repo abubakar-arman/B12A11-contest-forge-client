@@ -23,10 +23,11 @@ const CreatedContests = () => {
     const mutationDelete = useMutation({
         mutationFn: (_id) => axiosSecure.delete(`/api/contests/${_id}`),
         onSuccess: (res) => {
-            console.log('Server Response :', res.data);
+            // console.log('Server Response :', res.data);
             queryClient.invalidateQueries({ queryKey: ['contests'] })
 
             toast.success('Contest deleted')
+            return res
         },
         onError: (err) => console.error('Mutation Failed :', err)
     })
@@ -34,9 +35,10 @@ const CreatedContests = () => {
     const mutationDeregister = useMutation({
         mutationFn: (data) => axiosSecure.put(`/api/contest/deregister/${data.id}`, { email: data.email }),
         onSuccess: (res) => {
-            console.log('Server response:', res.data)
+            // console.log('Server response:', res.data)
             queryClient.invalidateQueries({ queryKey: ['contests'] })
             toast.success('Contest Deregistration successful')
+            return res
         },
         onError: (err) => console.error('Mutation Failed:', err)
     })

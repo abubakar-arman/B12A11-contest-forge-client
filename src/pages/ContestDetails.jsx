@@ -11,6 +11,7 @@ import { useRef } from 'react';
 import Spinner2 from '../Components/Spinner2';
 import useRole from '../hooks/useRole';
 import useAxiosSecure from '../hooks/useAxiosSecure';
+import ContestDetailsSkeleton from './Shared/ContestDetailsSkeleton';
 
 
 const ContestDetails = () => {
@@ -28,9 +29,10 @@ const ContestDetails = () => {
     const mutationRegister = useMutation({
         mutationFn: (_id) => axiosSecure.put(`/api/contest/register/${_id}`, user),
         onSuccess: (res) => {
-            console.log('Server response:', res.data)
+            // console.log('Server response:', res.data)
             queryClient.invalidateQueries({ queryKey: ['contestDetails', id] })
             toast.success('Contest registration successful')
+            return res
         },
         onError: (err) => console.error('Mutation Failed:', err)
     })
@@ -45,10 +47,11 @@ const ContestDetails = () => {
             return axiosSecure.post(`/api/submissions`, data)
         },
         onSuccess: (res) => {
-            console.log('Server Response :', res.data);
+            // console.log('Server Response :', res.data);
             queryClient.invalidateQueries({ queryKey: ['submissions'] })
 
             toast.success('Task submitted successfully!')
+            return res
         },
         onError: (err) => console.error('Mutation Failed :', err)
     })
@@ -56,7 +59,7 @@ const ContestDetails = () => {
     const [isContestEnded, setIsContestEnded] = useState(false)
     const textareaRef = useRef(null);
 
-    if (isLoading || roleLoading) return <Spinner2 />
+    if (isLoading || roleLoading) return <ContestDetailsSkeleton />
     if (error) return <p>Error: {error.message}</p>
 
     return (
@@ -116,7 +119,7 @@ const ContestDetails = () => {
                         {isContestEnded ?
                             <button className='btn btn-neutral w-50 py-8 btn-disabled'>Contest Ended</button>
                             :
-                            <>{contest.participated_users.includes(user.email) ?
+                            <>{contest.participated_users.includes(user?.email) ?
                                 <button
                                     className="btn btn-primary w-50 py-8"
                                     onClick={() => document.getElementById('submissionModal').showModal()}>

@@ -24,9 +24,9 @@ const Signup = () => {
     onError: (err) => console.error('Mutation Failed :', err)
   });
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
+  // useEffect(() => {
+  //   console.log(user);
+  // }, [user]);
 
   const invalidPassErr = `Enter a valid password:
 - Must have an Uppercase letter

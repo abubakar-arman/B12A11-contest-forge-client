@@ -35,9 +35,10 @@ const SubmittedTasks = () => {
             return axiosSecure.put(`/api/contest/declare-winner/${submission.contestId}`, submission)
         },
         onSuccess: (res) => {
-            console.log('Server Response :', res.data);
+            // console.log('Server Response :', res.data);
             queryClient.invalidateQueries({ queryKey: ['submissions'] })
             toast.success('Winner Declared!')
+            return res
         },
         onError: (err) => console.error('Mutation Failed :', err)
     })
@@ -47,9 +48,10 @@ const SubmittedTasks = () => {
             return axiosSecure.put(`/api/contest/undo-winner/${submission.contestId}`, submission)
         },
         onSuccess: (res) => {
-            console.log('Server Response :', res.data);
+            // console.log('Server Response :', res.data);
             queryClient.invalidateQueries({ queryKey: ['submissions'] })
             toast.success('Undo Winner Declaration Successful')
+            return res
         },
         onError: (err) => console.error('Mutation Failed :', err)
     })
@@ -57,10 +59,11 @@ const SubmittedTasks = () => {
     const mutationDelete = useMutation({
         mutationFn: (_id) => axiosSecure.delete(`/api/submissions/${_id}`),
         onSuccess: (res) => {
-            console.log('Server Response :', res.data);
+            // console.log('Server Response :', res.data);
             queryClient.invalidateQueries({ queryKey: ['submissions'] })
 
             toast.success('Submission deleted')
+            return res
         },
         onError: (err) => console.error('Mutation Failed :', err)
     })

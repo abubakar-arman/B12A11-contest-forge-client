@@ -7,6 +7,7 @@ import Reviews from './Reviews';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect } from 'react';
+import HowItWorks from './HowItWorks';
 
 const Home = () => {
     useEffect(() => {
@@ -22,6 +23,7 @@ const Home = () => {
         <div>
             <Banner />
             <PopularContests />
+            <HowItWorks />
             <Stats />
             <Winners />
             <Reviews />

@@ -20,10 +20,11 @@ const AddContest = () => {
   const mutationAddContest = useMutation({
     mutationFn: (contest) => axiosSecure.post('/api/contests', contest),
     onSuccess: (res) => {
-      console.log('Server Response :', res.data);
+      // console.log('Server Response :', res.data);
       queryClient.invalidateQueries({ queryKey: ['contests'] })
 
       toast.success('Contest Created Successfully!')
+      return res
     },
     onError: (err) => console.error('Mutation Failed :', err)
   })

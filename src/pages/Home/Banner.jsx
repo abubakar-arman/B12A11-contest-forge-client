@@ -3,6 +3,7 @@ import { Carousel } from 'react-responsive-carousel'
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Spinner2 from "../../Components/Spinner2";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router";
 
 const Banner = () => {
     const axiosSecure = useAxiosSecure()
@@ -15,6 +16,13 @@ const Banner = () => {
     if (error) return <p>Error: {error.message}</p>
     return (
         <div className="relative">
+            <h3
+                className='text-2xl lg:text-3xl font-bold text-primary mb-5 -mt-30 md:-mt-10 absolute top-1/3 z-110 left-1/2 -translate-x-1/2 '
+                style={{ WebkitTextStroke: '1px var(--color-primary-content)' }}
+            >Craft Greatness. Launch Contests</h3>
+            <h5
+                className='text-neutral-content font-bold mb-5 -mt-10 md:mt-0 w-full px-10 text-center absolute top-1/3 z-110 left-1/2 -translate-x-1/2'
+            >"Discover, join and create exciting coding contests – compete with peers,<br />showcase your skills and win real prizes all in one collaborative platform."</h5>
             <div className="absolute top-1/2 z-100 left-1/2 -translate-x-1/2 w-80">
                 <form className='mb-5 flex'>
                     <label className="input">
@@ -35,6 +43,12 @@ const Banner = () => {
                     <button className='btn btn-warning ml-4 '>Search</button>
                 </form>
             </div>
+            <Link
+                to='/all-contests'
+                className='btn btn-primary absolute top-1/2 mt-20 z-110 left-1/2 
+                -translate-x-9/12 '
+            >Participate Now</Link>
+
             <Carousel autoPlay infiniteLoop dynamicHeight={false} showThumbs={false}>
                 {
                     images.map((im, i) => (

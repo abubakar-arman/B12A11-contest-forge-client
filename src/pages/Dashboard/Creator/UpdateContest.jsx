@@ -25,7 +25,7 @@ const UpdateContest = () => {
       queryClient.invalidateQueries({ queryKey: ['contests'] })
 
       toast.success('Contest Updated Successfully!')
-      console.log('Server Response :', res.data);
+      // console.log('Server Response :', res.data);
       return res
     },
     onError: (err) => console.error('Mutation Failed :', err)
