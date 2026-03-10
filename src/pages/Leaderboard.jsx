@@ -5,16 +5,17 @@ import { FaTrophy, FaMedal } from 'react-icons/fa';
 import { useQuery } from '@tanstack/react-query';
 import Spinner2 from '../Components/Spinner2';
 import useAxiosSecure from '../hooks/useAxiosSecure'
+import LeaderboardSkeleton from '../Components/LeaderboardSkeleton';
 
 const Leaderboard = () => {
-    const axiosSecure = useAxiosSecure()
+  const axiosSecure = useAxiosSecure()
   const { data: users, isLoading, error } = useQuery({
     queryKey: ['leaderboard'],
     queryFn: () => axiosSecure.get('/api/users').then(res => res.data.result),
     select: (users) => users.filter(u => u.total_wins > 0)
   });
 
-  if (isLoading) return <Spinner2 />;
+  if (isLoading) return <LeaderboardSkeleton />;
   if (error) return <p className="text-center text-error">Error: {error.message}</p>;
 
   // 2. Sort users by wins (Highest first)
@@ -45,10 +46,10 @@ const Leaderboard = () => {
               return (
                 <tr key={user._id} className="hover:bg-base-200 transition-colors">
                   <td className="font-bold text-lg">
-                    {rank === 1 ? <FaMedal className="text-yellow-500 text-2xl" /> : 
-                     rank === 2 ? <FaMedal className="text-gray-400 text-2xl" /> : 
-                     rank === 3 ? <FaMedal className="text-orange-400 text-2xl" /> : 
-                     `#${rank}`}
+                    {rank === 1 ? <FaMedal className="text-yellow-500 text-2xl" /> :
+                      rank === 2 ? <FaMedal className="text-gray-400 text-2xl" /> :
+                        rank === 3 ? <FaMedal className="text-orange-400 text-2xl" /> :
+                          `#${rank}`}
                   </td>
                   <td>
                     <div className="flex items-center gap-3">
@@ -70,16 +71,16 @@ const Leaderboard = () => {
                   </td>
                   <td className="text-center">
                     <div className="stat-value text-primary text-2xl">
-                        {user.total_wins || 0}
+                      {user.total_wins || 0}
                     </div>
                   </td>
                 </tr>
               );
             })}
           </tbody>
-          
+
         </table>
-            {!rankedUsers.length && <p className='text-center'>No items to show</p>}
+        {!rankedUsers.length && <p className='text-center'>No items to show</p>}
       </div>
     </div>
   );

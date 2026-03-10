@@ -3,6 +3,7 @@ import ContestCard from './Shared/ContestCard';
 import { useQuery } from '@tanstack/react-query';
 import Spinner2 from '../Components/Spinner2';
 import useAxiosSecure from '../hooks/useAxiosSecure'
+import AllContestsSkeleton from '../Components/AllContestsSkeleton';
 
 const AllContests = () => {
     const axiosSecure = useAxiosSecure()
@@ -13,7 +14,7 @@ const AllContests = () => {
     })
     // console.log('data:', contests);
 
-    if (isLoading) return <Spinner2 />;
+    if (isLoading) return <AllContestsSkeleton />;
     if (error) return <p>Error: {error.message}</p>
 
     return (

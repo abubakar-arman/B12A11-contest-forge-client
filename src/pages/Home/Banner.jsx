@@ -4,6 +4,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Spinner2 from "../../Components/Spinner2";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router";
+import LandingSkelitonLoader from "../../Components/LandingSkelitonLoader";
 
 const Banner = () => {
     const axiosSecure = useAxiosSecure()
@@ -12,7 +13,7 @@ const Banner = () => {
         queryFn: () => axiosSecure.get(`/api/home/banner`).then(res => res.data.imgs)
     })
 
-    if (isLoading) return <Spinner2 />;
+    if (isLoading) return <LandingSkelitonLoader />;
     if (error) return <p>Error: {error.message}</p>
     return (
         <div className="relative">

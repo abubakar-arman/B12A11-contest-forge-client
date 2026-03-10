@@ -4,9 +4,10 @@ import { NavLink, useNavigate } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 import { MdDarkMode } from "react-icons/md";
 import { MdLightMode } from "react-icons/md";
+import LandingSkelitonLoader from '../../Components/LandingSkelitonLoader';
 
 const Navbar = () => {
-    const { logout, isAuthenticated, user } = useAuth()
+    const { logout, isAuthenticated, user, loading } = useAuth()
     const navigate = useNavigate()
     const [theme, setTheme] = useState(localStorage.getItem("theme") || "light")
 
